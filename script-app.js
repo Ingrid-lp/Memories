@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const greetingElement = document.getElementById('greeting');
     const memoriesContainer = document.getElementById('memories-container');
     const addMemoryBtn = document.getElementById('add-memory-btn');
+    const addToAlbumBtn = document.getElementById('add-to-album-btn');
     const memoryModal = document.getElementById('memory-modal');
     const memoryForm = document.getElementById('memory-form');
     const memoryIdInput = document.getElementById('memory-id');
@@ -22,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const addSelectedMemoriesBtn = document.getElementById('add-selected-memories-btn');
     const viewMemoryModal = document.getElementById('view-memory-modal');
     const viewMemoryContent = document.getElementById('view-memory-content');
+    const imageUploadField = document.getElementById('image-upload-field');
 
     const loggedInUser = localStorage.getItem('loggedInUser');
     if (!loggedInUser) {
@@ -72,7 +74,14 @@ document.addEventListener('DOMContentLoaded', () => {
         albumsList.innerHTML = '';
         albums.filter(a => a.userId === loggedInUser).forEach(album => {
             const li = document.createElement('li');
-            li.innerHTML = `<a href="#" class="menu-item album-item" data-id="${album.id}"><span class="material-icons">folder</span> ${album.title}</a>`;
+            li.className = 'album-item-container';
+            li.innerHTML = `
+                <a href="#" class="menu-item album-item" data-id="${album.id}"><span class="material-icons">folder</span> ${album.title}</a>
+                <div class="album-actions">
+                    <button class="icon-btn edit-album-btn" data-id="${album.id}"><span class="material-icons">edit</span></button>
+                    <button class="icon-btn delete-album-btn" data-id="${album.id}"><span class="material-icons">delete</span></button>
+                </div>
+            `;
             albumsList.appendChild(li);
         });
     };
@@ -98,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <button class="icon-btn delete-btn" data-id="${memory.id}"><span class="material-icons">delete</span></button>
             </div>
         `;
-
+        
         const editBtn = viewMemoryContent.querySelector('.edit-btn');
         const deleteBtn = viewMemoryContent.querySelector('.delete-btn');
         const memoryId = memory.id;
@@ -110,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('memory-title').value = memoryToEdit.title;
                 document.getElementById('memory-description').value = memoryToEdit.description;
                 document.getElementById('memory-date').value = memoryToEdit.date;
-                document.getElementById('image-upload-field').style.display = 'none';
+                imageUploadField.style.display = 'none';
                 document.getElementById('memory-image').required = false;
                 memoryModalTitle.textContent = 'Editar Memória';
                 hideModal('view-memory-modal');
@@ -172,6 +181,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
         homeLink.classList.add('active');
         sidebar.classList.remove('show');
+        addMemoryBtn.style.display = 'block';
+        addToAlbumBtn.style.display = 'none';
     });
 
     createAlbumLink.addEventListener('click', (e) => {
@@ -193,28 +204,63 @@ document.addEventListener('DOMContentLoaded', () => {
 
     albumsList.addEventListener('click', (e) => {
         const target = e.target.closest('.album-item');
-        if (!target) return;
-
-        currentAlbumId = parseInt(target.dataset.id);
-        const albumTitle = target.textContent.trim();
-        contentTitle.textContent = albumTitle;
-        renderMemories();
-
-        document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
-        target.classList.add('active');
-        sidebar.classList.remove('show');
+        const editBtn = e.target.closest('.edit-album-btn');
+        const deleteBtn = e.target.closest('.delete-album-btn');
+        if (target) {
+            e.preventDefault();
+            currentAlbumId = parseInt(target.dataset.id);
+            const albumTitle = albums.find(a => a.id === currentAlbumId).title;
+            contentTitle.textContent = albumTitle;
+            renderMemories();
+            document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+            target.classList.add('active');
+            sidebar.classList.remove('show');
+            addMemoryBtn.style.display = 'none';
+            addToAlbumBtn.style.display = 'block';
+        }
+        if (editBtn) {
+            e.preventDefault();
+            const albumId = parseInt(editBtn.dataset.id);
+            const albumToEdit = albums.find(a => a.id === albumId);
+            const newTitle = prompt('Digite o novo nome para o álbum:', albumToEdit.title);
+            if (newTitle && newTitle.trim() !== '') {
+                albumToEdit.title = newTitle;
+                saveToLocalStorage('albums', albums);
+                renderAlbums();
+                alert('Nome do álbum alterado com sucesso!');
+            }
+        }
+        if (deleteBtn) {
+            e.preventDefault();
+            const albumId = parseInt(deleteBtn.dataset.id);
+            if (confirm('Tem certeza que deseja excluir este álbum e todas as memórias associadas a ele?')) {
+                albums = albums.filter(a => a.id !== albumId);
+                memories = memories.filter(m => m.albumId !== albumId);
+                saveToLocalStorage('albums', albums);
+                saveToLocalStorage('memories', memories);
+                renderAlbums();
+                currentAlbumId = null;
+                contentTitle.textContent = 'Minhas Memórias';
+                renderMemories();
+                alert('Álbum excluído com sucesso!');
+            }
+        }
     });
 
     addMemoryBtn.addEventListener('click', () => {
+        memoryForm.reset();
+        imageUploadField.style.display = 'block';
+        document.getElementById('memory-image').required = true;
+        memoryIdInput.value = '';
+        memoryModalTitle.textContent = 'Adicionar Nova Memória';
+        showModal('memory-modal');
+    });
+
+    addToAlbumBtn.addEventListener('click', () => {
         if (currentAlbumId) {
             showAddMemoriesToAlbumModal(currentAlbumId);
         } else {
-            memoryForm.reset();
-            document.getElementById('image-upload-field').style.display = 'block'; // Exibe o campo na criação
-            document.getElementById('memory-image').required = true; // Garante que a imagem é obrigatória ao criar
-            memoryIdInput.value = '';
-            memoryModalTitle.textContent = 'Adicionar Nova Memória';
-            showModal('memory-modal');
+            alert('Selecione um álbum para adicionar memórias.');
         }
     });
 
@@ -250,7 +296,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 memoryToUpdate.title = title;
                 memoryToUpdate.description = description;
                 memoryToUpdate.date = date;
-                // A imagem não é editada, então não há lógica aqui
                 saveToLocalStorage('memories', memories);
                 renderMemories();
                 hideModal('memory-modal');
@@ -310,8 +355,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('memory-title').value = memoryToEdit.title;
                 document.getElementById('memory-description').value = memoryToEdit.description;
                 document.getElementById('memory-date').value = memoryToEdit.date;
-                document.getElementById('image-upload-field').style.display = 'none'; // Esconde o campo de imagem
-                document.getElementById('memory-image').required = false; // Torna o campo opcional
+                imageUploadField.style.display = 'none';
+                document.getElementById('memory-image').required = false;
                 memoryModalTitle.textContent = 'Editar Memória';
                 hideModal('view-memory-modal');
                 showModal('memory-modal');

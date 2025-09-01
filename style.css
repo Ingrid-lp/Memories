@@ -121,6 +121,11 @@ body {
     padding: 10px 15px;
 }
 
+.header-buttons {
+    display: flex;
+    gap: 10px;
+}
+
 .sidebar {
     width: 280px;
     background-color: var(--surface-color);
@@ -312,15 +317,31 @@ body {
     padding: 0;
 }
 
-.album-list li {
-    padding: 15px;
-    cursor: pointer;
-    border-bottom: 1px solid #eee;
-    transition: background-color 0.2s;
+.album-item-container {
+    display: flex;
+    align-items: center;
+    /* Alterado para que o nome e os botões fiquem alinhados */
+    justify-content: space-between;
+    padding-right: 15px;
 }
 
-.album-list li:hover {
+.album-list li a {
+    padding: 15px 0;
+    /* Removido o padding lateral para que o botão fique mais próximo */
+}
+
+.album-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.album-list li a:hover, .album-list li a.active {
     background-color: var(--background-color);
+    color: var(--primary-color);
+}
+
+.album-list .material-icons {
+    margin-right: 15px;
 }
 
 .empty-state {
