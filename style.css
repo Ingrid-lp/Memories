@@ -229,7 +229,7 @@ body {
 }
 
 .memory-details {
-    display: none; /* Alterado para esconder o título e a data */
+    display: none;
     padding: 15px;
     flex-grow: 1;
 }
@@ -377,6 +377,11 @@ body {
     display: flex;
     justify-content: flex-end;
     width: 100%;
+}
+
+/* Estilo para os botões de ação no modal de visualização */
+.modal-actions {
+    margin-top: 20px;
 }
 
 @media (max-width: 768px) {

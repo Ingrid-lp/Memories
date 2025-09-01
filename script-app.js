@@ -58,21 +58,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.className = 'memory-card';
                 card.innerHTML = `
                     <img src="${memory.image}" alt="${memory.title}" class="memory-image" data-id="${memory.id}">
-                    <div class="memory-details">
-                        <h3>${memory.title || 'Sem título'}</h3>
-                        <p>Data: ${memory.date || 'Não informada'}</p>
-                    </div>
-                    <div class="memory-actions">
-                        <button class="icon-btn edit-btn" data-id="${memory.id}"><span class="material-icons">edit</span></button>
-                        <button class="icon-btn delete-btn" data-id="${memory.id}"><span class="material-icons">delete</span></button>
-                    </div>
                 `;
-
                 card.querySelector('.memory-image').addEventListener('click', () => {
                     const memoryToView = memories.find(m => m.id == memory.id);
                     showMemoryDetails(memoryToView);
                 });
-
                 memoriesContainer.appendChild(card);
             });
         }
@@ -103,7 +93,40 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p><strong>Descrição:</strong> ${memory.description || 'Sem descrição'}</p>
                 <p><strong>Data:</strong> ${memory.date || 'Não informada'}</p>
             </div>
+            <div class="memory-actions modal-actions">
+                <button class="icon-btn edit-btn" data-id="${memory.id}"><span class="material-icons">edit</span></button>
+                <button class="icon-btn delete-btn" data-id="${memory.id}"><span class="material-icons">delete</span></button>
+            </div>
         `;
+
+        const editBtn = viewMemoryContent.querySelector('.edit-btn');
+        const deleteBtn = viewMemoryContent.querySelector('.delete-btn');
+        const memoryId = memory.id;
+
+        editBtn.addEventListener('click', () => {
+            const memoryToEdit = memories.find(m => m.id === memoryId);
+            if (memoryToEdit) {
+                document.getElementById('memory-id').value = memoryToEdit.id;
+                document.getElementById('memory-title').value = memoryToEdit.title;
+                document.getElementById('memory-description').value = memoryToEdit.description;
+                document.getElementById('memory-date').value = memoryToEdit.date;
+                document.getElementById('image-upload-field').style.display = 'none';
+                document.getElementById('memory-image').required = false;
+                memoryModalTitle.textContent = 'Editar Memória';
+                hideModal('view-memory-modal');
+                showModal('memory-modal');
+            }
+        });
+
+        deleteBtn.addEventListener('click', () => {
+            if (confirm('Tem certeza que deseja excluir esta memória?')) {
+                memories = memories.filter(m => m.id !== memoryId);
+                saveToLocalStorage('memories', memories);
+                hideModal('view-memory-modal');
+                renderMemories();
+            }
+        });
+
         showModal('view-memory-modal');
     };
 
@@ -187,6 +210,8 @@ document.addEventListener('DOMContentLoaded', () => {
             showAddMemoriesToAlbumModal(currentAlbumId);
         } else {
             memoryForm.reset();
+            document.getElementById('image-upload-field').style.display = 'block'; // Exibe o campo na criação
+            document.getElementById('memory-image').required = true; // Garante que a imagem é obrigatória ao criar
             memoryIdInput.value = '';
             memoryModalTitle.textContent = 'Adicionar Nova Memória';
             showModal('memory-modal');
@@ -225,20 +250,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 memoryToUpdate.title = title;
                 memoryToUpdate.description = description;
                 memoryToUpdate.date = date;
-                if (imageFile) {
-                    const reader = new FileReader();
-                    reader.onload = (event) => {
-                        memoryToUpdate.image = event.target.result;
-                        saveToLocalStorage('memories', memories);
-                        renderMemories();
-                        hideModal('memory-modal');
-                    };
-                    reader.readAsDataURL(imageFile);
-                } else {
-                    saveToLocalStorage('memories', memories);
-                    renderMemories();
-                    hideModal('memory-modal');
-                }
+                // A imagem não é editada, então não há lógica aqui
+                saveToLocalStorage('memories', memories);
+                renderMemories();
+                hideModal('memory-modal');
             }
         } else {
             if (!imageFile) {
@@ -291,17 +306,21 @@ document.addEventListener('DOMContentLoaded', () => {
         if (target.classList.contains('edit-btn')) {
             const memoryToEdit = memories.find(m => m.id === memoryId);
             if (memoryToEdit) {
-                memoryIdInput.value = memoryToEdit.id;
+                document.getElementById('memory-id').value = memoryToEdit.id;
                 document.getElementById('memory-title').value = memoryToEdit.title;
                 document.getElementById('memory-description').value = memoryToEdit.description;
                 document.getElementById('memory-date').value = memoryToEdit.date;
+                document.getElementById('image-upload-field').style.display = 'none'; // Esconde o campo de imagem
+                document.getElementById('memory-image').required = false; // Torna o campo opcional
                 memoryModalTitle.textContent = 'Editar Memória';
+                hideModal('view-memory-modal');
                 showModal('memory-modal');
             }
         } else if (target.classList.contains('delete-btn')) {
             if (confirm('Tem certeza que deseja excluir esta memória?')) {
                 memories = memories.filter(m => m.id !== memoryId);
                 saveToLocalStorage('memories', memories);
+                hideModal('view-memory-modal');
                 renderMemories();
             }
         }
