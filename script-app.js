@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const memoriesContainer = document.getElementById('memories-container');
     const addMemoryBtn = document.getElementById('add-memory-btn');
     const addToAlbumBtn = document.getElementById('add-to-album-btn');
+    const removeFromAlbumBtn = document.getElementById('remove-from-album-btn');
     const memoryModal = document.getElementById('memory-modal');
     const memoryForm = document.getElementById('memory-form');
     const memoryIdInput = document.getElementById('memory-id');
@@ -103,6 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p><strong>Data:</strong> ${memory.date || 'Não informada'}</p>
             </div>
             <div class="memory-actions modal-actions">
+                ${memory.albumId ? `<button class="icon-btn remove-from-album-btn" data-id="${memory.id}"><span class="material-icons">folder_delete</span></button>` : ''}
                 <button class="icon-btn edit-btn" data-id="${memory.id}"><span class="material-icons">edit</span></button>
                 <button class="icon-btn delete-btn" data-id="${memory.id}"><span class="material-icons">delete</span></button>
             </div>
@@ -110,31 +112,50 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const editBtn = viewMemoryContent.querySelector('.edit-btn');
         const deleteBtn = viewMemoryContent.querySelector('.delete-btn');
+        const removeFromAlbumBtn = viewMemoryContent.querySelector('.remove-from-album-btn');
         const memoryId = memory.id;
 
-        editBtn.addEventListener('click', () => {
-            const memoryToEdit = memories.find(m => m.id === memoryId);
-            if (memoryToEdit) {
-                document.getElementById('memory-id').value = memoryToEdit.id;
-                document.getElementById('memory-title').value = memoryToEdit.title;
-                document.getElementById('memory-description').value = memoryToEdit.description;
-                document.getElementById('memory-date').value = memoryToEdit.date;
-                imageUploadField.style.display = 'none';
-                document.getElementById('memory-image').required = false;
-                memoryModalTitle.textContent = 'Editar Memória';
-                hideModal('view-memory-modal');
-                showModal('memory-modal');
-            }
-        });
+        if (editBtn) {
+            editBtn.addEventListener('click', () => {
+                const memoryToEdit = memories.find(m => m.id === memoryId);
+                if (memoryToEdit) {
+                    document.getElementById('memory-id').value = memoryToEdit.id;
+                    document.getElementById('memory-title').value = memoryToEdit.title;
+                    document.getElementById('memory-description').value = memoryToEdit.description;
+                    document.getElementById('memory-date').value = memoryToEdit.date;
+                    imageUploadField.style.display = 'none';
+                    document.getElementById('memory-image').required = false;
+                    memoryModalTitle.textContent = 'Editar Memória';
+                    hideModal('view-memory-modal');
+                    showModal('memory-modal');
+                }
+            });
+        }
 
-        deleteBtn.addEventListener('click', () => {
-            if (confirm('Tem certeza que deseja excluir esta memória?')) {
-                memories = memories.filter(m => m.id !== memoryId);
-                saveToLocalStorage('memories', memories);
-                hideModal('view-memory-modal');
-                renderMemories();
-            }
-        });
+        if (deleteBtn) {
+            deleteBtn.addEventListener('click', () => {
+                if (confirm('Tem certeza que deseja excluir esta memória?')) {
+                    memories = memories.filter(m => m.id !== memoryId);
+                    saveToLocalStorage('memories', memories);
+                    hideModal('view-memory-modal');
+                    renderMemories();
+                }
+            });
+        }
+
+        if (removeFromAlbumBtn) {
+            removeFromAlbumBtn.addEventListener('click', () => {
+                if (confirm('Tem certeza que deseja remover esta memória do álbum? Ela não será excluída do sistema.')) {
+                    const memoryToRemove = memories.find(m => m.id === memoryId);
+                    if (memoryToRemove) {
+                        memoryToRemove.albumId = null;
+                        saveToLocalStorage('memories', memories);
+                        hideModal('view-memory-modal');
+                        renderMemories();
+                    }
+                }
+            });
+        }
 
         showModal('view-memory-modal');
     };
@@ -183,6 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
         sidebar.classList.remove('show');
         addMemoryBtn.style.display = 'block';
         addToAlbumBtn.style.display = 'none';
+        removeFromAlbumBtn.style.display = 'none';
     });
 
     createAlbumLink.addEventListener('click', (e) => {
@@ -217,6 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
             sidebar.classList.remove('show');
             addMemoryBtn.style.display = 'none';
             addToAlbumBtn.style.display = 'block';
+            removeFromAlbumBtn.style.display = 'block';
         }
         if (editBtn) {
             e.preventDefault();
@@ -261,6 +284,32 @@ document.addEventListener('DOMContentLoaded', () => {
             showAddMemoriesToAlbumModal(currentAlbumId);
         } else {
             alert('Selecione um álbum para adicionar memórias.');
+        }
+    });
+    
+    removeFromAlbumBtn.addEventListener('click', () => {
+        // Lógica para remover a memória do álbum
+        if (currentAlbumId) {
+            const albumTitle = albums.find(a => a.id === currentAlbumId).title;
+            const memoriesInAlbum = memories.filter(m => m.albumId === currentAlbumId);
+            
+            if (memoriesInAlbum.length === 0) {
+                alert(`O álbum "${albumTitle}" não possui memórias para serem removidas.`);
+                return;
+            }
+
+            if (confirm(`Tem certeza que deseja remover TODAS as memórias do álbum "${albumTitle}"? Elas não serão excluídas do sistema.`)) {
+                memories.forEach(m => {
+                    if (m.albumId === currentAlbumId) {
+                        m.albumId = null;
+                    }
+                });
+                saveToLocalStorage('memories', memories);
+                renderMemories();
+                alert('Memórias removidas do álbum com sucesso!');
+            }
+        } else {
+            alert('Selecione um álbum para remover memórias.');
         }
     });
 
