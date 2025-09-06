@@ -1,103 +1,116 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Referências a elementos do DOM
-    const mainApp = document.getElementById('main-app');
-    const greetingElement = document.getElementById('greeting');
-    const memoriesContainer = document.getElementById('memories-container');
-    const addMemoryBtn = document.getElementById('add-memory-btn');
-    const addToAlbumBtn = document.getElementById('add-to-album-btn');
-    const removeFromAlbumBtn = document.getElementById('remove-from-album-btn');
-    const memoryModal = document.getElementById('memory-modal');
-    const memoryForm = document.getElementById('memory-form');
-    const memoryIdInput = document.getElementById('memory-id');
-    const memoryModalTitle = document.getElementById('modal-title');
-    const logoutBtn = document.getElementById('logout-btn');
-    const menuBtn = document.getElementById('menu-btn');
-    const sidebar = document.getElementById('sidebar');
-    const mainContent = document.getElementById('main-content');
-    const homeLink = document.getElementById('home-link');
-    const createAlbumLink = document.getElementById('create-album-link');
-    const albumsList = document.getElementById('albums-list');
-    const contentTitle = document.getElementById('content-title');
-    const emptyState = document.getElementById('empty-state');
-    const addToAlbumModal = document.getElementById('add-to-album-modal');
-    const memoriesToAddList = document.getElementById('memories-to-add-list');
-    const addSelectedMemoriesBtn = document.getElementById('add-selected-memories-btn');
-    const viewMemoryModal = document.getElementById('view-memory-modal');
-    const viewMemoryContent = document.getElementById('view-memory-content');
-    const imageUploadField = document.getElementById('image-upload-field');
+            // Referências a elementos do DOM
+            const mainApp = document.getElementById('main-app');
+            const greetingElement = document.getElementById('greeting');
+            const memoriesContainer = document.getElementById('memories-container');
+            const addMemoryBtn = document.getElementById('add-memory-btn');
+            const addToAlbumBtn = document.getElementById('add-to-album-btn');
+            const memoryModal = document.getElementById('memory-modal');
+            const memoryForm = document.getElementById('memory-form');
+            const memoryIdInput = document.getElementById('memory-id');
+            const memoryModalTitle = document.getElementById('modal-title');
+            const logoutBtn = document.getElementById('logout-btn');
+            const menuBtn = document.getElementById('menu-btn');
+            const sidebar = document.getElementById('sidebar');
+            const homeLink = document.getElementById('home-link');
+            const createAlbumLink = document.getElementById('create-album-link');
+            const albumsList = document.getElementById('albums-list');
+            const contentTitle = document.getElementById('content-title');
+            const emptyState = document.getElementById('empty-state');
+            const addToAlbumModal = document.getElementById('add-to-album-modal');
+            const memoriesToAddList = document.getElementById('memories-to-add-list');
+            const addSelectedMemoriesBtn = document.getElementById('add-selected-memories-btn');
+            const viewMemoryModal = document.getElementById('view-memory-modal');
+            const viewMemoryContent = document.getElementById('view-memory-content');
+            const imageUploadField = document.getElementById('image-upload-field');
 
-    const loggedInUser = localStorage.getItem('loggedInUser');
-    if (!loggedInUser) {
-        window.location.href = 'index.html';
-        return;
-    }
+            const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+            if (!loggedInUser) {
+                window.location.href = 'index.html';
+                return;
+            }
 
-    let memories = JSON.parse(localStorage.getItem('memories')) || [];
-    let albums = JSON.parse(localStorage.getItem('albums')) || [];
-    let currentAlbumId = null;
+            let memories = [];
+            let albums = [];
+            let currentAlbumId = null;
 
-    // Funções de armazenamento e renderização
-    const saveToLocalStorage = (key, data) => localStorage.setItem(key, JSON.stringify(data));
+            const API_URL = 'http://localhost:3000';
 
-    const renderScreen = () => {
-        greetingElement.textContent = `Olá, ${loggedInUser}`;
-        renderMemories();
-        renderAlbums();
-    };
+            const fetchData = async() => {
+                try {
+                    const memoriesResponse = await fetch(`${API_URL}/memories/${loggedInUser.id}`);
+                    memories = await memoriesResponse.json();
 
-    const renderMemories = () => {
-        memoriesContainer.innerHTML = '';
-        const userMemories = memories.filter(m => m.userId === loggedInUser);
-        const filteredMemories = currentAlbumId ?
-            userMemories.filter(m => m.albumId === currentAlbumId) :
-            userMemories;
+                    const albumsResponse = await fetch(`${API_URL}/albums/${loggedInUser.id}`);
+                    albums = await albumsResponse.json();
 
-        if (filteredMemories.length === 0) {
-            emptyState.style.display = 'block';
-        } else {
-            emptyState.style.display = 'none';
-            filteredMemories.forEach(memory => {
-                const card = document.createElement('div');
-                card.className = 'memory-card';
-                card.innerHTML = `
-                    <img src="${memory.image}" alt="${memory.title}" class="memory-image" data-id="${memory.id}">
+                    renderScreen();
+                } catch (error) {
+                    alert('Erro ao carregar dados do servidor. Certifique-se de que o servidor Node.js está rodando.');
+                    console.error('Fetch data error:', error);
+                }
+            };
+
+            const renderScreen = () => {
+                greetingElement.textContent = `Olá, ${loggedInUser.name}`;
+                renderMemories();
+                renderAlbums();
+            };
+
+            const renderMemories = () => {
+                memoriesContainer.innerHTML = '';
+                const filteredMemories = currentAlbumId ?
+                    memories.filter(m => m.albumId === parseInt(currentAlbumId)) :
+                    memories.filter(m => m.albumId === null);
+
+                if (filteredMemories.length === 0) {
+                    emptyState.style.display = 'block';
+                } else {
+                    emptyState.style.display = 'none';
+                    filteredMemories.forEach(memory => {
+                        const card = document.createElement('div');
+                        card.className = 'memory-card';
+                        card.innerHTML = `
+                    <img src="${memory.imageUrl}" alt="${memory.title}" class="memory-image" data-id="${memory.id}">
                 `;
-                card.querySelector('.memory-image').addEventListener('click', () => {
-                    const memoryToView = memories.find(m => m.id == memory.id);
-                    showMemoryDetails(memoryToView);
-                });
-                memoriesContainer.appendChild(card);
-            });
-        }
-    };
 
-    const renderAlbums = () => {
-        albumsList.innerHTML = '';
-        albums.filter(a => a.userId === loggedInUser).forEach(album => {
-            const li = document.createElement('li');
-            li.className = 'album-item-container';
-            li.innerHTML = `
+                        card.querySelector('.memory-image').addEventListener('click', () => {
+                            const memoryToView = memories.find(m => m.id == memory.id);
+                            showMemoryDetails(memoryToView);
+                        });
+
+                        memoriesContainer.appendChild(card);
+                    });
+                }
+            };
+
+            const renderAlbums = () => {
+                albumsList.innerHTML = '';
+                albums.forEach(album => {
+                    const li = document.createElement('li');
+                    li.className = 'album-item-container';
+                    li.innerHTML = `
                 <a href="#" class="menu-item album-item" data-id="${album.id}"><span class="material-icons">folder</span> ${album.title}</a>
                 <div class="album-actions">
                     <button class="icon-btn edit-album-btn" data-id="${album.id}"><span class="material-icons">edit</span></button>
                     <button class="icon-btn delete-album-btn" data-id="${album.id}"><span class="material-icons">delete</span></button>
                 </div>
             `;
-            albumsList.appendChild(li);
-        });
-    };
+                    albumsList.appendChild(li);
+                });
+            };
 
-    const showModal = (modalId) => {
-        document.getElementById(modalId).style.display = 'flex';
-    };
+            const showModal = (modalId) => {
+                document.getElementById(modalId).style.display = 'flex';
+            };
 
-    const hideModal = (modalId) => {
-        document.getElementById(modalId).style.display = 'none';
-    };
+            const hideModal = (modalId) => {
+                document.getElementById(modalId).style.display = 'none';
+            };
 
-    const showMemoryDetails = (memory) => {
-        viewMemoryContent.innerHTML = `
-            <img src="${memory.image}" alt="${memory.title}" style="max-width: 100%; max-height: 80vh; object-fit: contain; display: block; margin: 0 auto;">
+            const showMemoryDetails = (memory) => {
+                    viewMemoryContent.innerHTML = `
+            <img src="${memory.imageUrl}" alt="${memory.title}" style="max-width: 100%; max-height: 80vh; object-fit: contain; display: block; margin: 0 auto;">
             <div class="memory-details-view">
                 <h3>${memory.title || 'Sem título'}</h3>
                 <p><strong>Descrição:</strong> ${memory.description || 'Sem descrição'}</p>
@@ -117,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (editBtn) {
             editBtn.addEventListener('click', () => {
-                const memoryToEdit = memories.find(m => m.id === memoryId);
+                const memoryToEdit = memories.find(m => m.id == memoryId);
                 if (memoryToEdit) {
                     document.getElementById('memory-id').value = memoryToEdit.id;
                     document.getElementById('memory-title').value = memoryToEdit.title;
@@ -133,25 +146,42 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (deleteBtn) {
-            deleteBtn.addEventListener('click', () => {
+            deleteBtn.addEventListener('click', async () => {
                 if (confirm('Tem certeza que deseja excluir esta memória?')) {
-                    memories = memories.filter(m => m.id !== memoryId);
-                    saveToLocalStorage('memories', memories);
-                    hideModal('view-memory-modal');
-                    renderMemories();
+                    try {
+                        const response = await fetch(`${API_URL}/memories/${memoryId}`, { method: 'DELETE' });
+                        if (response.ok) {
+                            alert('Memória excluída com sucesso!');
+                            await fetchData();
+                            hideModal('view-memory-modal');
+                        } else {
+                            alert('Erro ao excluir memória.');
+                        }
+                    } catch (error) {
+                        alert('Erro ao conectar ao servidor.');
+                    }
                 }
             });
         }
 
         if (removeFromAlbumBtn) {
-            removeFromAlbumBtn.addEventListener('click', () => {
+            removeFromAlbumBtn.addEventListener('click', async () => {
                 if (confirm('Tem certeza que deseja remover esta memória do álbum? Ela não será excluída do sistema.')) {
-                    const memoryToRemove = memories.find(m => m.id === memoryId);
-                    if (memoryToRemove) {
-                        memoryToRemove.albumId = null;
-                        saveToLocalStorage('memories', memories);
-                        hideModal('view-memory-modal');
-                        renderMemories();
+                    try {
+                        const response = await fetch(`${API_URL}/memories/${memoryId}`, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ albumId: null })
+                        });
+                        if (response.ok) {
+                            alert('Memória removida do álbum com sucesso!');
+                            await fetchData();
+                            hideModal('view-memory-modal');
+                        } else {
+                            alert('Erro ao remover memória do álbum.');
+                        }
+                    } catch (error) {
+                        alert('Erro ao conectar ao servidor.');
                     }
                 }
             });
@@ -161,20 +191,19 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const showAddMemoriesToAlbumModal = (albumId) => {
-        const albumTitle = albums.find(a => a.id === albumId).title;
-        const userMemories = memories.filter(m => m.userId === loggedInUser);
-        const memoriesNotInAlbum = userMemories.filter(m => m.albumId !== albumId);
-
+        const albumTitle = albums.find(a => a.id == albumId).title;
+        const memoriesNotInAlbum = memories.filter(m => m.albumId === null);
+    
         memoriesToAddList.innerHTML = '';
         document.getElementById('add-to-album-title').textContent = `Adicione suas memórias ao álbum "${albumTitle}":`;
-
+    
         if (memoriesNotInAlbum.length > 0) {
             memoriesNotInAlbum.forEach(memory => {
                 const item = document.createElement('div');
                 item.className = 'memory-item';
                 item.innerHTML = `
                     <input type="checkbox" data-id="${memory.id}">
-                    <img src="${memory.image}" alt="${memory.title}">
+                    <img src="${memory.imageUrl}" alt="${memory.title}">
                 `;
                 memoriesToAddList.appendChild(item);
             });
@@ -183,6 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
             alert(`Todas as suas memórias já estão no álbum "${albumTitle}".`);
         }
     };
+    
 
     // Eventos
     logoutBtn.addEventListener('click', () => {
@@ -204,34 +234,40 @@ document.addEventListener('DOMContentLoaded', () => {
         sidebar.classList.remove('show');
         addMemoryBtn.style.display = 'block';
         addToAlbumBtn.style.display = 'none';
-        removeFromAlbumBtn.style.display = 'none';
     });
 
-    createAlbumLink.addEventListener('click', (e) => {
+    createAlbumLink.addEventListener('click', async (e) => {
         e.preventDefault();
         const albumTitle = prompt('Digite o título do novo álbum:');
         if (albumTitle) {
-            const newAlbum = {
-                id: Date.now(),
-                userId: loggedInUser,
-                title: albumTitle
-            };
-            albums.push(newAlbum);
-            saveToLocalStorage('albums', albums);
-            renderAlbums();
-            alert(`Álbum "${albumTitle}" criado com sucesso!`);
+            try {
+                const response = await fetch(`${API_URL}/albums`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title: albumTitle, userId: loggedInUser.id })
+                });
+                if (response.ok) {
+                    alert('Álbum criado com sucesso!');
+                    await fetchData();
+                } else {
+                    alert('Erro ao criar álbum.');
+                }
+            } catch (error) {
+                alert('Erro ao conectar ao servidor.');
+            }
         }
         sidebar.classList.remove('show');
     });
 
-    albumsList.addEventListener('click', (e) => {
+    albumsList.addEventListener('click', async (e) => {
         const target = e.target.closest('.album-item');
         const editBtn = e.target.closest('.edit-album-btn');
         const deleteBtn = e.target.closest('.delete-album-btn');
+
         if (target) {
             e.preventDefault();
-            currentAlbumId = parseInt(target.dataset.id);
-            const albumTitle = albums.find(a => a.id === currentAlbumId).title;
+            currentAlbumId = target.dataset.id;
+            const albumTitle = albums.find(a => a.id == currentAlbumId).title;
             contentTitle.textContent = albumTitle;
             renderMemories();
             document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
@@ -239,33 +275,47 @@ document.addEventListener('DOMContentLoaded', () => {
             sidebar.classList.remove('show');
             addMemoryBtn.style.display = 'none';
             addToAlbumBtn.style.display = 'block';
-            removeFromAlbumBtn.style.display = 'block';
         }
         if (editBtn) {
             e.preventDefault();
-            const albumId = parseInt(editBtn.dataset.id);
-            const albumToEdit = albums.find(a => a.id === albumId);
+            const albumId = editBtn.dataset.id;
+            const albumToEdit = albums.find(a => a.id == albumId);
             const newTitle = prompt('Digite o novo nome para o álbum:', albumToEdit.title);
             if (newTitle && newTitle.trim() !== '') {
-                albumToEdit.title = newTitle;
-                saveToLocalStorage('albums', albums);
-                renderAlbums();
-                alert('Nome do álbum alterado com sucesso!');
+                try {
+                    const response = await fetch(`${API_URL}/albums/${albumId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ title: newTitle })
+                    });
+                    if (response.ok) {
+                        alert('Nome do álbum alterado com sucesso!');
+                        await fetchData();
+                    } else {
+                        alert('Erro ao alterar nome do álbum.');
+                    }
+                } catch (error) {
+                    alert('Erro ao conectar ao servidor.');
+                }
             }
         }
         if (deleteBtn) {
             e.preventDefault();
-            const albumId = parseInt(deleteBtn.dataset.id);
+            const albumId = deleteBtn.dataset.id;
             if (confirm('Tem certeza que deseja excluir este álbum e todas as memórias associadas a ele?')) {
-                albums = albums.filter(a => a.id !== albumId);
-                memories = memories.filter(m => m.albumId !== albumId);
-                saveToLocalStorage('albums', albums);
-                saveToLocalStorage('memories', memories);
-                renderAlbums();
-                currentAlbumId = null;
-                contentTitle.textContent = 'Minhas Memórias';
-                renderMemories();
-                alert('Álbum excluído com sucesso!');
+                try {
+                    const response = await fetch(`${API_URL}/albums/${albumId}`, { method: 'DELETE' });
+                    if (response.ok) {
+                        alert('Álbum e suas memórias associadas excluídas com sucesso!');
+                        await fetchData();
+                        currentAlbumId = null;
+                        contentTitle.textContent = 'Minhas Memórias';
+                    } else {
+                        alert('Erro ao excluir álbum.');
+                    }
+                } catch (error) {
+                    alert('Erro ao conectar ao servidor.');
+                }
             }
         }
     });
@@ -286,89 +336,90 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Selecione um álbum para adicionar memórias.');
         }
     });
-    
-    removeFromAlbumBtn.addEventListener('click', () => {
-        // Lógica para remover a memória do álbum
-        if (currentAlbumId) {
-            const albumTitle = albums.find(a => a.id === currentAlbumId).title;
-            const memoriesInAlbum = memories.filter(m => m.albumId === currentAlbumId);
-            
-            if (memoriesInAlbum.length === 0) {
-                alert(`O álbum "${albumTitle}" não possui memórias para serem removidas.`);
-                return;
-            }
 
-            if (confirm(`Tem certeza que deseja remover TODAS as memórias do álbum "${albumTitle}"? Elas não serão excluídas do sistema.`)) {
-                memories.forEach(m => {
-                    if (m.albumId === currentAlbumId) {
-                        m.albumId = null;
-                    }
-                });
-                saveToLocalStorage('memories', memories);
-                renderMemories();
-                alert('Memórias removidas do álbum com sucesso!');
-            }
-        } else {
-            alert('Selecione um álbum para remover memórias.');
-        }
-    });
-
-    addSelectedMemoriesBtn.addEventListener('click', () => {
+    addSelectedMemoriesBtn.addEventListener('click', async () => {
         const checkboxes = memoriesToAddList.querySelectorAll('input[type="checkbox"]:checked');
-        const selectedMemoryIds = Array.from(checkboxes).map(checkbox => parseInt(checkbox.dataset.id));
+        const selectedMemoryIds = Array.from(checkboxes).map(checkbox => checkbox.dataset.id);
         if (selectedMemoryIds.length === 0) {
             alert('Selecione pelo menos uma memória para adicionar ao álbum.');
             return;
         }
-        selectedMemoryIds.forEach(id => {
-            const memoryToUpdate = memories.find(m => m.id === id);
-            if (memoryToUpdate) {
-                memoryToUpdate.albumId = currentAlbumId;
+
+        try {
+            for (const id of selectedMemoryIds) {
+                const response = await fetch(`${API_URL}/memories/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ albumId: currentAlbumId })
+                });
             }
-        });
-        saveToLocalStorage('memories', memories);
-        hideModal('add-to-album-modal');
-        renderMemories();
-        alert('Memórias adicionadas com sucesso!');
+            alert('Memórias adicionadas com sucesso!');
+            await fetchData();
+            hideModal('add-to-album-modal');
+        } catch (error) {
+            alert('Erro ao conectar ao servidor.');
+        }
     });
 
-    memoryForm.addEventListener('submit', (e) => {
+    memoryForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const id = memoryIdInput.value;
         const imageFile = e.target['memory-image'].files[0];
         const title = e.target['memory-title'].value;
         const description = e.target['memory-description'].value;
         const date = e.target['memory-date'].value;
+
         if (id) {
-            const memoryToUpdate = memories.find(m => m.id == id);
-            if (memoryToUpdate) {
-                memoryToUpdate.title = title;
-                memoryToUpdate.description = description;
-                memoryToUpdate.date = date;
-                saveToLocalStorage('memories', memories);
-                renderMemories();
-                hideModal('memory-modal');
+            // Atualizar memória existente
+            try {
+                const response = await fetch(`${API_URL}/memories/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title, description, date })
+                });
+                if (response.ok) {
+                    alert('Memória atualizada com sucesso!');
+                    await fetchData();
+                    hideModal('memory-modal');
+                } else {
+                    alert('Erro ao atualizar memória.');
+                }
+            } catch (error) {
+                alert('Erro ao conectar ao servidor.');
             }
         } else {
+            // Adicionar nova memória
             if (!imageFile) {
                 alert('Por favor, selecione uma imagem.');
                 return;
             }
+
             const reader = new FileReader();
-            reader.onload = (event) => {
-                const newMemory = {
-                    id: Date.now(),
-                    userId: loggedInUser,
-                    image: event.target.result,
-                    title,
-                    description,
-                    date,
-                    albumId: null
-                };
-                memories.push(newMemory);
-                saveToLocalStorage('memories', memories);
-                renderMemories();
-                hideModal('memory-modal');
+            reader.onload = async (event) => {
+                const imageUrl = event.target.result;
+                try {
+                    const response = await fetch(`${API_URL}/memories`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            userId: loggedInUser.id,
+                            imageUrl,
+                            title,
+                            description,
+                            date,
+                            albumId: null
+                        })
+                    });
+                    if (response.ok) {
+                        alert('Memória adicionada com sucesso!');
+                        await fetchData();
+                        hideModal('memory-modal');
+                    } else {
+                        alert('Erro ao adicionar memória.');
+                    }
+                } catch (error) {
+                    alert('Erro ao conectar ao servidor.');
+                }
             };
             reader.readAsDataURL(imageFile);
         }
@@ -396,9 +447,9 @@ document.addEventListener('DOMContentLoaded', () => {
     memoriesContainer.addEventListener('click', (e) => {
         const target = e.target.closest('button');
         if (!target) return;
-        const memoryId = parseInt(target.dataset.id);
+        const memoryId = target.dataset.id;
         if (target.classList.contains('edit-btn')) {
-            const memoryToEdit = memories.find(m => m.id === memoryId);
+            const memoryToEdit = memories.find(m => m.id == memoryId);
             if (memoryToEdit) {
                 document.getElementById('memory-id').value = memoryToEdit.id;
                 document.getElementById('memory-title').value = memoryToEdit.title;
@@ -407,18 +458,48 @@ document.addEventListener('DOMContentLoaded', () => {
                 imageUploadField.style.display = 'none';
                 document.getElementById('memory-image').required = false;
                 memoryModalTitle.textContent = 'Editar Memória';
-                hideModal('view-memory-modal');
                 showModal('memory-modal');
             }
         } else if (target.classList.contains('delete-btn')) {
             if (confirm('Tem certeza que deseja excluir esta memória?')) {
-                memories = memories.filter(m => m.id !== memoryId);
-                saveToLocalStorage('memories', memories);
-                hideModal('view-memory-modal');
-                renderMemories();
+                const memoryDocId = target.dataset.id;
+                fetch(`${API_URL}/memories/${memoryDocId}`, { method: 'DELETE' })
+                    .then(response => {
+                        if (response.ok) {
+                            alert('Memória excluída com sucesso!');
+                            fetchData();
+                        } else {
+                            alert('Erro ao excluir memória.');
+                        }
+                    })
+                    .catch(error => {
+                        alert('Erro ao conectar ao servidor.');
+                        console.error('Delete error:', error);
+                    });
+            }
+        } else if (target.classList.contains('remove-from-album-btn')) {
+            if (confirm('Tem certeza que deseja remover esta memória do álbum? Ela não será excluída do sistema.')) {
+                const memoryDocId = target.dataset.id;
+                fetch(`${API_URL}/memories/${memoryDocId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ albumId: null })
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            alert('Memória removida do álbum com sucesso!');
+                            fetchData();
+                        } else {
+                            alert('Erro ao remover memória do álbum.');
+                        }
+                    })
+                    .catch(error => {
+                        alert('Erro ao conectar ao servidor.');
+                        console.error('Remove from album error:', error);
+                    });
             }
         }
     });
 
-    renderScreen();
+    fetchData();
 });

@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
-
 :root {
     --primary-color: #4CAF50;
     --primary-dark-color: #45a049;
@@ -19,7 +18,9 @@ body {
     overflow-x: hidden;
 }
 
+
 /* Telas de Login e Cadastro */
+
 .container {
     max-width: 400px;
     margin: 50px auto;
@@ -47,7 +48,8 @@ body {
     font-weight: bold;
 }
 
-.form-group input, .form-group textarea {
+.form-group input,
+.form-group textarea {
     width: 100%;
     padding: 12px;
     border: 1px solid var(--border-color);
@@ -99,7 +101,9 @@ body {
     text-decoration: underline;
 }
 
+
 /* Layout Principal do Aplicativo */
+
 .app-container {
     display: flex;
     min-height: 100vh;
@@ -195,7 +199,8 @@ body {
     transition: background-color 0.2s, color 0.2s;
 }
 
-.menu-list li a:hover, .menu-list li a.active {
+.menu-list li a:hover,
+.menu-list li a.active {
     background-color: var(--background-color);
     color: var(--primary-color);
 }
@@ -211,12 +216,16 @@ body {
     transition: margin-left 0.3s ease;
 }
 
+
 /* Adapta o conteúdo quando o menu lateral está aberto */
-.sidebar.show + #main-content {
+
+.sidebar.show+#main-content {
     margin-left: 280px;
 }
 
+
 /* Grid de Memórias */
+
 .memories-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -242,7 +251,6 @@ body {
 }
 
 .memory-details {
-    display: none;
     padding: 15px;
     flex-grow: 1;
 }
@@ -278,7 +286,9 @@ body {
     color: var(--text-color);
 }
 
+
 /* Modais */
+
 .modal {
     display: none;
     position: fixed;
@@ -341,7 +351,8 @@ body {
     gap: 5px;
 }
 
-.album-list li a:hover, .album-list li a.active {
+.album-list li a:hover,
+.album-list li a.active {
     background-color: var(--background-color);
     color: var(--primary-color);
 }
@@ -362,7 +373,9 @@ body {
     margin-bottom: 10px;
 }
 
+
 /* Estilos para o novo modal de seleção de memórias */
+
 .memories-selection-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
@@ -406,7 +419,9 @@ body {
     width: 100%;
 }
 
+
 /* Estilo para os botões de ação no modal de visualização */
+
 .modal-actions {
     margin-top: 20px;
 }
@@ -415,15 +430,12 @@ body {
     .sidebar {
         width: 100%;
     }
-
     .app-header {
         justify-content: center;
     }
-
     #add-memory-btn {
         display: none;
     }
-
     #main-content {
         padding: 90px 10px 10px 10px;
     }

@@ -6,40 +6,57 @@ document.addEventListener('DOMContentLoaded', () => {
     const showRegisterLink = document.getElementById('show-register');
     const showLoginLink = document.getElementById('show-login');
 
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    const loggedInUser = localStorage.getItem('loggedInUser');
+    const API_URL = 'http://localhost:3000';
 
-    if (loggedInUser) {
-        window.location.href = 'app.html';
-        return;
-    }
-
-    loginForm.addEventListener('submit', (e) => {
+    loginForm.addEventListener('submit', async(e) => {
         e.preventDefault();
         const email = e.target['login-email'].value;
         const password = e.target['login-password'].value;
-        const user = users.find(u => u.email === email && u.password === password);
-        if (user) {
-            localStorage.setItem('loggedInUser', user.name);
-            window.location.href = 'app.html';
-        } else {
-            alert('Email ou senha incorretos.');
+
+        try {
+            const response = await fetch(`${API_URL}/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                localStorage.setItem('loggedInUser', JSON.stringify(data.user));
+                window.location.href = 'app.html';
+            } else {
+                alert(data.message);
+            }
+        } catch (error) {
+            alert('Erro ao tentar fazer login. Servidor indisponível.');
+            console.error('Login error:', error);
         }
     });
 
-    registerForm.addEventListener('submit', (e) => {
+    registerForm.addEventListener('submit', async(e) => {
         e.preventDefault();
         const name = e.target['register-name'].value;
         const email = e.target['register-email'].value;
         const password = e.target['register-password'].value;
-        if (users.find(u => u.email === email)) {
-            alert('Este email já está cadastrado.');
-            return;
+
+        try {
+            const response = await fetch(`${API_URL}/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, password })
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                alert(data.message);
+                showLoginLink.click();
+            } else {
+                alert(data.message);
+            }
+        } catch (error) {
+            alert('Erro ao tentar criar a conta. Servidor indisponível.');
+            console.error('Registration error:', error);
         }
-        users.push({ name, email, password });
-        localStorage.setItem('users', JSON.stringify(users));
-        alert('Conta criada com sucesso! Faça login para continuar.');
-        showLoginLink.click();
     });
 
     showRegisterLink.addEventListener('click', (e) => {
