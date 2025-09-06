@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (removeFromAlbumBtn) {
             removeFromAlbumBtn.addEventListener('click', async () => {
-                if (confirm('Tem certeza que deseja remover esta memória do álbum? Ela não será excluída do sistema.')) {
+                if (confirm('Tem certeza que deseja remover esta memória do álbum?')) {
                     try {
                         const response = await fetch(`${API_URL}/memories/${memoryId}`, {
                             method: 'PUT',
@@ -306,7 +306,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 try {
                     const response = await fetch(`${API_URL}/albums/${albumId}`, { method: 'DELETE' });
                     if (response.ok) {
-                        alert('Álbum e suas memórias associadas excluídas com sucesso!');
+                        alert('Álbum excluido com sucesso!');
                         await fetchData();
                         currentAlbumId = null;
                         contentTitle.textContent = 'Minhas Memórias';
@@ -390,7 +390,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             // Adicionar nova memória
             if (!imageFile) {
-                alert('Por favor, selecione uma imagem.');
+                alert('Por favor, selecione uma memória.');
                 return;
             }
 
@@ -478,7 +478,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
             }
         } else if (target.classList.contains('remove-from-album-btn')) {
-            if (confirm('Tem certeza que deseja remover esta memória do álbum? Ela não será excluída do sistema.')) {
+            if (confirm('Tem certeza que deseja remover esta memória do álbum?')) {
                 const memoryDocId = target.dataset.id;
                 fetch(`${API_URL}/memories/${memoryDocId}`, {
                     method: 'PUT',
