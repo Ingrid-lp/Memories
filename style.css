@@ -134,7 +134,7 @@ body {
 }
 
 .header-buttons {
-    display: flex;
+    display: none;
     gap: 10px;
 }
 
@@ -207,6 +207,18 @@ body {
 
 .menu-list .material-icons {
     margin-right: 15px;
+}
+
+
+/* Novo estilo para o botão Adicionar Memórias no menu */
+
+#add-memory-container {
+    padding: 10px 20px;
+}
+
+#add-memory-btn {
+    width: 100%;
+    text-align: left;
 }
 
 #main-content {
@@ -432,11 +444,5 @@ body {
     }
     .app-header {
         justify-content: center;
-    }
-    #add-memory-btn {
-        display: none;
-    }
-    #main-content {
-        padding: 90px 10px 10px 10px;
     }
 }

@@ -1,10 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-            // Referências a elementos do DOM
-            const mainApp = document.getElementById('main-app');
             const greetingElement = document.getElementById('greeting');
             const memoriesContainer = document.getElementById('memories-container');
             const addMemoryBtn = document.getElementById('add-memory-btn');
-            const addToAlbumBtn = document.getElementById('add-to-album-btn');
             const memoryModal = document.getElementById('memory-modal');
             const memoryForm = document.getElementById('memory-form');
             const memoryIdInput = document.getElementById('memory-id');

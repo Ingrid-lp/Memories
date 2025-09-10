@@ -12,8 +12,8 @@ app.use(bodyParser.json());
 // Configurações do seu banco de dados MySQL
 const db = mysql.createConnection({
     host: 'localhost',
-    user: 'root', // <-- usuário do MySQL
-    password: 'MinhaSenha@123', // <-- sua senha
+    user: 'root', // <-- Substitua pelo seu usuário do MySQL
+    password: 'MinhaSenha@123', // <-- Substitua pela sua senha
     database: 'memories_db'
 });
 

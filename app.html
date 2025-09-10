@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Memories</title>
+    <title>Memórias - Sistema de Álbuns</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
@@ -14,11 +14,7 @@
     <div id="main-app" class="app-container">
         <header class="app-header">
             <button id="menu-btn" class="icon-btn"><span class="material-icons">menu</span></button>
-            <h1 id="app-title">Sistema Memories</h1>
-            <div class="header-buttons">
-                <button id="add-memory-btn" class="btn add-btn">Adicionar Memórias</button>
-                <button id="add-to-album-btn" class="btn add-btn" style="display: none;">Adicionar ao Álbum</button>
-            </div>
+            <h1 id="app-title">Memories</h1>
         </header>
 
         <nav id="sidebar" class="sidebar">
@@ -32,6 +28,9 @@
             <ul class="menu-list">
                 <li><a href="#" id="home-link" class="menu-item active"><span class="material-icons">home</span> Minhas Memórias</a></li>
                 <li><a href="#" id="create-album-link" class="menu-item"><span class="material-icons">folder</span> Criar Álbum</a></li>
+                <li id="add-memory-container">
+                    <button id="add-memory-btn" class="btn add-btn"><span class="material-icons">add_box</span> Adicionar Memórias</button>
+                </li>
             </ul>
             <ul id="albums-list" class="menu-list album-section">
             </ul>
@@ -42,7 +41,7 @@
             <div id="memories-container" class="memories-grid">
             </div>
             <div id="empty-state" class="empty-state" style="display: none;">
-                <span class="material-icons empty-icon">image</span>
+                <span class="material-icons empty-icon">Memória</span>
                 <p>Você ainda não possui memórias. Clique em "Adicionar Memórias" para começar.</p>
             </div>
         </main>
