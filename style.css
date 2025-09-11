@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 :root {
-    --primary-color: #4CAF50;
-    --primary-dark-color: #45a049;
+    --primary-color: #DE8F5F;
+    --primary-dark-color: #BA7348;
     --background-color: #f0f2f5;
     --surface-color: #ffffff;
     --text-color: #333;
@@ -10,25 +10,38 @@
     --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Deixa a tela ocupando 100% da altura */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
 body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
-    background-color: var(--background-color);
+    background-color: var(--primary-color);
     color: var(--text-color);
     overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 
 /* Telas de Login e Cadastro */
 
 .container {
-    max-width: 400px;
-    margin: 50px auto;
-    padding: 30px;
+    width: 100%;
+    max-width: 420px;
+    min-height: 65vh;
+    padding: 10px 20px 50px 20px; 
     background-color: var(--surface-color);
-    border-radius: 8px;
+    border-radius: 60px 60px 0 0;
     box-shadow: var(--shadow);
     text-align: center;
+    box-sizing: border-box; 
+    margin: 0 auto;         
 }
 
 .title {
