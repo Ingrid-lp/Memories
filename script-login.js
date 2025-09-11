@@ -59,15 +59,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // oi adiiconei troca de fundo tar
     showRegisterLink.addEventListener('click', (e) => {
         e.preventDefault();
         loginScreen.style.display = 'none';
         registerScreen.style.display = 'block';
+        document.body.style.backgroundImage = "url('img/cadastroimage.png')";
     });
 
     showLoginLink.addEventListener('click', (e) => {
         e.preventDefault();
         loginScreen.style.display = 'block';
         registerScreen.style.display = 'none';
+        document.body.style.backgroundImage = "url('img/loginimage.png')";
     });
 });
