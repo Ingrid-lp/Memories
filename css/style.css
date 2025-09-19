@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+:root {
+    --primary-color: #DE8F5F;
+    --primary-dark-color: #BA7348;
+    --background-color: #f0f2f5;
+    --surface-color: #ffffff;
+    --text-color: #333;
+    --light-text-color: #777;
+    --border-color: #ccc;
+    --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+.alice-regular {
+  font-family: "Alice", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+body {
+   font-family: "Alice", serif;
+    margin: 0;
+    background-color: var(--surface-color);
+    color: var(--primary-dark-color);
+    overflow-x: hidden;
+    background-color: var(--primary-color);
+    background-size: 411px;
+
+}
+
+.login-page {
+    background-color: var(--primary-color);
+    background-image: url('img/loginimage.png');
+}
+
+.container {
+    width: 100%;
+    max-width: 420px;
+    min-height: 60vh;
+    padding: 10px 20px 50px 20px;
+    background-color: var(--surface-color);
+    border-radius: 60px 60px 0 0;
+    box-shadow: var(--shadow);
+    text-align: center;
+    box-sizing: border-box;
+    margin: 0 auto;
+    position: absolute;
+    bottom: 0;
+}
+
+.title {
+    font-size: 32px;
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 17px;
+    background-color: #EFEFEF;
+    border: none;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.btn {
+    font-family: "Alice", serif;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 45px;
+    background-color: var(--primary-color);
+    color: #fff;
+    text-decoration: none;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    font-size: 32px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+    gap: 8px;
+    margin-bottom: 20px;
+    margin-top: 15px;
+}
+
+#show-login{
+    text-decoration: none;
+    color: var(--primary-color);
+    font-size: 24px;
+}
+
+#show-register{
+    text-decoration: none;
+    color: var(--primary-color);
+    font-size: 24px;
+    border-color: var(--primary-color);
+    background: none;
+    border-radius: 60px;
+    border-style: solid;
+    padding: 6px 45px;
+    margin-top: -13;
+}
+
+.btn:hover {
+    background-color: var(--primary-dark-color);
+}
+
+.delete-btn {
+    background-color: #f44336;
+}
+
+.delete-btn:hover {
+    background-color: #d32f2f;
+}
+
+.link-text {
+    margin-top: 20px;
+}
+
+.link-text a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.link-text a:hover {
+    text-decoration: underline;
+}
+
+
