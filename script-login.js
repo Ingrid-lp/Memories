@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const showRegisterLink = document.getElementById('show-register');
     const showLoginLink = document.getElementById('show-login');
 
+    document.body.style.backgroundImage = "url('img/loginimage.png')";
     const API_URL = 'http://localhost:3000';
 
     loginForm.addEventListener('submit', async(e) => {

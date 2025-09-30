@@ -53,18 +53,19 @@ html, body {
 
 .sidebar {
     width: 280px;
-    background-color: var(--surface-color);
+    background-color: var(--primary-color);
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    padding-top: 70px;
+    padding-top: 14px;
+    margin-top: 45px;
     position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
+    height: 93%;
     transform: translateX(-100%);
     transition: transform 0.3s ease;
     z-index: 999;
     display: flex;
     flex-direction: column;
+    border-radius: 2px 40px 40px 2px;
+    overflow: hidden;
 }
 
 .sidebar.show {
@@ -87,12 +88,14 @@ html, body {
 }
 
 .user-profile-section {
+    background-color: #F3E1E1; /* cor diferente */
     padding: 20px;
-    border-bottom: 1px solid #eee;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 15px;
+    gap: 60px;
+    border-radius: 1px 3px 30px 30px;     /* opcional, arredonda */
+    color: var(--primary-dark-color);             /* se a cor for escura, troca cor do texto */
 }
 
 .user-info {
@@ -107,8 +110,12 @@ html, body {
 }
 
 .logout-btn {
-    width: 100%;
-    margin: 0;
+  background: none;   
+  border: none;      
+  padding: 0;         
+  color:  var(--primary-dark-color);;     
+  font: inherit;      /* herda fonte */
+  font-size: 18px;  
 }
 
 .menu-list {
