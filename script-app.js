@@ -1,117 +1,127 @@
 document.addEventListener('DOMContentLoaded', () => {
-            const greetingElement = document.getElementById('greeting');
-            const memoriesContainer = document.getElementById('memories-container');
-            const addMemoryBtn = document.getElementById('add-memory-btn');
-            const memoryModal = document.getElementById('memory-modal');
-            const memoryForm = document.getElementById('memory-form');
-            const memoryIdInput = document.getElementById('memory-id');
-            const memoryModalTitle = document.getElementById('modal-title');
-            const logoutBtn = document.getElementById('logout-btn');
-            const menuBtn = document.getElementById('menu-btn');
-            const sidebar = document.getElementById('sidebar');
-            const homeLink = document.getElementById('home-link');
-            const createAlbumLink = document.getElementById('create-album-link');
-            const albumsList = document.getElementById('albums-list');
-            const contentTitle = document.getElementById('content-title');
-            const emptyState = document.getElementById('empty-state');
-            const addToAlbumModal = document.getElementById('add-to-album-modal');
-            const memoriesToAddList = document.getElementById('memories-to-add-list');
-            const addSelectedMemoriesBtn = document.getElementById('add-selected-memories-btn');
-            const viewMemoryModal = document.getElementById('view-memory-modal');
-            const viewMemoryContent = document.getElementById('view-memory-content');
-            const imageUploadField = document.getElementById('image-upload-field');
+    const greetingElement = document.getElementById('greeting');
+    const memoriesContainer = document.getElementById('memories-container');
+    const addMemoryBtn = document.getElementById('add-memory-btn');
+    const memoryModal = document.getElementById('memory-modal');
+    const memoryForm = document.getElementById('memory-form');
+    const memoryIdInput = document.getElementById('memory-id');
+    const memoryModalTitle = document.getElementById('modal-title');
+    const logoutBtn = document.getElementById('logout-btn');
+    const menuBtn = document.getElementById('menu-btn');
+    const sidebar = document.getElementById('sidebar');
+    const homeLink = document.getElementById('home-link');
+    const createAlbumLink = document.getElementById('create-album-link');
+    const albumsList = document.getElementById('albums-list');
+    const contentTitle = document.getElementById('content-title');
+    const emptyState = document.getElementById('empty-state');
+    const addToAlbumModal = document.getElementById('add-to-album-modal');
+    const memoriesToAddList = document.getElementById('memories-to-add-list');
+    const addSelectedMemoriesBtn = document.getElementById('add-selected-memories-btn');
+    const viewMemoryModal = document.getElementById('view-memory-modal');
+    const viewMemoryContent = document.getElementById('view-memory-content');
+    const imageUploadField = document.getElementById('image-upload-field');
 
-            const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
-            if (!loggedInUser) {
-                window.location.href = 'index.html';
-                return;
-            }
+    // Esta referência é um placeholder para evitar erros, já que o botão 'Adicionar a Álbum'
+    // não estava no app.html mas a lógica o esperava.
+    const addToAlbumBtn = document.createElement('button'); 
 
-            window.addEventListener('load', () => {
-                renderScreen();
-            });
+    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+    if (!loggedInUser) {
+        window.location.href = 'index.html';
+        return;
+    }
 
-            let memories = [];
-            let albums = [];
-            let currentAlbumId = null;
+    window.addEventListener('load', () => {
+        fetchData();
+    });
 
-            const API_URL = 'http://localhost:3000';
+    let memories = [];
+    let albums = [];
+    let currentAlbumId = null;
 
-            const fetchData = async() => {
-                try {
-                    const memoriesResponse = await fetch(`${API_URL}/memories/${loggedInUser.id}`);
-                    memories = await memoriesResponse.json();
+    const API_URL = 'http://localhost:3000';
 
-                    const albumsResponse = await fetch(`${API_URL}/albums/${loggedInUser.id}`);
-                    albums = await albumsResponse.json();
+    const fetchData = async() => {
+        try {
+            const memoriesResponse = await fetch(`${API_URL}/memories/${loggedInUser.id}`);
+            memories = await memoriesResponse.json();
 
-                    renderScreen();
-                } catch (error) {
-                    alert('Erro ao carregar dados do servidor. Certifique-se de que o servidor Node.js está rodando.');
-                    console.error('Fetch data error:', error);
-                }
-            };
+            const albumsResponse = await fetch(`${API_URL}/albums/${loggedInUser.id}`);
+            albums = await albumsResponse.json();
 
-            const renderScreen = () => {
-              greetingElement.innerHTML = `Bem vindo,<br> <span class="user-name">${loggedInUser.name}!</span>`;
-                renderMemories();
-                renderAlbums();
-            };
+            renderScreen();
+        } catch (error) {
+            alert('Erro ao carregar dados do servidor. Certifique-se de que o servidor Node.js está rodando.');
+            console.error('Fetch data error:', error);
+        }
+    };
 
-            const renderMemories = () => {
-                memoriesContainer.innerHTML = '';
-                const filteredMemories = currentAlbumId ?
-                    memories.filter(m => m.albumId === parseInt(currentAlbumId)) :
-                    memories.filter(m => m.albumId === null);
+    const renderScreen = () => {
+        greetingElement.innerHTML = `Bem vindo,<br> <span class="user-name">${loggedInUser.name}!</span>`;
+        renderMemories();
+        renderAlbums();
+    };
 
-                if (filteredMemories.length === 0) {
-                    emptyState.style.display = 'block';
-                } else {
-                    emptyState.style.display = 'none';
-                    filteredMemories.forEach(memory => {
-                        const card = document.createElement('div');
-                        card.className = 'memory-card';
-                        card.innerHTML = `
-                    <img src="${memory.imageUrl}" alt="${memory.title}" class="memory-image" data-id="${memory.id}">
+    const renderMemories = () => {
+        memoriesContainer.innerHTML = '';
+        const filteredMemories = currentAlbumId ?
+            memories.filter(m => m.albumId === parseInt(currentAlbumId)) :
+            memories.filter(m => m.albumId === null);
+
+        if (filteredMemories.length === 0) {
+            emptyState.style.display = 'block';
+        } else {
+            emptyState.style.display = 'none';
+            filteredMemories.forEach(memory => {
+                const card = document.createElement('div');
+                card.className = 'memory-card';
+                
+                // Constrói o URL completo
+                const imageUrl = memory.imageUrl.startsWith('/uploads') ? `${API_URL}${memory.imageUrl}` : memory.imageUrl;
+                
+                card.innerHTML = `
+                    <img src="${imageUrl}" alt="${memory.title}" class="memory-image" data-id="${memory.id}">
                 `;
 
-                        card.querySelector('.memory-image').addEventListener('click', () => {
-                            const memoryToView = memories.find(m => m.id == memory.id);
-                            showMemoryDetails(memoryToView);
-                        });
+                card.querySelector('.memory-image').addEventListener('click', () => {
+                    const memoryToView = memories.find(m => m.id == memory.id);
+                    showMemoryDetails(memoryToView);
+                });
 
-                        memoriesContainer.appendChild(card);
-                    });
-                }
-            };
+                memoriesContainer.appendChild(card);
+            });
+        }
+    };
 
-            const renderAlbums = () => {
-                albumsList.innerHTML = '';
-                albums.forEach(album => {
-                    const li = document.createElement('li');
-                    li.className = 'album-item-container';
-                    li.innerHTML = `
+    const renderAlbums = () => {
+        albumsList.innerHTML = '';
+        albums.forEach(album => {
+            const li = document.createElement('li');
+            li.className = 'album-item-container';
+            li.innerHTML = `
                 <a href="#" class="menu-item album-item" data-id="${album.id}"><span class="material-icons">folder</span> ${album.title}</a>
                 <div class="album-actions">
                     <button class="icon-btn edit-album-btn" data-id="${album.id}"><span class="material-icons">edit</span></button>
                     <button class="icon-btn delete-album-btn" data-id="${album.id}"><span class="material-icons">delete</span></button>
                 </div>
             `;
-                    albumsList.appendChild(li);
-                });
-            };
+            albumsList.appendChild(li);
+        });
+    };
 
-            const showModal = (modalId) => {
-                document.getElementById(modalId).style.display = 'flex';
-            };
+    const showModal = (modalId) => {
+        document.getElementById(modalId).style.display = 'flex';
+    };
 
-            const hideModal = (modalId) => {
-                document.getElementById(modalId).style.display = 'none';
-            };
+    const hideModal = (modalId) => {
+        document.getElementById(modalId).style.display = 'none';
+    };
 
-            const showMemoryDetails = (memory) => {
-                    viewMemoryContent.innerHTML = `
-            <img src="${memory.imageUrl}" alt="${memory.title}" style="max-width: 100%; max-height: 80vh; object-fit: contain; display: block; margin: 0 auto;">
+    const showMemoryDetails = (memory) => {
+        const imageUrl = memory.imageUrl.startsWith('/uploads') ? `${API_URL}${memory.imageUrl}` : memory.imageUrl;
+        
+        viewMemoryContent.innerHTML = `
+            <img src="${imageUrl}" alt="${memory.title}" style="max-width: 100%; max-height: 80vh; object-fit: contain; display: block; margin: 0 auto;">
             <div class="memory-details-view">
                 <h3>${memory.title || 'Sem título'}</h3>
                 <p><strong>Descrição:</strong> ${memory.description || 'Sem descrição'}</p>
@@ -202,9 +212,10 @@ document.addEventListener('DOMContentLoaded', () => {
             memoriesNotInAlbum.forEach(memory => {
                 const item = document.createElement('div');
                 item.className = 'memory-item';
+                const imageUrl = memory.imageUrl.startsWith('/uploads') ? `${API_URL}${memory.imageUrl}` : memory.imageUrl;
                 item.innerHTML = `
                     <input type="checkbox" data-id="${memory.id}">
-                    <img src="${memory.imageUrl}" alt="${memory.title}">
+                    <img src="${imageUrl}" alt="${memory.title}">
                 `;
                 memoriesToAddList.appendChild(item);
             });
@@ -366,12 +377,12 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         const id = memoryIdInput.value;
         const imageFile = e.target['memory-image'].files[0];
-        const title = e.target['memory-title'].value;
-        const description = e.target['memory-description'].value;
-        const date = e.target['memory-date'].value;
+        const title = e.target['memory-title'].value; // Corrigido para acessar via name ou id
+        const description = e.target['memory-description'].value; // Corrigido para acessar via name ou id
+        const date = e.target['memory-date'].value; // Corrigido para acessar via name ou id
 
         if (id) {
-            // Atualizar memória existente
+            // Atualizar memória existente (SÓ METADADOS)
             try {
                 const response = await fetch(`${API_URL}/memories/${id}`, {
                     method: 'PUT',
@@ -382,6 +393,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     alert('Memória atualizada com sucesso!');
                     await fetchData();
                     hideModal('memory-modal');
+                    hideModal('view-memory-modal');
                 } else {
                     alert('Erro ao atualizar memória.');
                 }
@@ -389,40 +401,43 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('Erro ao conectar ao servidor.');
             }
         } else {
-            // Adicionar nova memória
+            // Adicionar nova memória (CORRIGIDO PARA USAR FormData)
             if (!imageFile) {
-                alert('Por favor, selecione uma memória.');
+                alert('Por favor, selecione uma memória (imagem).');
                 return;
             }
 
-            const reader = new FileReader();
-            reader.onload = async (event) => {
-                const imageUrl = event.target.result;
-                try {
-                    const response = await fetch(`${API_URL}/memories`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            userId: loggedInUser.id,
-                            imageUrl,
-                            title,
-                            description,
-                            date,
-                            albumId: null
-                        })
-                    });
-                    if (response.ok) {
-                        alert('Memória adicionada com sucesso!');
-                        await fetchData();
-                        hideModal('memory-modal');
-                    } else {
-                        alert('Erro ao adicionar memória.');
-                    }
-                } catch (error) {
-                    alert('Erro ao conectar ao servidor.');
+            // --- LÓGICA CORRIGIDA INICIA AQUI ---
+            
+            const formData = new FormData();
+            formData.append('memoryImage', imageFile); // 'memoryImage' é o campo do ficheiro para o Multer
+            formData.append('title', title);
+            formData.append('description', description);
+            formData.append('date', date);
+            formData.append('userId', loggedInUser.id);
+            formData.append('albumId', currentAlbumId || ''); // Envia o ID do álbum ou vazio para NULL
+
+            try {
+                const response = await fetch(`${API_URL}/memories`, {
+                    method: 'POST',
+                    // Importante: NÃO defina 'Content-Type'. O FormData define o cabeçalho correto.
+                    body: formData
+                });
+                
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('Memória adicionada com sucesso!');
+                    await fetchData();
+                    hideModal('memory-modal');
+                } else {
+                    alert(`Erro ao adicionar memória: ${data.message || response.statusText}`);
                 }
-            };
-            reader.readAsDataURL(imageFile);
+            } catch (error) {
+                alert('Erro ao conectar ao servidor.');
+                console.error('Add memory error:', error);
+            }
+            // --- LÓGICA CORRIGIDA TERMINA AQUI ---
         }
     });
 
@@ -449,18 +464,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const target = e.target.closest('button');
         if (!target) return;
         const memoryId = target.dataset.id;
+        
+        // --- Lógica original mantida para edição/exclusão ---
+        
         if (target.classList.contains('edit-btn')) {
-            const memoryToEdit = memories.find(m => m.id == memoryId);
-            if (memoryToEdit) {
-                document.getElementById('memory-id').value = memoryToEdit.id;
-                document.getElementById('memory-title').value = memoryToEdit.title;
-                document.getElementById('memory-description').value = memoryToEdit.description;
-                document.getElementById('memory-date').value = memoryToEdit.date;
-                imageUploadField.style.display = 'none';
-                document.getElementById('memory-image').required = false;
-                memoryModalTitle.textContent = 'Editar Memória';
-                showModal('memory-modal');
-            }
+             const memoryToEdit = memories.find(m => m.id == memoryId);
+             if (memoryToEdit) {
+                 document.getElementById('memory-id').value = memoryToEdit.id;
+                 document.getElementById('memory-title').value = memoryToEdit.title;
+                 document.getElementById('memory-description').value = memoryToEdit.description;
+                 document.getElementById('memory-date').value = memoryToEdit.date;
+                 imageUploadField.style.display = 'none';
+                 document.getElementById('memory-image').required = false;
+                 memoryModalTitle.textContent = 'Editar Memória';
+                 showModal('memory-modal');
+             }
         } else if (target.classList.contains('delete-btn')) {
             if (confirm('Tem certeza que deseja excluir esta memória?')) {
                 const memoryDocId = target.dataset.id;

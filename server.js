@@ -3,11 +3,35 @@ const mysql = require('mysql');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
+// ADICIONAR: Módulos para lidar com upload de ficheiros e caminhos
+const multer = require('multer');
+const path = require('path');
+
 const app = express();
 const port = 3000;
 
+// Configuração do armazenamento do Multer
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        // O ficheiro será salvo na pasta 'uploads/'
+        cb(null, 'uploads/'); 
+    },
+    filename: (req, file, cb) => {
+        // Cria um nome de ficheiro único para a imagem
+        cb(null, Date.now() + path.extname(file.originalname));
+    }
+});
+
+const upload = multer({ storage: storage });
+
+// MIDDLEWARES
 app.use(cors());
-app.use(bodyParser.json());
+
+// Configura o Express para servir ficheiros estáticos da pasta 'uploads' (para aceder às imagens)
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Manter o body-parser.json para rotas que esperam JSON (login, register, PUTs)
+app.use(bodyParser.json()); 
 
 // Configurações do seu banco de dados MySQL
 const db = mysql.createConnection({
@@ -92,24 +116,47 @@ app.get('/memories/:userId', (req, res) => {
     });
 });
 
-app.post('/memories', (req, res) => {
-    const { title, description, date, imageUrl, userId, albumId } = req.body;
+// ROTA ATUALIZADA: usa 'upload.single('memoryImage')' para processar o ficheiro
+app.post('/memories', upload.single('memoryImage'), (req, res) => {
+    // 1. Verifica se o ficheiro foi carregado (o Multer popula req.file)
+    if (!req.file) {
+        return res.status(400).json({ message: 'O ficheiro da memória (imagem) é obrigatório.' });
+    }
+
+    // 2. O URL da imagem é o caminho para onde o Multer salvou o ficheiro
+    const imageUrl = `/uploads/${req.file.filename}`;
+    
+    // 3. Os outros campos vêm do req.body (o Multer consegue ler campos de texto do FormData)
+    // O Multer converte o albumId (se for uma string vazia) para null/undefined, mas verificamos aqui para segurança
+    const { title, description, date, userId, albumId } = req.body;
+
+    // 4. Salva os dados no banco de dados
     const query = 'INSERT INTO memories (title, description, date, imageUrl, userId, albumId) VALUES (?, ?, ?, ?, ?, ?)';
-    db.query(query, [title, description, date, imageUrl, userId, albumId], (err, result) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.status(201).json({ id: result.insertId, message: 'Memória adicionada com sucesso!' });
+    // Usa albumId || null para garantir que o MySQL recebe NULL para IDs vazios (importante para FK)
+    db.query(query, [title, description, date, imageUrl, userId, albumId || null], (err, result) => {
+        if (err) {
+            console.error('Erro ao inserir no banco de dados:', err);
+            return res.status(500).json({ error: err.message });
+        }
+        res.status(201).json({ 
+            id: result.insertId, 
+            imageUrl: imageUrl, 
+            message: 'Memória adicionada com sucesso!' 
+        });
     });
 });
 
 app.put('/memories/:id', (req, res) => {
     const { id } = req.params;
+    // O imageUrl não deve ser atualizado por esta rota
     const { title, description, date, albumId } = req.body;
     let query;
     let params;
 
     if (albumId !== undefined) {
         query = 'UPDATE memories SET albumId = ? WHERE id = ?';
-        params = [albumId, id];
+        // Garante que albumId vazio no frontend vira NULL no DB
+        params = [albumId || null, id]; 
     } else {
         query = 'UPDATE memories SET title = ?, description = ?, date = ? WHERE id = ?';
         params = [title, description, date, id];

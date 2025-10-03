@@ -55,19 +55,19 @@
                 <input type="hidden" id="memory-id">
                 <div id="image-upload-field" class="form-group">
                     <label for="memory-image">Memória:</label>
-                    <input type="file" id="memory-image" accept="image/*" required>
+                    <input type="file" id="memory-image" name="memoryImage" accept="image/*" required>
                 </div>
                 <div class="form-group">
                     <label for="memory-title">Título:</label>
-                    <input type="text" id="memory-title">
+                    <input type="text" id="memory-title" name="memory-title-input">
                 </div>
                 <div class="form-group">
                     <label for="memory-description">Descrição:</label>
-                    <textarea id="memory-description"></textarea>
+                    <textarea id="memory-description" name="memory-description-input"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="memory-date">Data:</label>
-                    <input type="date" id="memory-date">
+                    <input type="date" id="memory-date" name="memory-date-input">
                 </div>
                 <button type="submit" class="btn">Salvar</button>
             </form>
