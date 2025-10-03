@@ -41,7 +41,6 @@ body {
 
 .container {
     width: 100%;
-    max-width: 420px;
     min-height: 60vh;
     padding: 10px 20px 50px 20px;
     background-color: var(--surface-color);
@@ -116,7 +115,7 @@ body {
     border-radius: 60px;
     border-style: solid;
     padding: 6px 45px;
-    margin-top: -13;
+    margin-top: -13px;
 }
 
 .btn:hover {

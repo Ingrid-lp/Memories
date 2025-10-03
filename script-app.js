@@ -27,6 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            window.addEventListener('load', () => {
+                renderScreen();
+            });
+
             let memories = [];
             let albums = [];
             let currentAlbumId = null;
@@ -49,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             const renderScreen = () => {
-                greetingElement.textContent = `Olá, ${loggedInUser.name}`;
+              greetingElement.innerHTML = `Bem vindo,<br> <span class="user-name">${loggedInUser.name}!</span>`;
                 renderMemories();
                 renderAlbums();
             };

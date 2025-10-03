@@ -88,14 +88,14 @@ html, body {
 }
 
 .user-profile-section {
-    background-color: #F3E1E1; /* cor diferente */
+    background-color: #F3E1E1; /* container branco */
     padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 60px;
-    border-radius: 1px 3px 30px 30px;     /* opcional, arredonda */
-    color: var(--primary-dark-color);             /* se a cor for escura, troca cor do texto */
+    gap: 25px;
+    border-radius: 1px 3px 30px 30px;     
+    color: var(--primary-dark-color);             
 }
 
 .user-info {
@@ -113,7 +113,7 @@ html, body {
   background: none;   
   border: none;      
   padding: 0;         
-  color:  var(--primary-dark-color);;     
+  color:  #A86A46;;     
   font: inherit;      /* herda fonte */
   font-size: 18px;  
 }
@@ -394,4 +394,14 @@ html, body {
     .user-profile-section {
         padding-top: 0;
     }
+}
+#greeting {
+  color: var(--primary-color);
+  font-size: 30px;
+}
+
+#greeting .user-name {
+  color: #B86F43; 
+  font-size: 30px;
+
 }
