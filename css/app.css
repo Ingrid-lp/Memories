@@ -58,7 +58,7 @@ html, body {
     padding-top: 14px;
     margin-top: 45px;
     position: fixed;
-    height: 93%;
+    height: 95%;
     transform: translateX(-100%);
     transition: transform 0.3s ease;
     z-index: 999;
@@ -128,17 +128,13 @@ html, body {
     display: flex;
     align-items: center;
     padding: 15px 20px;
-    color: var(--light-text-color);
+    color: #B86F43;
     text-decoration: none;
     font-weight: 500;
     transition: background-color 0.2s, color 0.2s;
+    font-size: 20px;
 }
 
-.menu-list li a:hover,
-.menu-list li a.active {
-    background-color: var(--background-color);
-    color: var(--primary-color);
-}
 
 .menu-list .material-icons {
     margin-right: 15px;
@@ -150,8 +146,18 @@ html, body {
 }
 
 #add-memory-btn {
-    width: 100%;
-    text-align: left;
+    display: flex;
+    align-items: center;
+    color: var(--light-text-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.2s, color 0.2s;
+    border:none;
+    background-color:  #DE8F5F;
+    margin: 1px 0px 10px -15px;
+    font: inherit; 
+    color: #B86F43;
+    font-size: 20px;
 }
 
 /* Grid de Memórias */
