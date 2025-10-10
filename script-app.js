@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const viewMemoryModal = document.getElementById('view-memory-modal');
     const viewMemoryContent = document.getElementById('view-memory-content');
     const imageUploadField = document.getElementById('image-upload-field');
+    const memorySentimentInput = document.getElementById('memory-sentiment'); // NOVO: Referência ao campo Sentimento
 
     // Elementos adicionados para o novo botão de adicionar ao álbum
     const addToAlbumBtnContainer = document.getElementById('add-to-album-btn-container'); 
@@ -144,10 +145,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const showMemoryDetails = (memory) => {
         const imageUrl = memory.imageUrl.startsWith('/uploads') ? `${API_URL}${memory.imageUrl}` : memory.imageUrl;
         
+        // ATUALIZADO: Adicionado o campo Sentimento na visualização
         viewMemoryContent.innerHTML = `
             <img src="${imageUrl}" alt="${memory.title}" style="max-width: 100%; max-height: 80vh; object-fit: contain; display: block; margin: 0 auto;">
             <div class="memory-details-view">
                 <h3>${memory.title || 'Sem título'}</h3>
+                <p><strong>Sentimento:</strong> ${memory.sentiment || 'Não informado'}</p>
                 <p><strong>Descrição:</strong> ${memory.description || 'Sem descrição'}</p>
                 <p><strong>Data:</strong> ${memory.date || 'Não informada'}</p>
             </div>
@@ -171,6 +174,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.getElementById('memory-title').value = memoryToEdit.title;
                     document.getElementById('memory-description').value = memoryToEdit.description;
                     document.getElementById('memory-date').value = memoryToEdit.date;
+                    // NOVO: Preencher o campo de sentimento
+                    memorySentimentInput.value = memoryToEdit.sentiment || ''; 
                     imageUploadField.style.display = 'none';
                     document.getElementById('memory-image').required = false;
                     memoryModalTitle.textContent = 'Editar Memória';
@@ -375,6 +380,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     addMemoryBtn.addEventListener('click', () => {
         memoryForm.reset();
+        // NOVO: Limpar o campo de sentimento
+        memorySentimentInput.value = ''; 
         imageUploadField.style.display = 'block';
         document.getElementById('memory-image').required = true;
         memoryIdInput.value = '';
@@ -420,9 +427,11 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         const id = memoryIdInput.value;
         const imageFile = e.target['memory-image'].files[0];
-        const title = e.target['memory-title'].value; // Corrigido para acessar via name ou id
-        const description = e.target['memory-description'].value; // Corrigido para acessar via name ou id
-        const date = e.target['memory-date'].value; // Corrigido para acessar via name ou id
+        const title = e.target['memory-title'].value; 
+        const description = e.target['memory-description'].value;
+        const date = e.target['memory-date'].value;
+        // NOVO: Capturar o valor do campo de sentimento
+        const sentiment = memorySentimentInput.value;
 
         if (id) {
             // Atualizar memória existente (SÓ METADADOS)
@@ -430,7 +439,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const response = await fetch(`${API_URL}/memories/${id}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ title, description, date })
+                    // ATUALIZADO: Adicionado 'sentiment' ao PUT de metadados
+                    body: JSON.stringify({ title, description, date, sentiment })
                 });
                 if (response.ok) {
                     alert('Memória atualizada com sucesso!');
@@ -444,7 +454,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('Erro ao conectar ao servidor.');
             }
         } else {
-            // Adicionar nova memória (CORRIGIDO PARA USAR FormData)
+            // Adicionar nova memória (upload)
             if (!imageFile) {
                 alert('Por favor, selecione uma memória (imagem).');
                 return;
@@ -453,12 +463,14 @@ document.addEventListener('DOMContentLoaded', () => {
             // --- LÓGICA CORRIGIDA INICIA AQUI ---
             
             const formData = new FormData();
-            formData.append('memoryImage', imageFile); // 'memoryImage' é o campo do ficheiro para o Multer
+            formData.append('memoryImage', imageFile); 
             formData.append('title', title);
             formData.append('description', description);
             formData.append('date', date);
             formData.append('userId', loggedInUser.id);
-            formData.append('albumId', currentAlbumId || ''); // Envia o ID do álbum ou vazio para NULL
+            formData.append('albumId', currentAlbumId || ''); 
+            // NOVO: Adicionado 'sentiment' ao FormData
+            formData.append('sentiment', sentiment);
 
             try {
                 const response = await fetch(`${API_URL}/memories`, {
@@ -517,6 +529,8 @@ document.addEventListener('DOMContentLoaded', () => {
                  document.getElementById('memory-title').value = memoryToEdit.title;
                  document.getElementById('memory-description').value = memoryToEdit.description;
                  document.getElementById('memory-date').value = memoryToEdit.date;
+                 // NOVO: Preencher o campo de sentimento
+                 memorySentimentInput.value = memoryToEdit.sentiment || ''; 
                  imageUploadField.style.display = 'none';
                  document.getElementById('memory-image').required = false;
                  memoryModalTitle.textContent = 'Editar Memória';

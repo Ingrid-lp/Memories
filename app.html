@@ -31,7 +31,9 @@
                 <li id="add-memory-container">
                     <button id="add-memory-btn" class="btn add-btn"><span class="material-icons">add_box</span> Adicionar Memórias</button>
                 </li>
-                <li><a href="#" id="mapa-ilhas-link" class="menu-item"><span class="material-icons">explore</span> Mapa das ilhas</a></li>
+                <li>
+                    <a href="#" id="mapa-ilhas-link" class="menu-item"><span class="material-icons">explore</span> Mapa das ilhas</a>
+                </li>
             </ul>
             <ul id="albums-list" class="menu-list album-section">
             </ul>
@@ -73,6 +75,19 @@
                     <label for="memory-date">Data:</label>
                     <input type="date" id="memory-date" name="memory-date-input">
                 </div>
+                
+                <div class="form-group">
+                    <label for="memory-sentiment">Sentimentos:</label>
+                    <select id="memory-sentiment" name="memory-sentiment">
+                        <option value="">Selecione um sentimento</option>
+                        <option value="Felicidade">Felicidade</option>
+                        <option value="Amor">Amor</option>
+                        <option value="Tristeza">Tristeza</option>
+                        <option value="Raiva">Raiva</option>
+                        <option value="Nostalgia">Nostalgia</option>
+                    </select>
+                </div>
+
                 <button type="submit" class="btn">Salvar</button>
             </form>
         </div>
