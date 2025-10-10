@@ -21,9 +21,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const viewMemoryContent = document.getElementById('view-memory-content');
     const imageUploadField = document.getElementById('image-upload-field');
 
-    // Esta referência é um placeholder para evitar erros, já que o botão 'Adicionar a Álbum'
-    // não estava no app.html mas a lógica o esperava.
-    const addToAlbumBtn = document.createElement('button'); 
+    // Elementos adicionados para o novo botão de adicionar ao álbum
+    const addToAlbumBtnContainer = document.getElementById('add-to-album-btn-container'); 
+    const addToAlbumBtn = document.getElementById('add-to-album-btn'); 
 
     const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
     if (!loggedInUser) {
@@ -55,11 +55,27 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Fetch data error:', error);
         }
     };
+    
+    // Função para controlar a visibilidade dos botões de adicionar
+    const updateAddMemoryButtons = () => {
+        // O botão da barra lateral (#add-memory-btn) sempre permanece visível (upload de nova memória).
+        addMemoryBtn.style.display = 'block'; 
+
+        if (currentAlbumId) {
+            // Se um álbum está selecionado, mostramos o botão "Adicionar Memórias ao Álbum" no corpo principal (adicionar existentes).
+            addToAlbumBtnContainer.style.display = 'block';
+        } else {
+            // Se "Minhas Memórias" (home) está selecionado, escondemos o botão de "Adicionar a Álbum".
+            addToAlbumBtnContainer.style.display = 'none';
+        }
+    };
+
 
     const renderScreen = () => {
         greetingElement.innerHTML = `Bem vindo,<br> <span class="user-name">${loggedInUser.name}!</span>`;
         renderMemories();
         renderAlbums();
+        updateAddMemoryButtons();
     };
 
     const renderMemories = () => {
@@ -70,6 +86,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (filteredMemories.length === 0) {
             emptyState.style.display = 'block';
+            // Lógica para exibir mensagens específicas para álbuns vazios
+            if (currentAlbumId) {
+                emptyState.querySelector('p').textContent = `Não há memórias para exibir neste álbum. Clique em "Adicionar Memórias ao Álbum" para adicionar memórias existentes.`;
+                emptyState.querySelector('.empty-icon').textContent = 'FOLDER';
+            } else {
+                emptyState.querySelector('p').textContent = 'Você ainda não possui memórias. Clique em "Adicionar Memórias" para começar.';
+                emptyState.querySelector('.empty-icon').textContent = 'MEMÓRIA';
+            }
         } else {
             emptyState.style.display = 'none';
             filteredMemories.forEach(memory => {
@@ -244,13 +268,21 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
         homeLink.classList.add('active');
         sidebar.classList.remove('show');
-        addMemoryBtn.style.display = 'block';
-        addToAlbumBtn.style.display = 'none';
+        // ATUALIZADO: Chama a nova função
+        updateAddMemoryButtons();
     });
 
     createAlbumLink.addEventListener('click', async (e) => {
         e.preventDefault();
         const albumTitle = prompt('Digite o título do novo álbum:');
+        
+        // NOVO: Validação do tamanho máximo de 10 caracteres
+        if (albumTitle && albumTitle.trim().length > 10) {
+            alert('O título do álbum não pode ter mais de 10 caracteres.');
+            sidebar.classList.remove('show');
+            return; // Impede a continuação
+        }
+
         if (albumTitle) {
             try {
                 const response = await fetch(`${API_URL}/albums`, {
@@ -285,14 +317,21 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
             target.classList.add('active');
             sidebar.classList.remove('show');
-            addMemoryBtn.style.display = 'none';
-            addToAlbumBtn.style.display = 'block';
+            // ATUALIZADO: Chama a nova função
+            updateAddMemoryButtons();
         }
         if (editBtn) {
             e.preventDefault();
             const albumId = editBtn.dataset.id;
             const albumToEdit = albums.find(a => a.id == albumId);
             const newTitle = prompt('Digite o novo nome para o álbum:', albumToEdit.title);
+            
+            // NOVO: Validação do tamanho máximo de 10 caracteres para edição
+            if (newTitle && newTitle.trim().length > 10) {
+                alert('O título do álbum não pode ter mais de 10 caracteres.');
+                return; // Impede a continuação
+            }
+
             if (newTitle && newTitle.trim() !== '') {
                 try {
                     const response = await fetch(`${API_URL}/albums/${albumId}`, {
@@ -322,6 +361,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         await fetchData();
                         currentAlbumId = null;
                         contentTitle.textContent = 'Minhas Memórias';
+                        // ATUALIZADO: Chama a nova função
+                        updateAddMemoryButtons();
                     } else {
                         alert('Erro ao excluir álbum.');
                     }
@@ -341,10 +382,12 @@ document.addEventListener('DOMContentLoaded', () => {
         showModal('memory-modal');
     });
 
+    // NOVO: Listener para o novo botão no corpo principal - AÇÃO DE ADICIONAR MEMÓRIA EXISTENTE
     addToAlbumBtn.addEventListener('click', () => {
         if (currentAlbumId) {
-            showAddMemoriesToAlbumModal(currentAlbumId);
+            showAddMemoriesToAlbumModal(currentAlbumId); // Abre o modal de seleção de memórias NÃO atribuídas
         } else {
+            // Esta lógica não deve ser executada se o updateAddMemoryButtons funcionar
             alert('Selecione um álbum para adicionar memórias.');
         }
     });

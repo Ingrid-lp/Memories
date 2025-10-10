@@ -79,7 +79,12 @@ html, body {
 }
 
 .add-btn {
-    padding: 10px 15px;
+    padding: 2px 15px;
+}
+
+#mapa-ilhas-link
+{
+      padding: 6px 20px;
 }
 
 .header-buttons {
@@ -275,27 +280,25 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-right: 15px;
 }
 
 .album-list li a {
     padding: 15px 0;
 }
 
-.album-actions {
-    display: flex;
-    gap: 5px;
-}
-
-.album-list li a:hover,
-.album-list li a.active {
-    background-color: var(--background-color);
-    color: var(--primary-color);
-}
 
 .album-list .material-icons {
     margin-right: 15px;
 }
+
+.album-item-container .material-icons {
+   color: #F3E1E1;
+}
+
+.menu-item.album-item {
+    color: #F3E1E1 !important;
+}
+
 
 .empty-state {
     text-align: center;
