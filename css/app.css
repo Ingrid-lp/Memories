@@ -414,3 +414,50 @@ html, body {
   font-size: 30px;
 
 }
+
+
+
+/* =================================================================
+   SOLUÇÃO DE SCROLL E QUEBRA DE LINHA NO MODAL DE VISUALIZAÇÃO
+   ================================================================= */
+
+/* 1. Aplica rolagem ao conteúdo total do modal (para caso a imagem seja muito grande) */
+#view-memory-modal .modal-content {
+    max-height: 90vh; /* Limita a altura total do modal */
+    overflow-y: auto; /* Adiciona scroll se a altura for excedida */
+    padding: 30px; /* Garante que o padding original seja mantido */
+    box-sizing: border-box;
+}
+
+/* 2. Limita a altura e adiciona rolagem FOCADA no bloco de detalhes (incluindo a descrição) */
+#view-memory-content .memory-details-view {
+    max-height: 250px; /* Altura máxima para o bloco de texto. Ajuste se precisar de mais/menos espaço. */
+    overflow-y: auto; /* Habilita o scroll vertical apenas nesta área de detalhes. */
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+/* 3. Garante que o texto da descrição quebre a linha corretamente */
+#view-memory-content .memory-details-view p {
+    /* Permite quebra de linha para strings longas e preserva quebras manuais (se houver) */
+    white-space: pre-wrap; 
+    /* Garante que palavras individuais muito longas sejam quebradas */
+    word-wrap: break-word; 
+}
+
+/* 4. Garante que a imagem dentro do modal se ajuste */
+#view-memory-content img {
+    max-width: 100%;
+    max-height: 50vh; /* Altura da imagem um pouco menor para deixar espaço para os detalhes e botões */
+    object-fit: contain; 
+    display: block; 
+    margin: 0 auto 15px auto;
+}
+
+/* NOVO: Bloqueia a rolagem do body quando um modal está aberto */
+body.modal-open {
+    overflow: hidden;
+}

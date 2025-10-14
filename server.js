@@ -136,6 +136,7 @@ app.post('/memories', upload.single('memoryImage'), (req, res) => {
     // ATUALIZADO: Adicionado 'sentiment' à query e aos parâmetros
     const query = 'INSERT INTO memories (title, description, date, imageUrl, userId, albumId, sentiment) VALUES (?, ?, ?, ?, ?, ?, ?)';
     // Usa albumId || null para garantir que o MySQL recebe NULL para IDs vazios (importante para FK)
+    // Usa sentiment || null para salvar NULL se o valor for string vazia.
     db.query(query, [title, description, date, imageUrl, userId, albumId || null, sentiment || null], (err, result) => {
         if (err) {
             console.error('Erro ao inserir no banco de dados:', err);
@@ -164,6 +165,7 @@ app.put('/memories/:id', (req, res) => {
     } else {
         // ATUALIZADO: Adicionado 'sentiment'
         query = 'UPDATE memories SET title = ?, description = ?, date = ?, sentiment = ? WHERE id = ?';
+        // Usa sentiment || null para salvar NULL se o valor for string vazia.
         params = [title, description, date, sentiment || null, id];
     }
 
@@ -190,19 +192,46 @@ app.delete('/memories/:id', (req, res) => {
 
 // Rotas da API para Álbuns
 app.get('/albums/:userId', (req, res) => {
-// ... (código omitido)
+    const { userId } = req.params;
+    const query = 'SELECT * FROM albums WHERE userId = ?';
+    db.query(query, [userId], (err, results) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(results);
+    });
 });
 
 app.post('/albums', (req, res) => {
-// ... (código omitido)
+    const { title, userId } = req.body;
+    const query = 'INSERT INTO albums (title, userId) VALUES (?, ?)';
+    db.query(query, [title, userId], (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.status(201).json({ id: result.insertId, message: 'Álbum criado com sucesso!' });
+    });
 });
 
 app.put('/albums/:id', (req, res) => {
-// ... (código omitido)
+    const { id } = req.params;
+    const { title } = req.body;
+    const query = 'UPDATE albums SET title = ? WHERE id = ?';
+    db.query(query, [title, id], (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Álbum não encontrado.' });
+        }
+        res.json({ message: 'Álbum atualizado com sucesso!' });
+    });
 });
 
 app.delete('/albums/:id', (req, res) => {
-// ... (código omitido)
+    const { id } = req.params;
+    const query = 'DELETE FROM albums WHERE id = ?';
+    db.query(query, [id], (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Álbum não encontrado.' });
+        }
+        res.json({ message: 'Álbum excluída com sucesso!' });
+    });
 });
 
 app.listen(port, () => {

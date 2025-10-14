@@ -146,6 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const imageUrl = memory.imageUrl.startsWith('/uploads') ? `${API_URL}${memory.imageUrl}` : memory.imageUrl;
         
         // ATUALIZADO: Adicionado o campo Sentimento na visualização
+        // IMPORTANTE: A div "memory-details-view" é o alvo do CSS para limitar a altura da descrição e forçar a rolagem.
         viewMemoryContent.innerHTML = `
             <img src="${imageUrl}" alt="${memory.title}" style="max-width: 100%; max-height: 80vh; object-fit: contain; display: block; margin: 0 auto;">
             <div class="memory-details-view">
