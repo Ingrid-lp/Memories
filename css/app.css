@@ -427,26 +427,32 @@ html, body {
     overflow-y: auto; /* Adiciona scroll se a altura for excedida */
     padding: 30px; /* Garante que o padding original seja mantido */
     box-sizing: border-box;
+    white-space: pre-line !important;
 }
 
 /* 2. Limita a altura e adiciona rolagem FOCADA no bloco de detalhes (incluindo a descrição) */
 #view-memory-content .memory-details-view {
-    max-height: 250px; /* Altura máxima para o bloco de texto. Ajuste se precisar de mais/menos espaço. */
-    overflow-y: auto; /* Habilita o scroll vertical apenas nesta área de detalhes. */
+    max-height: 200px;         /* Limita a altura da caixa */
+    width: 100%;               /* Ocupa toda a largura do container pai */
+    max-width: 350px;          /* Define um limite de largura */
+    overflow-y: auto;          /* Scroll vertical se ultrapassar a altura */
+    overflow-x: hidden;        /* Impede scroll lateral */
     padding: 10px;
     margin-bottom: 15px;
-    border: 1px solid #ddd;
     border-radius: 5px;
-    background-color: #f9f9f9;
+    background-color: #ffffff;
+    box-sizing: border-box;
+    border-style: none;
 }
+
 
 /* 3. Garante que o texto da descrição quebre a linha corretamente */
 #view-memory-content .memory-details-view p {
-    /* Permite quebra de linha para strings longas e preserva quebras manuais (se houver) */
-    white-space: pre-wrap; 
-    /* Garante que palavras individuais muito longas sejam quebradas */
-    word-wrap: break-word; 
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
+
 
 /* 4. Garante que a imagem dentro do modal se ajuste */
 #view-memory-content img {
@@ -460,4 +466,8 @@ html, body {
 /* NOVO: Bloqueia a rolagem do body quando um modal está aberto */
 body.modal-open {
     overflow: hidden;
+}
+
+#view-memory-content .memory-details-view {
+    overflow-x: hidden;
 }
