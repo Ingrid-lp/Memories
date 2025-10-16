@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa das Ilhas - Memories</title>
+    <link rel="stylesheet" href="css/mapa-ilhas.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Alice&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="map-container">
+        <!-- Ajustando header para ficar igual ao app.html -->
+        <header class="app-header">
+            <button id="menu-btn" class="icon-btn"><span class="material-icons">menu</span></button>
+            <h1>Memories</h1>
+        </header>
+
+        <nav id="sidebar" class="sidebar">
+            <div class="user-profile-section">
+                <div class="user-info">
+                    <span class="material-icons" style="font-size: 48px;">account_circle</span>
+                    <span id="greeting"></span>
+                </div>
+                <button id="logout-btn" class="btn logout-btn">
+                    <span style="font-size: 30px;">Sair </span>
+                    <span class="material-icons" style="vertical-align: -5px;">exit_to_app</span>
+                </button>
+            </div>
+            <ul class="menu-list">
+                <li><a href="app.html" class="menu-item"><span class="material-icons">home</span> Minhas Memórias</a></li>
+                <li><a href="#" id="create-album-link" class="menu-item"><span class="material-icons">folder</span> Criar Álbum</a></li>
+                <li id="add-memory-container">
+                    <button id="add-memory-btn" class="btn add-btn"><span class="material-icons">add_box</span> Adicionar Memórias</button>
+                </li>
+                <li>
+                    <a href="mapa-ilhas.html" class="menu-item active"><span class="material-icons">explore</span> Mapa das ilhas</a>
+                </li>
+            </ul>
+            <ul id="albums-list" class="menu-list album-section">
+            </ul>
+        </nav>
+
+        <main id="main-content">
+            <div class="islands-map">
+                <div class="island-item">
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-dVLGQKAvubD40uWzqTvPJ7Sx8EWZkR.png" alt="Ilha Felicidade" class="island-image">
+                    <p class="island-name">Ilha Felicidade</p>
+                </div>
+
+                <div class="island-item">
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-dVLGQKAvubD40uWzqTvPJ7Sx8EWZkR.png" alt="Ilha Amor" class="island-image">
+                    <p class="island-name">Ilha Amor</p>
+                </div>
+
+                <div class="island-item">
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-dVLGQKAvubD40uWzqTvPJ7Sx8EWZkR.png" alt="Ilha Tristeza" class="island-image">
+                    <p class="island-name">Ilha Tristeza</p>
+                </div>
+
+                <div class="island-item">
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-dVLGQKAvubD40uWzqTvPJ7Sx8EWZkR.png" alt="Ilha Nostalgia" class="island-image">
+                    <p class="island-name">Ilha Nostalgia</p>
+                </div>
+
+                <div class="island-item">
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-dVLGQKAvubD40uWzqTvPJ7Sx8EWZkR.png" alt="Ilha Raiva" class="island-image">
+                    <p class="island-name">Ilha Raiva</p>
+                </div>
+
+                <div class="island-item">
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-dVLGQKAvubD40uWzqTvPJ7Sx8EWZkR.png" alt="Ilha Medo" class="island-image">
+                    <p class="island-name">Ilha Medo</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script-mapa-ilhas.js"></script>
+</body>
+
+</html>
