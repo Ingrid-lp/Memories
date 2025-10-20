@@ -70,7 +70,7 @@ db.connect(err => {
         imageUrl TEXT,
         userId INT,
         albumId INT DEFAULT NULL,
-        sentiment VARCHAR(255),
+        sentiment VARCHAR(255) NOT NULL,
         FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE,
         FOREIGN KEY (albumId) REFERENCES albums(id) ON DELETE SET NULL
     )`;
