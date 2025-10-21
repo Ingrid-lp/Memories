@@ -12,7 +12,6 @@
 
 <body>
     <div class="map-container">
-        <!-- Ajustando header para ficar igual ao app.html -->
         <header class="app-header">
             <button id="menu-btn" class="icon-btn"><span class="material-icons">menu</span></button>
             <h1>Memories</h1>
@@ -44,7 +43,13 @@
         </nav>
 
         <main id="main-content">
-            <div class="islands-map">
+    
+            <div class="islands-map" id="islands-map-container">
+
+                <button id="view-chart-btn" class="btn small-btn chart-btn"> 
+                    <span class="material-icons">bar_chart</span> Gráfico das Ilhas
+                </button>
+
                 <div class="island-item">
                     <img src="img/Ilhadoamor1.png" alt="Ilha Felicidade" class="island-image">
                     <p class="island-name">Ilha Da Felicidade</p>
@@ -77,6 +82,8 @@
             </div>
         </main>
     </div>
+    
+    <div id="custom-alert-container"></div>
 
     <script src="script-mapa-ilhas.js"></script>
 </body>

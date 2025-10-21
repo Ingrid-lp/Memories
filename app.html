@@ -78,8 +78,8 @@
                 
                 <div class="form-group">
                     <label for="memory-sentiment">Sentimentos:</label>
-                    <select id="memory-sentiment" name="memory-sentiment">
-                        <option value="">Selecione um sentimento</option>
+                    <select id="memory-sentiment" name="memory-sentiment" required>
+                        <option value="" disabled selected>Selecione um sentimento</option>
                         <option value="Felicidade">Felicidade</option>
                         <option value="Amor">Amor</option>
                         <option value="Tristeza">Tristeza</option>
@@ -112,6 +112,29 @@
             </div>
         </div>
     </div>
+
+    <div id="custom-confirm-modal" class="modal">
+        <div class="modal-content custom-dialog-content">
+            <h3 id="custom-confirm-message">Tem certeza que deseja continuar?</h3>
+            <div class="modal-actions">
+                <button id="custom-confirm-yes" class="btn delete-btn">Sim</button>
+                <button id="custom-confirm-no" class="btn">Não</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="custom-prompt-modal" class="modal">
+        <div class="modal-content custom-dialog-content">
+            <h3 id="custom-prompt-message">Digite um valor:</h3>
+            <input type="text" id="custom-prompt-input" class="form-group-input" maxlength="10">
+            <div class="modal-actions">
+                <button id="custom-prompt-ok" class="btn">OK</button>
+                <button id="custom-prompt-cancel" class="btn delete-btn">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="custom-alert-container"></div> 
 
     <script src="script-app.js"></script>
 </body>

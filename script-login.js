@@ -1,3 +1,32 @@
+const showCustomAlert = (message, type = 'success', duration = 3000) => {
+    const container = document.getElementById('custom-alert-container');
+    if (!container) {
+        // Fallback para o alert() padrão se o container não for encontrado
+        console.warn('Container de alerta customizado não encontrado, usando alert() padrão.');
+        alert(message);
+        return;
+    }
+
+    const alertElement = document.createElement('div');
+    alertElement.className = `custom-alert ${type}`;
+    alertElement.textContent = message;
+
+    container.appendChild(alertElement);
+
+    // Forçar reflow para garantir a transição de entrada
+    void alertElement.offsetWidth; 
+    alertElement.classList.add('show');
+
+    // Remover após a duração especificada
+    setTimeout(() => {
+        alertElement.classList.remove('show');
+        // Esperar o tempo da transição (0.3s definido no CSS) antes de remover o elemento
+        alertElement.addEventListener('transitionend', () => {
+            alertElement.remove();
+        });
+    }, duration);
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     const loginScreen = document.getElementById('login-screen');
     const registerScreen = document.getElementById('register-screen');
@@ -26,10 +55,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('loggedInUser', JSON.stringify(data.user));
                 window.location.href = 'app.html';
             } else {
-                alert(data.message);
+                showCustomAlert(data.message, 'warning');
             }
         } catch (error) {
-            alert('Erro ao tentar fazer login. Servidor indisponível.');
+            showCustomAlert('Erro ao tentar fazer login. Servidor indisponível.', 'error');
             console.error('Login error:', error);
         }
     });
@@ -49,18 +78,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const data = await response.json();
             if (response.ok) {
-                alert(data.message);
+                showCustomAlert(data.message, 'success');
                 showLoginLink.click();
             } else {
-                alert(data.message);
+                showCustomAlert(data.message, 'warning');
             }
         } catch (error) {
-            alert('Erro ao tentar criar a conta. Servidor indisponível.');
+            showCustomAlert('Erro ao tentar criar a conta. Servidor indisponível.', 'error');
             console.error('Registration error:', error);
         }
     });
 
-    // oi adiiconei troca de fundo tar
+    // Lógica para mostrar a tela de cadastro e mudar o fundo
     showRegisterLink.addEventListener('click', (e) => {
         e.preventDefault();
         loginScreen.style.display = 'none';

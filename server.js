@@ -3,7 +3,6 @@ const mysql = require('mysql');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
-// ADICIONAR: Módulos para lidar com upload de ficheiros e caminhos
 const multer = require('multer');
 const path = require('path');
 
@@ -13,11 +12,9 @@ const port = 3000;
 // Configuração do armazenamento do Multer
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        // O ficheiro será salvo na pasta 'uploads/'
         cb(null, 'uploads/'); 
     },
     filename: (req, file, cb) => {
-        // Cria um nome de ficheiro único para a imagem
         cb(null, Date.now() + path.extname(file.originalname));
     }
 });
@@ -26,18 +23,14 @@ const upload = multer({ storage: storage });
 
 // MIDDLEWARES
 app.use(cors());
-
-// Configura o Express para servir ficheiros estáticos da pasta 'uploads' (para aceder às imagens)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-// Manter o body-parser.json para rotas que esperam JSON (login, register, PUTs)
 app.use(bodyParser.json()); 
 
 // Configurações do seu banco de dados MySQL
 const db = mysql.createConnection({
     host: 'localhost',
-    user: 'root', // <-- Substitua pelo seu usuário do MySQL
-    password: 'MinhaSenha@123', // <-- Substitua pela sua senha
+    user: 'root', 
+    password: 'MinhaSenha@123', 
     database: 'memories_db'
 });
 
@@ -61,7 +54,7 @@ db.connect(err => {
         userId INT,
         FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE
     )`;
-    // ATUALIZADO: Adicionada a coluna 'sentiment'
+    // ATUALIZADO: REMOVIDA A COLUNA albumId
     const createMemoriesTable = `CREATE TABLE IF NOT EXISTS memories (
         id INT AUTO_INCREMENT PRIMARY KEY,
         title VARCHAR(255),
@@ -69,18 +62,25 @@ db.connect(err => {
         date VARCHAR(255),
         imageUrl TEXT,
         userId INT,
-        albumId INT DEFAULT NULL,
         sentiment VARCHAR(255) NOT NULL,
-        FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE,
-        FOREIGN KEY (albumId) REFERENCES albums(id) ON DELETE SET NULL
+        FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE
+    )`;
+    // NOVO: TABELA DE LIGAÇÃO PARA RELACIONAMENTO MUITOS-PARA-MUITOS
+    const createMemoryAlbumsTable = `CREATE TABLE IF NOT EXISTS memory_albums (
+        memoryId INT,
+        albumId INT,
+        PRIMARY KEY (memoryId, albumId),
+        FOREIGN KEY (memoryId) REFERENCES memories(id) ON DELETE CASCADE,
+        FOREIGN KEY (albumId) REFERENCES albums(id) ON DELETE CASCADE
     )`;
 
     db.query(createUsersTable, err => { if (err) console.error('Erro ao criar tabela de usuários:', err); });
     db.query(createAlbumsTable, err => { if (err) console.error('Erro ao criar tabela de álbuns:', err); });
     db.query(createMemoriesTable, err => { if (err) console.error('Erro ao criar tabela de memórias:', err); });
+    db.query(createMemoryAlbumsTable, err => { if (err) console.error('Erro ao criar tabela de ligação memory_albums:', err); });
 });
 
-// Rotas da API para Autenticação
+// Rotas da API para Autenticação (MANTIDAS)
 app.post('/register', (req, res) => {
     const { name, email, password } = req.body;
     const query = 'INSERT INTO users (name, email, password) VALUES (?, ?, ?)';
@@ -109,35 +109,39 @@ app.post('/login', (req, res) => {
 });
 
 // Rotas da API para Memórias
+
+// ATUALIZADO: Buscar memórias e seus IDs de álbum associados (para o frontend)
 app.get('/memories/:userId', (req, res) => {
     const { userId } = req.params;
-    const query = 'SELECT * FROM memories WHERE userId = ?';
+    const query = 'SELECT m.*, GROUP_CONCAT(ma.albumId) as albumIds FROM memories m LEFT JOIN memory_albums ma ON m.id = ma.memoryId WHERE m.userId = ? GROUP BY m.id';
     db.query(query, [userId], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
-        res.json(results);
+        const formattedResults = results.map(m => ({
+            ...m,
+            albumIds: m.albumIds ? m.albumIds.split(',').map(id => Number(id)) : []
+        }));
+        res.json(formattedResults);
     });
 });
 
-// ROTA ATUALIZADA: agora salva o campo 'sentiment'
+// ATUALIZADO: Lógica de POST com validação de Sentimento
 app.post('/memories', upload.single('memoryImage'), (req, res) => {
-    // 1. Verifica se o ficheiro foi carregado (o Multer popula req.file)
     if (!req.file) {
         return res.status(400).json({ message: 'O ficheiro da memória (imagem) é obrigatório.' });
     }
 
-    // 2. O URL da imagem é o caminho para onde o Multer salvou o ficheiro
     const imageUrl = `/uploads/${req.file.filename}`;
     
-    // 3. Os outros campos vêm do req.body (o Multer consegue ler campos de texto do FormData)
-    // ATUALIZADO: Adicionado 'sentiment' à desestruturação
-    const { title, description, date, userId, albumId, sentiment } = req.body;
+    const { title, description, date, userId, sentiment } = req.body;
+    
+    // NOVO: VALIDAÇÃO DE SENTIMENTO OBRIGATÓRIO
+    if (!sentiment || sentiment.trim() === '') {
+        return res.status(400).json({ message: 'O campo Sentimento é obrigatório.' });
+    }
 
-    // 4. Salva os dados no banco de dados
-    // ATUALIZADO: Adicionado 'sentiment' à query e aos parâmetros
-    const query = 'INSERT INTO memories (title, description, date, imageUrl, userId, albumId, sentiment) VALUES (?, ?, ?, ?, ?, ?, ?)';
-    // Usa albumId || null para garantir que o MySQL recebe NULL para IDs vazios (importante para FK)
-    // Usa sentiment || null para salvar NULL se o valor for string vazia.
-    db.query(query, [title, description, date, imageUrl, userId, albumId || null, sentiment || null], (err, result) => {
+    // QUERY sem albumId
+    const query = 'INSERT INTO memories (title, description, date, imageUrl, userId, sentiment) VALUES (?, ?, ?, ?, ?, ?)';
+    db.query(query, [title, description, date, imageUrl, userId, sentiment], (err, result) => {
         if (err) {
             console.error('Erro ao inserir no banco de dados:', err);
             return res.status(500).json({ error: err.message });
@@ -150,24 +154,18 @@ app.post('/memories', upload.single('memoryImage'), (req, res) => {
     });
 });
 
-// ROTA ATUALIZADA: permite a atualização do campo 'sentiment'
+// ATUALIZADO: Rota PUT AGORA SÓ ATUALIZA METADADOS (sem albumId)
 app.put('/memories/:id', (req, res) => {
     const { id } = req.params;
-    // ATUALIZADO: Adicionado 'sentiment'
-    const { title, description, date, albumId, sentiment } = req.body;
-    let query;
-    let params;
+    const { title, description, date, sentiment } = req.body; 
 
-    if (albumId !== undefined) {
-        query = 'UPDATE memories SET albumId = ? WHERE id = ?';
-        // Garante que albumId vazio no frontend vira NULL no DB
-        params = [albumId || null, id]; 
-    } else {
-        // ATUALIZADO: Adicionado 'sentiment'
-        query = 'UPDATE memories SET title = ?, description = ?, date = ?, sentiment = ? WHERE id = ?';
-        // Usa sentiment || null para salvar NULL se o valor for string vazia.
-        params = [title, description, date, sentiment || null, id];
+    // NOVO: VALIDAÇÃO DE SENTIMENTO NA EDIÇÃO
+     if (!sentiment || sentiment.trim() === '') {
+        return res.status(400).json({ message: 'O campo Sentimento é obrigatório.' });
     }
+
+    const query = 'UPDATE memories SET title = ?, description = ?, date = ?, sentiment = ? WHERE id = ?';
+    const params = [title, description, date, sentiment, id];
 
     db.query(query, params, (err, result) => {
         if (err) return res.status(500).json({ error: err.message });
@@ -190,7 +188,37 @@ app.delete('/memories/:id', (req, res) => {
     });
 });
 
-// Rotas da API para Álbuns
+
+// NOVO: Rotas para a nova tabela de ligação (memory_albums)
+
+app.post('/memory_albums', (req, res) => {
+    const { memoryId, albumId } = req.body;
+    const query = 'INSERT INTO memory_albums (memoryId, albumId) VALUES (?, ?)';
+    db.query(query, [memoryId, albumId], (err, result) => {
+        if (err) {
+            if (err.code === 'ER_DUP_ENTRY') {
+                return res.status(409).json({ message: 'Memória já está neste álbum.' });
+            }
+            return res.status(500).json({ error: err.message });
+        }
+        res.status(201).json({ message: 'Memória adicionada ao álbum com sucesso!' });
+    });
+});
+
+app.delete('/memory_albums/:memoryId/:albumId', (req, res) => {
+    const { memoryId, albumId } = req.params;
+    const query = 'DELETE FROM memory_albums WHERE memoryId = ? AND albumId = ?';
+    db.query(query, [memoryId, albumId], (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Ligação não encontrada.' });
+        }
+        res.json({ message: 'Memória removida do álbum com sucesso!' });
+    });
+});
+
+
+// Rotas da API para Álbuns (MANTIDAS)
 app.get('/albums/:userId', (req, res) => {
     const { userId } = req.params;
     const query = 'SELECT * FROM albums WHERE userId = ?';
