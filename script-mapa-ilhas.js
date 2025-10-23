@@ -141,7 +141,6 @@ document.addEventListener("DOMContentLoaded", () => {
       'Tristeza': { count: 0 },
       'Nostalgia': { count: 0 },
       'Raiva': { count: 0 },
-      'Medo': { count: 0 }
   };
 
 
