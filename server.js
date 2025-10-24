@@ -262,6 +262,18 @@ app.delete('/albums/:id', (req, res) => {
     });
 });
 
+// NOVO: Rota para buscar contagens de sentimentos por usuário
+app.get('/sentiments/:userId', (req, res) => {
+    const { userId } = req.params;
+    // Consulta SQL que agrupa e conta as memórias por sentimento para o usuário
+    const query = 'SELECT sentiment, COUNT(*) as count FROM memories WHERE userId = ? GROUP BY sentiment';
+    db.query(query, [userId], (err, results) => {
+        if (err) return res.status(500).json({ error: err.message });
+        // Retorna um array de objetos: [{ sentiment: 'Felicidade', count: 5 }, ...]
+        res.json(results);
+    });
+});
+
 app.listen(port, () => {
     console.log(`Servidor rodando em http://localhost:${port}`);
 });

@@ -132,16 +132,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   let albums = []
+  let sentimentCounts = {} // NOVO: Objeto para armazenar as contagens dinamicamente
   const API_URL = "http://localhost:3000"
-
-  // Mapeamento de sentimentos e dados de exibição para as ilhas (Simplificado)
-  const sentimentMap = {
-      'Felicidade': { count: 0 }, 
-      'Amor': { count: 0 },
-      'Tristeza': { count: 0 },
-      'Nostalgia': { count: 0 },
-      'Raiva': { count: 0 },
-  };
 
 
   const fetchAlbums = async () => {
@@ -155,10 +147,48 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Função que apenas simula o carregamento (já que o HTML é estático)
+  // NOVO: Função para buscar as contagens de sentimentos
   const fetchSentimentCounts = async () => {
-    // Apenas garante que o script não tenta carregar dinamicamente, mantendo o HTML estático.
+    try {
+        const response = await fetch(`${API_URL}/sentiments/${loggedInUser.id}`)
+        const data = await response.json()
+        
+        // Converte o array de objetos em um mapa para fácil acesso (ex: counts['Felicidade'] = 5)
+        sentimentCounts = data.reduce((acc, current) => {
+            acc[current.sentiment] = Number(current.count);
+            return acc;
+        }, {});
+
+        renderSentimentCounts();
+
+    } catch (error) {
+        console.error("Erro ao carregar contagens de sentimentos:", error);
+        showCustomAlert("Erro ao carregar contagens de sentimentos.", 'error', 5000);
+    }
   };
+  
+  // NOVO: Função para renderizar as contagens no HTML
+  const renderSentimentCounts = () => {
+      // Seleciona todos os spans que devem exibir a contagem
+      const sentimentElements = document.querySelectorAll('.sentiment-count');
+      
+      sentimentElements.forEach(element => {
+          const sentiment = element.dataset.sentiment;
+          const count = sentimentCounts[sentiment] || 0; // Obtém a contagem ou 0 se não houver
+          element.textContent = `(${count})`;
+
+          // Lógica para adicionar uma classe de destaque, se houver memórias (Opcional)
+          const islandItem = element.closest('.island-item');
+          if (islandItem) {
+              if (count > 0) {
+                  islandItem.classList.add('has-memories'); 
+              } else {
+                  islandItem.classList.remove('has-memories');
+              }
+          }
+      });
+  }
+
 
   const renderAlbums = () => {
     albumsList.innerHTML = ""
@@ -179,10 +209,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   
   // A renderização de ilhas foi removida para usar o HTML estático.
-  const renderIslands = (data) => {
-      const mapContainer = document.getElementById('islands-map-container');
-      // Nenhuma ação para manter o conteúdo estático do usuário.
-  }
+  // const renderIslands = (data) => { ... } // Comentado/Removido como no código original
 
   // Eventos
 
@@ -296,5 +323,5 @@ document.addEventListener("DOMContentLoaded", () => {
   // Inicialização
   greetingElement.innerHTML = `Bem vindo,<br> <span class="user-name">${loggedInUser.name}!</span>`
   fetchAlbums()
-  fetchSentimentCounts()
+  fetchSentimentCounts() // CHAMA A NOVA FUNÇÃO
 })
