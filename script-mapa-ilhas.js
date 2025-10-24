@@ -112,6 +112,15 @@ const customConfirm = (message) => {
     });
 };
 
+// CORRIGIDO: Mapa para associar o sentimento ao prefixo do nome do arquivo (agora incluindo 'da' e 'do')
+const SENTIMENT_TO_PREFIX = {
+    'Felicidade': 'Ilhadafelicidade',
+    'Amor': 'Ilhadoamor',
+    'Tristeza': 'Ilhadatristeza',
+    'Raiva': 'Ilhadaraiva',
+    'Nostalgia': 'Ilhadanostalgia'
+};
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const menuBtn = document.getElementById("menu-btn")
@@ -132,7 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   let albums = []
-  let sentimentCounts = {} // NOVO: Objeto para armazenar as contagens dinamicamente
+  let sentimentCounts = {} // Objeto para armazenar as contagens dinamicamente
   const API_URL = "http://localhost:3000"
 
 
@@ -147,7 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // NOVO: Função para buscar as contagens de sentimentos
+  // Função para buscar as contagens de sentimentos
   const fetchSentimentCounts = async () => {
     try {
         const response = await fetch(`${API_URL}/sentiments/${loggedInUser.id}`)
@@ -167,7 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
   
-  // NOVO: Função para renderizar as contagens no HTML
+  // ATUALIZADO: Função para renderizar as contagens no HTML e atualizar as imagens
   const renderSentimentCounts = () => {
       // Seleciona todos os spans que devem exibir a contagem
       const sentimentElements = document.querySelectorAll('.sentiment-count');
@@ -177,14 +186,39 @@ document.addEventListener("DOMContentLoaded", () => {
           const count = sentimentCounts[sentiment] || 0; // Obtém a contagem ou 0 se não houver
           element.textContent = `(${count})`;
 
-          // Lógica para adicionar uma classe de destaque, se houver memórias (Opcional)
           const islandItem = element.closest('.island-item');
-          if (islandItem) {
-              if (count > 0) {
-                  islandItem.classList.add('has-memories'); 
-              } else {
-                  islandItem.classList.remove('has-memories');
-              }
+          if (!islandItem) return;
+
+          // Seleciona o elemento <img> dentro do island-item
+          const imageElement = islandItem.querySelector('.island-image');
+          if (!imageElement) return;
+
+          // Lógica para determinar o Nível da Ilha (1-5: N1, 6-15: N2, 16-25: N3, >25: N4)
+          let level = 1;
+          if (count > 25) {
+              level = 4;
+          } else if (count > 15) {
+              level = 3;
+          } else if (count > 5) {
+              level = 2;
+          }
+          // Se count for 0 a 5, level permanece 1.
+
+          // Mapeia o sentimento para o prefixo do nome do arquivo
+          const imagePrefix = SENTIMENT_TO_PREFIX[sentiment];
+          
+          if (imagePrefix) {
+              // Constrói o novo caminho da imagem com o prefixo CORRETO e o nível
+              const newSrc = `img/${imagePrefix}${level}.png`;
+              imageElement.src = newSrc;
+          }
+
+
+          // Lógica para adicionar uma classe de destaque (mantida)
+          if (count > 0) {
+              islandItem.classList.add('has-memories'); 
+          } else {
+              islandItem.classList.remove('has-memories');
           }
       });
   }
