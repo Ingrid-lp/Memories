@@ -27,6 +27,7 @@ html, body {
     min-height: 100vh;
 }
 
+/*Header*/
 .app-header {
     background-color: var(--surface-color);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -41,6 +42,7 @@ html, body {
     z-index: 1000;
 }
 
+/*Header Memories*/
 .app-header h1 {
     font-size: 24px;
     font-weight: 700;
@@ -51,6 +53,7 @@ html, body {
     display: block; /* Garante que o botão de menu é visível no mobile */
 }
 
+/*menu sanduiche o formato em si*/
 .sidebar {
     width: 280px;
     background-color: var(--primary-color);
@@ -68,30 +71,30 @@ html, body {
     overflow: hidden;
 }
 
+/*faz aparecer*/
 .sidebar.show {
     transform: translateX(0);
 }
 
+/*mexe nas imagens na tela inicial mas considero mais com a header*/
 #main-content {
     margin-left: 0;
     padding: 90px 20px 20px 20px;
     flex-grow: 1;
 }
 
+/*botao add memoria MENU*/
 .add-btn {
     padding: 2px 15px;
 }
 
+/*botao das ilhas*/
 #mapa-ilhas-link
 {
-      padding: 6px 20px;
+    padding: 6px 20px;
 }
 
-.header-buttons {
-    display: none;
-    gap: 10px;
-}
-
+/*tudo no container da cor*/
 .user-profile-section {
     background-color: #F3E1E1; /* container branco */
     padding: 20px;
@@ -103,6 +106,7 @@ html, body {
     color: var(--primary-dark-color);             
 }
 
+/*bem vindo...*/
 .user-info {
     display: flex;
     align-items: center;
@@ -114,21 +118,24 @@ html, body {
     font-weight: 500;
 }
 
+/*autoexplicativo*/
 .logout-btn {
   background: none;   
   border: none;      
   padding: 0;         
   color:  #A86A46;;     
-  font: inherit;      /* herda fonte */
+  font: inherit;      
   font-size: 18px;  
 }
 
+/*informaçoes em questao de listagem*/
 .menu-list {
     list-style: none;
     padding: 0;
     margin: 10px 0;
 }
 
+/*informações em questao da letra, tamanho especifico*/
 .menu-list li a {
     display: flex;
     align-items: center;
@@ -140,12 +147,12 @@ html, body {
     font-size: 20px;
 }
 
-
+/*margem*/
 .menu-list .material-icons {
     margin-right: 15px;
 }
 
-
+/*add memoria é botao e n link no menu, ent altera a parte*/
 #add-memory-container {
     padding: 10px 20px;
 }
@@ -165,7 +172,8 @@ html, body {
     font-size: 20px;
 }
 
-/* Grid de Memórias */
+/* AS memorias paginas, voltar se der errado em main content*/
+/*AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA*/
 
 .memories-grid {
     display: grid;
@@ -245,20 +253,24 @@ html, body {
 
 .modal-content {
     background-color: var(--surface-color);
-    padding: 30px;
-    border-radius: 8px;
-    width: 90%;
-    max-width: 500px;
+    width: 100%;
     position: relative;
     box-shadow: var(--shadow);
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
+    min-height: 80vh;
+    padding: 30px 20px 50px 20px;
+    background-color: var(--surface-color);
+    border-radius: 30px 30px 0px 0px;
+    box-sizing: border-box;
+    margin: 0 auto;
+    position: absolute;
+    bottom: 0;
 }
 
 .close-btn {
-    color: #aaa;
     position: absolute;
     top: 10px;
     right: 15px;
@@ -267,9 +279,44 @@ html, body {
     cursor: pointer;
 }
 
-.close-btn:hover {
-    color: var(--text-color);
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
 }
+
+.form-group input,
+.form-group textarea,
+.form-group select{
+    width: 100%;
+    padding: 15px;
+    background-color: #EFEFEF;
+    border: none;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-size: 15px;
+}
+
+#salvar-btn {
+    font-family: "Alice", serif;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 45px;
+    background-color: var(--primary-color);
+    color: #fff;
+    text-decoration: none;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    font-size: 32px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+    gap: 8px;
+    margin-bottom: 20px;
+    margin-top: 15px;
+}
+
+
 
 .album-list {
     list-style: none;
@@ -296,7 +343,7 @@ html, body {
 }
 
 .menu-item.album-item {
-    color: #F3E1E1 !important;
+    color: #F3E1E1;
 }
 
 

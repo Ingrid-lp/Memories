@@ -24,7 +24,7 @@ html, body {
 
 
 body {
-   font-family: "Alice", serif;
+    font-family: "Alice", serif;
     margin: 0;
     background-color: var(--surface-color);
     color: var(--primary-dark-color);
@@ -113,18 +113,9 @@ body {
     margin-top: -13px;
 }
 
-.btn:hover {
-    background-color: var(--primary-dark-color);
-}
-
 .delete-btn {
     background-color: #f44336;
 }
-
-.delete-btn:hover {
-    background-color: #d32f2f;
-}
-
 .link-text {
     margin-top: 20px;
 }
