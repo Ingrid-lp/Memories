@@ -53,45 +53,55 @@
         </main>
     </div>
 
-    <div id="memory-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn">&times;</span>
+   <div id="memory-modal" class="modal">
+    <div class="modal-content">
+        
+        <!-- CONTAINER -->
+        <div class="modal-header">
             <h2 id="modal-title">Adicionar Nova Memória</h2>
-            <form id="memory-form">
-                <input type="hidden" id="memory-id">
-                <div id="image-upload-field" class="form-group">
-                    <label for="memory-image">Memória:</label>
-                    <input type="file" id="memory-image" name="memoryImage" accept="image/*" required>
-                </div>
-                <div class="form-group">
-                    <label for="memory-title">Título:</label>
-                    <input type="text" id="memory-title" name="memory-title-input">
-                </div>
-                <div class="form-group">
-                    <label for="memory-description">Descrição:</label>
-                    <textarea id="memory-description" name="memory-description-input"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="memory-date">Data:</label>
-                    <input type="date" id="memory-date" name="memory-date-input">
-                </div>
-                
-                <div class="form-group">
-                    <label for="memory-sentiment">Sentimentos:</label>
-                    <select id="memory-sentiment" name="memory-sentiment" required>
-                        <option value="" disabled selected>Selecione um sentimento</option>
-                        <option value="Felicidade">Felicidade</option>
-                        <option value="Amor">Amor</option>
-                        <option value="Tristeza">Tristeza</option>
-                        <option value="Raiva">Raiva</option>
-                        <option value="Nostalgia">Nostalgia</option>
-                    </select>
-
-
-                <button id="salvar-btn" type="submit" class="btn">Salvar</button>
-            </form>
+            <span class="close-btn">&times;</span>
         </div>
+
+        <form id="memory-form">
+            <input type="hidden" id="memory-id">
+
+            <div id="image-upload-field" class="form-group">
+                <label for="memory-image">Memória:</label>
+                <input type="file" id="memory-image" name="memoryImage" accept="image/*" required>
+            </div>
+
+            <div class="form-group">
+                <label for="memory-title">Título:</label>
+                <input type="text" id="memory-title" name="memory-title-input">
+            </div>
+
+            <div class="form-group">
+                <label for="memory-description">Descrição:</label>
+                <textarea id="memory-description" name="memory-description-input"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="memory-date">Data:</label>
+                <input type="date" id="memory-date" name="memory-date-input">
+            </div>
+            
+            <div class="form-group">
+                <label for="memory-sentiment">Sentimentos:</label>
+                <select id="memory-sentiment" name="memory-sentiment" required>
+                    <option value="" disabled selected>Selecione um sentimento</option>
+                    <option value="Felicidade">Felicidade</option>
+                    <option value="Amor">Amor</option>
+                    <option value="Tristeza">Tristeza</option>
+                    <option value="Raiva">Raiva</option>
+                    <option value="Nostalgia">Nostalgia</option>
+                </select>
+            </div>
+
+            <button id="salvar-btn" type="submit" class="btn">Salvar</button>
+        </form>
     </div>
+</div>
+
 
     <div id="add-to-album-modal" class="modal">
         <div class="modal-content">
@@ -105,17 +115,11 @@
         </div>
     </div>
 
-    <div id="view-memory-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn">&times;</span>
-            <div id="view-memory-content">
-            </div>
-        </div>
-    </div>
+   <div id="view-memory-modal" class="modal"> <div class="modal-content"> <span class="close-btn">&times;</span> <div id="view-memory-content"> </div> </div> </div>
 
     <div id="custom-confirm-modal" class="modal">
         <div class="modal-content custom-dialog-content">
-            <h3 id="custom-confirm-message">criar albUm</h3>
+            <h3 id="custom-confirm-message">Tem certeza que deseja continuar?</h3>
             <div class="modal-actions">
                 <button id="custom-confirm-yes" class="btn delete-btn">Sim</button>
                 <button id="custom-confirm-no" class="btn">Não</button>
@@ -125,7 +129,7 @@
 
     <div id="custom-prompt-modal" class="modal">
         <div class="modal-content custom-dialog-content">
-            <h3 id="custom-prompt-message"> SJSJSJMA</h3>
+            <h3 id="custom-prompt-message">Digite um valor:</h3>
             <input type="text" id="custom-prompt-input" class="form-group-input" maxlength="10">
             <div class="modal-actions">
                 <button id="custom-prompt-ok" class="btn">OK</button>

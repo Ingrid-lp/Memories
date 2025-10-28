@@ -27,7 +27,6 @@ html, body {
     min-height: 100vh;
 }
 
-/*Header*/
 .app-header {
     background-color: var(--surface-color);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -42,7 +41,6 @@ html, body {
     z-index: 1000;
 }
 
-/*Header Memories*/
 .app-header h1 {
     font-size: 24px;
     font-weight: 700;
@@ -53,7 +51,6 @@ html, body {
     display: block; /* Garante que o botão de menu é visível no mobile */
 }
 
-/*menu sanduiche o formato em si*/
 .sidebar {
     width: 280px;
     background-color: var(--primary-color);
@@ -71,30 +68,30 @@ html, body {
     overflow: hidden;
 }
 
-/*faz aparecer*/
 .sidebar.show {
     transform: translateX(0);
 }
 
-/*mexe nas imagens na tela inicial mas considero mais com a header*/
 #main-content {
     margin-left: 0;
     padding: 90px 20px 20px 20px;
     flex-grow: 1;
 }
 
-/*botao add memoria MENU*/
 .add-btn {
     padding: 2px 15px;
 }
 
-/*botao das ilhas*/
 #mapa-ilhas-link
 {
-    padding: 6px 20px;
+      padding: 6px 20px;
 }
 
-/*tudo no container da cor*/
+.header-buttons {
+    display: none;
+    gap: 10px;
+}
+
 .user-profile-section {
     background-color: #F3E1E1; /* container branco */
     padding: 20px;
@@ -106,7 +103,6 @@ html, body {
     color: var(--primary-dark-color);             
 }
 
-/*bem vindo...*/
 .user-info {
     display: flex;
     align-items: center;
@@ -118,24 +114,21 @@ html, body {
     font-weight: 500;
 }
 
-/*autoexplicativo*/
 .logout-btn {
   background: none;   
   border: none;      
   padding: 0;         
   color:  #A86A46;;     
-  font: inherit;      
+  font: inherit;      /* herda fonte */
   font-size: 18px;  
 }
 
-/*informaçoes em questao de listagem*/
 .menu-list {
     list-style: none;
     padding: 0;
     margin: 10px 0;
 }
 
-/*informações em questao da letra, tamanho especifico*/
 .menu-list li a {
     display: flex;
     align-items: center;
@@ -147,12 +140,12 @@ html, body {
     font-size: 20px;
 }
 
-/*margem*/
+
 .menu-list .material-icons {
     margin-right: 15px;
 }
 
-/*add memoria é botao e n link no menu, ent altera a parte*/
+
 #add-memory-container {
     padding: 10px 20px;
 }
@@ -172,8 +165,7 @@ html, body {
     font-size: 20px;
 }
 
-/* AS memorias paginas, voltar se der errado em main content*/
-/*AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA*/
+/* Grid de Memórias */
 
 .memories-grid {
     display: grid;
@@ -238,6 +230,8 @@ html, body {
 
 /* Modais */
 
+/* Modais */
+
 .modal {
     display: none;
     position: fixed;
@@ -263,40 +257,68 @@ html, body {
     min-height: 80vh;
     padding: 30px 20px 50px 20px;
     background-color: var(--surface-color);
-    border-radius: 30px 30px 0px 0px;
+    border-radius: 15px 15px 0px 0px;
     box-sizing: border-box;
     margin: 0 auto;
     position: absolute;
     bottom: 0;
+    overflow: hidden; /* evita que o header escape jhdj */
+    padding: 0px 15px 90px 15px;
 }
 
+
 .close-btn {
+    color: #aaa;
     position: absolute;
     top: 10px;
     right: 15px;
     font-size: 28px;
     font-weight: bold;
-    cursor: pointer;
 }
 
-.form-group {
+/* Modal de ver a memoria ta */
+#view-memory-modal .modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 600px; 
+    min-height: auto;
+    background-color: var(--surface-color);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+    bottom: auto; 
+    margin: 0; 
+}
+
+
+/* Modal ADICIONAR MEMORia */
+#memory-modal .form-group {
     margin-bottom: 20px;
     text-align: left;
 }
 
-.form-group input,
-.form-group textarea,
-.form-group select{
+#memory-modal .modal-header .close-btn {
+    color: #fff;
+}
+
+#memory-modal .form-group input,
+#memory-modal .form-group textarea,
+#memory-modal .form-group select {
     width: 100%;
     padding: 15px;
-    background-color: #EFEFEF;
+    background-color: #efefef;
     border: none;
     border-radius: 10px;
     box-sizing: border-box;
     font-size: 15px;
 }
 
-#salvar-btn {
+#memory-modal label {
+    color: var(--primary-dark-color); 
+    font-size: 18px; 
+}
+
+#memory-modal #salvar-btn {
     font-family: "Alice", serif;
     display: inline-flex;
     align-items: center;
@@ -306,15 +328,43 @@ html, body {
     color: #fff;
     text-decoration: none;
     border: none;
-    border-radius: 40px;
-    cursor: pointer;
+    border-radius: 30px;
     font-size: 32px;
-    font-weight: 500;
-    transition: background-color 0.3s ease;
-    gap: 8px;
-    margin-bottom: 20px;
-    margin-top: 15px;
+    margin-bottom: 10px;
+    margin-top: 50px;
 }
+
+.modal-header {
+    background-color:var(--primary-color);
+    width: 100%;
+    color: white;
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    padding: 12px 20px;
+    margin-bottom: 30px; 
+    border-radius: 18px ;
+}
+
+ /* animaçãozinha apenas para add memoria */
+#memory-modal .modal-content {
+      /* animaçãozinha hehe */
+    transform: translateY(100%);
+    opacity: 0;
+    animation: surgir 0.5s cubic-bezier(0, 1.08, 1, 1) forwards;
+}
+
+  @keyframes surgir {
+    0% {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
 
 
 
@@ -343,7 +393,7 @@ html, body {
 }
 
 .menu-item.album-item {
-    color: #F3E1E1;
+    color: #F3E1E1 !important;
 }
 
 
