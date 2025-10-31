@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/mapa-ilhas.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Alice&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -46,8 +47,8 @@
     
             <div class="islands-map" id="islands-map-container">
 
-                <button id="view-chart-btn" class="btn small-btn chart-btn"> 
-                    <span class="material-icons">bar_chart</span> Gráfico das Ilhas
+                <button id="view-chart-btn" class="btn small-btn chart-btn">
+                    <canvas id="meuGrafico" class="material-icons">bar_chart</canvas> Gráfico das Ilhas
                 </button>
 
                 <div class="island-item">
@@ -83,6 +84,7 @@
     <div id="custom-alert-container"></div>
 
     <script src="script-mapa-ilhas.js"></script>
+    <script src="script-graficos.js"></script>
 </body>
 
 </html>

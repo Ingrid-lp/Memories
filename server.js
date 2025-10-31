@@ -1,5 +1,5 @@
 const express = require('express');
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
@@ -24,14 +24,14 @@ const upload = multer({ storage: storage });
 // MIDDLEWARES
 app.use(cors());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-app.use(bodyParser.json()); 
+app.use(bodyParser.json());
 
 // Configurações do seu banco de dados MySQL
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root', 
-    password: 'MinhaSenha@123', 
-    database: 'memories_db'
+    host: 'wagnerweinert.com.br',
+    user: 'info22_ingrid', 
+    password: 'info22_ingrid', 
+    database: 'info22_ingrid'
 });
 
 db.connect(err => {

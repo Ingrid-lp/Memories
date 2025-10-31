@@ -195,11 +195,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
           // Lógica para determinar o Nível da Ilha (1-5: N1, 6-15: N2, 16-25: N3, >25: N4)
           let level = 1;
-          if (count > 25) {
+          if (count > 14) {
               level = 4;
-          } else if (count > 15) {
+          } else if (count > 9) {
               level = 3;
-          } else if (count > 5) {
+          } else if (count > 4) {
               level = 2;
           }
           // Se count for 0 a 5, level permanece 1.

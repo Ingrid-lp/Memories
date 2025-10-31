@@ -465,7 +465,7 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault()
       const albumId = editBtn.dataset.id
       const albumToEdit = albums.find((a) => a.id == albumId)
-      const newTitle = await customPrompt("Digite o novo nome para o álbum:", albumToEdit.title)
+      const newTitle = await customPrompt("Qual será o novo nome desse album?", albumToEdit.title)
 
       if (newTitle && newTitle.trim() !== "") {
         try {
@@ -488,7 +488,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (deleteBtn) {
       e.preventDefault()
       const albumId = deleteBtn.dataset.id
-      if (await customConfirm("Tem certeza que deseja excluir este álbum e todas as memórias associadas a ele?")) {
+      if (await customConfirm("Tem certeza que deseja excluir álbum?")) {
         try {
           const response = await fetch(`${API_URL}/albums/${albumId}`, { method: "DELETE" })
           if (response.ok) {
