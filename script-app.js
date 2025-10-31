@@ -418,7 +418,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   createAlbumLink.addEventListener("click", async (e) => {
     e.preventDefault()
-    const albumTitle = await customPrompt("Digite o título do novo álbum:")
+    const albumTitle = await customPrompt("Qual será o nome desse album?")
 
     if (albumTitle) {
       try {
