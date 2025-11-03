@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="css/mapa-ilhas.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Alice&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -36,7 +35,7 @@
                     <button id="add-memory-btn" class="btn add-btn"><span class="material-icons">add_box</span> Adicionar Memórias</button>
                 </li>
                 <li>
-                    <a href="mapa-ilhas.html" class="menu-item active"><span class="material-icons">explore</span> Mapa das ilhas</a>
+                    <a href="mapa-ilhas.html" class="menu-item active"><span class="material-icons">explore</span> Mapa das Ilhas</a>
                 </li>
             </ul>
             <ul id="albums-list" class="menu-list album-section">
@@ -48,7 +47,7 @@
             <div class="islands-map" id="islands-map-container">
 
                 <button id="view-chart-btn" class="btn small-btn chart-btn">
-                    <canvas id="meuGrafico" class="material-icons">bar_chart</canvas> Gráfico das Ilhas
+                    <span class="material-icons">bar_chart</span> Gráfico de Sentimentos
                 </button>
 
                 <div class="island-item">
@@ -82,6 +81,29 @@
     </div>
     
     <div id="custom-alert-container"></div>
+    
+    <div id="custom-confirm-modal" class="modal" onclick="hideModal('custom-confirm-modal')">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close-btn material-icons">close</span>
+            <p id="custom-confirm-message"></p>
+            <div class="modal-actions">
+                <button id="custom-confirm-no" class="btn secondary-btn">Não</button>
+                <button id="custom-confirm-yes" class="btn primary-btn">Sim</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="custom-prompt-modal" class="modal" onclick="hideModal('custom-prompt-modal')">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close-btn material-icons">close</span>
+            <p id="custom-prompt-message"></p>
+            <input type="text" id="custom-prompt-input" maxlength="255">
+            <div class="modal-actions">
+                <button id="custom-prompt-cancel" class="btn secondary-btn">Cancelar</button>
+                <button id="custom-prompt-ok" class="btn primary-btn">OK</button>
+            </div>
+        </div>
+    </div>
 
     <script src="script-mapa-ilhas.js"></script>
     <script src="script-graficos.js"></script>

@@ -1,15 +1,19 @@
 // Espera o DOM estar completamente carregado
 document.addEventListener('DOMContentLoaded', () => {
-  // Aqui estamos associando o clique do canvas ao gerar o gráfico
   const canvas = document.getElementById('meuGrafico');
-  if (canvas) {
-    canvas.addEventListener('click', gerarGrafico);
+  
+  // Identifica se estamos na página de gráficos
+  const isChartPage = window.location.pathname.includes('grafico-sentimentos.html') || document.title.includes('Gráfico de Sentimentos'); 
+
+  if (canvas && isChartPage) {
+      // Na página dedicada, o gráfico carrega automaticamente
+      gerarGrafico(); 
   }
 });
 
 const sentimentTypes = ['Felicidade', 'Amor', 'Raiva', 'Tristeza', 'Nostalgia'];
 
-// Função para gerar o gráfico (já existente)
+// Função para gerar o gráfico
 async function gerarGrafico() {
   const dados = await fetchSentimentCounts();  // Espera a contagem de sentimentos
 
@@ -19,57 +23,88 @@ async function gerarGrafico() {
 
 function grafico(labels, dados) {
   const ctx = document.getElementById('meuGrafico').getContext('2d');
+  
+  // Destruir qualquer instância anterior de gráfico 
+  if (window.myChart instanceof Chart) {
+      window.myChart.destroy();
+  }
 
-  new Chart(ctx, {
+  window.myChart = new Chart(ctx, {
     type: 'bar',  // Tipo de gráfico (barra)
     data: {
       labels: labels,  // Labels dos itens no eixo X
       datasets: [{
-        label: 'Valores',  // Nome da série de dados
+        label: 'Contagem de Memórias', 
         data: dados,  // Dados para o gráfico
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',  // Cor de fundo das barras
-        borderColor: 'rgba(54, 162, 235, 1)',  // Cor da borda das barras
-        borderWidth: 1  // Largura da borda
+        backgroundColor: [
+            'rgba(255, 210, 10, 0.6)', 
+            'rgba(255, 3, 192, 0.6)', 
+            'rgba(255, 4, 4, 0.6)', 
+            'rgba(0, 60, 255, 0.6)', 
+            'rgba(153, 102, 255, 0.6)'
+        ],
+    
+        borderWidth: 1 
       }]
     },
     options: {
-      responsive: true,  // Tornar o gráfico responsivo
+      responsive: true,
+      maintainAspectRatio: false, // Permite que o CSS controle melhor o tamanho
       scales: {
         y: {
-          beginAtZero: true  // Iniciar o eixo Y a partir de zero
+          beginAtZero: true,
+          ticks: {
+            stepSize: 1, 
+          },
+          title: {
+            display: true,
+            text: 'Número de sentimentos'
+          }
+        },
+        x: {
+            title: {
+                display: true,
+                
+            }
+        }
+      },
+      plugins: {
+        legend: {
+          display: false 
         }
       }
     }
   });
 }
+
+// Função para buscar a contagem de sentimentos (mantida)
 const fetchSentimentCounts = async () => {
   try {
     const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
-    console.log(loggedInUser);
+    if (!loggedInUser) return new Array(sentimentTypes.length).fill(0);
 
-    const response = await fetch(`http://localhost:3000/sentiments/${loggedInUser.id}`);
+    const API_URL = "http://localhost:3000";
+    const response = await fetch(`${API_URL}/sentiments/${loggedInUser.id}`);
+    
+    if (!response.ok) {
+        throw new Error(`Erro na API de Sentimentos: ${response.statusText}`);
+    }
+    
     const data = await response.json();
 
-    // Definir todos os sentimentos possíveis
-      // Adicione ou remova sentimentos conforme necessário
-
-    // Criar um mapa para armazenar as contagens de sentimentos
-    const sentimentCounts = data.reduce((acc, current) => {
+    const sentimentCountsMap = data.reduce((acc, current) => {
       acc[current.sentiment] = Number(current.count);
       return acc;
     }, {});
 
-    // Preencher as contagens para todos os sentimentos, caso algum não tenha sido encontrado
     const completeSentimentCounts = sentimentTypes.map(sentiment => {
-      return sentimentCounts[sentiment] || 0;  // Se não existir, retorna 0
+      return sentimentCountsMap[sentiment] || 0;
     });
 
-    // Retorna as contagens completas
     return completeSentimentCounts;
 
   } catch (error) {
-    console.error("Erro ao carregar contagens de sentimentos:", error);
-    // Caso haja erro, retorna um array de 0s para todos os sentimentos
-    return [0, 0, 0, 0, 0];  // Exemplo para 5 sentimentos
+    console.error("Erro ao carregar contagens de sentimentos para o gráfico:", error);
+    return new Array(sentimentTypes.length).fill(0);
   }
 };

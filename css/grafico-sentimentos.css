@@ -1,0 +1,37 @@
+/*
+ * CSS específico para a tela de gráfico.
+ * Sobrescreve regras do mapa para garantir que o gráfico flua
+ * normalmente após o texto, ocupando uma boa área da tela.
+ */
+
+/* Garante que a área principal use o fluxo normal de blocos */
+#main-content {
+    display: block !important; 
+    padding: 20px; /* Adiciona algum padding para não colar nas bordas */
+}
+
+/* Centraliza o título e a descrição */
+.page-title, .description-text {
+    text-align: center;
+    margin: 0 auto 10px auto;
+    max-width: 1000px;
+}
+
+/* Estiliza o contêiner do gráfico e define seu tamanho */
+.chart-container-wrapper {
+    position: relative; /* Necessário para que o canvas preencha o espaço */
+    width: 95%; 
+    max-width: 800px; 
+    height: 60vh; /* Define uma altura responsiva (60% da altura da viewport) */
+    margin: 20px auto 40px auto; /* Centraliza e adiciona espaçamento vertical */
+    padding: 20px;
+    background-color: #f9f9f9; 
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Garante que o canvas ocupe o espaço dentro do seu wrapper */
+#meuGrafico {
+    max-height: 100%;
+    max-width: 100%;
+}

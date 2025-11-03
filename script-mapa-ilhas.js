@@ -131,6 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const createAlbumLink = document.getElementById("create-album-link")
   const islandsMapContainer = document.getElementById("islands-map-container")
   const addMemoryBtn = document.getElementById("add-memory-btn")
+  const viewChartBtn = document.getElementById("view-chart-btn") // NOVO/RESTAURADO
   const closeBtns = document.querySelectorAll(".close-btn")
 
 
@@ -242,9 +243,6 @@ document.addEventListener("DOMContentLoaded", () => {
     })
   }
   
-  // A renderização de ilhas foi removida para usar o HTML estático.
-  // const renderIslands = (data) => { ... } // Comentado/Removido como no código original
-
   // Eventos
 
   logoutBtn.addEventListener("click", () => {
@@ -336,11 +334,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   })
 
-  // CORREÇÃO FINAL: Redireciona para app.html com um hash para abrir o modal.
+  // Redireciona para app.html com um hash para abrir o modal de adição de memória.
   if (addMemoryBtn) {
       addMemoryBtn.addEventListener("click", (e) => {
           e.preventDefault(); 
           window.location.href = "app.html#add-memory"; 
+      });
+  }
+
+  // EVENTO: Redireciona para a nova página de gráficos
+  if (viewChartBtn) {
+      viewChartBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          window.location.href = "grafico-sentimentos.html"; 
       });
   }
 
@@ -357,5 +363,5 @@ document.addEventListener("DOMContentLoaded", () => {
   // Inicialização
   greetingElement.innerHTML = `Bem vindo,<br> <span class="user-name">${loggedInUser.name}!</span>`
   fetchAlbums()
-  fetchSentimentCounts() // CHAMA A NOVA FUNÇÃO
+  fetchSentimentCounts() // CHAMA A FUNÇÃO
 })
