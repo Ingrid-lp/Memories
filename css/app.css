@@ -367,13 +367,12 @@ html, body {
 #custom-prompt-modal .modal-content {
     position: relative;
     width: 90%;
-    min-height: auto;
-    background-color: var(--surface-color);
+    background-color: var(--primary-color);
     border-radius: 20px;
-    padding: 30px;
+    padding: 15px 20px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
     text-align: center;
-
+    gap: 30px;
     animation: pop-up 0.5s cubic-bezier(0.11, 1.09, 0.12, 1.11);
 }
 
@@ -390,8 +389,53 @@ html, body {
 
 
 
+#custom-prompt-message {
+    font-size: 26px;
+    color: var(--surface-color);
+    font-weight: 5;
+    margin-bottom: 0px;
+}
 
 
+#custom-prompt-input {
+    width: 100%;
+    padding: 15px;
+    background-color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-size: 15px;
+}
+
+
+#custom-prompt-modal .modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+#custom-prompt-modal .modal-actions .btn {
+    font: inherit;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: -10px; 
+    margin-left: 15px;
+    margin-bottom: 10px;
+    background-color: #CF7A47;
+    color: var(--surface-color);
+    font-size: 25px;
+}
+
+
+
+
+
+
+/*Modal Criar EXCLUIR */
 .modal-content.custom-dialog-content {
     position: relative;
     width: 80%;
@@ -425,14 +469,12 @@ html, body {
     border: none;
     cursor: pointer;
     border-radius: 5px;
-    margin-top: -25px;
-    margin-right: 20px;  
-    margin-left: 20px;
+    margin-top: -25px; 
+    margin-left: 15px;
     margin-bottom: 10px;
     background-color: #CF7A47;
     color: var(--surface-color);
     font-size: 25px;
-
 }
 
 #custom-confirm-no
