@@ -233,12 +233,12 @@ document.addEventListener("DOMContentLoaded", () => {
       emptyState.style.display = "block"
       if (currentAlbumId) {
         emptyState.querySelector("p").textContent =
-          `Não há memórias para exibir neste álbum. Clique em "Adicionar Memórias ao Álbum" para adicionar memórias existentes.`
-        emptyState.querySelector(".empty-icon").textContent = "FOLDER"
+          `Não há memórias neste álbum! Se quiser colocar algumas memórias, aperte no botão acima "Adicionar" para adicionar memórias que já existem.`
+        emptyState.querySelector(".empty-icon").textContent = "ALBUM VAZIO :("
       } else {
         emptyState.querySelector("p").textContent =
-          'Você ainda não possui memórias. Clique em "Adicionar Memórias" para começar.'
-        emptyState.querySelector(".empty-icon").textContent = "MEMÓRIA"
+          'Você ainda não possui memórias, Mas sem problemas! Vá em "Adicionar Memórias" para começar seu mapa de memórias.'
+        emptyState.querySelector(".empty-icon").textContent = "MEMÓRIAS"
       }
     } else {
       emptyState.style.display = "none"
@@ -704,3 +704,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
   fetchData()
 })
+
