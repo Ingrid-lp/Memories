@@ -184,7 +184,7 @@ html, body {
     font-size: 20px;
 }
 
-/* Grid de Memórias */
+/* Grid de Memórias ( Se der tempo alterar estilo Masonry*/
 
 .memories-grid {
     display: grid;
@@ -211,6 +211,18 @@ html, body {
     min-height: 120px; /* Mantém uma altura mínima */
     object-fit: cover;
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 .memory-details {
     padding: 15px;
@@ -540,12 +552,12 @@ html, body {
 
 .memories-selection-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    gap: 10px;
-    max-height: 400px;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 15px;
+    max-height: 500px;
     overflow-y: auto;
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 .memories-selection-list .memory-item {
@@ -553,27 +565,17 @@ html, body {
     flex-direction: column;
     align-items: center;
     position: relative;
+    padding: 5px;
 }
 
-.memories-selection-list .memory-item input[type="checkbox"] {
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    z-index: 1;
-    width: 20px;
-    height: 20px;
-}
 
 .memories-selection-list .memory-item img {
     width: 100%;
-    height: 100px;
+    height: 100%;
     object-fit: cover;
     border-radius: 4px;
 }
 
-.memories-selection-list .memory-item-details {
-    display: none;
-}
 
 .modal-footer {
     display: flex;
@@ -581,6 +583,54 @@ html, body {
     width: 100%;
 }
 
+/* Estilo do checkbox  */
+.memories-selection-list .memory-item input[type="checkbox"] {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    z-index: 1;
+    width: 25px; 
+    height: 25px; 
+    appearance: none; 
+    background-color: #ffffff; 
+    border: 2px solid #BA7348; 
+    border-radius: 5px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Quando o checkbox está marcado */
+.memories-selection-list .memory-item input[type="checkbox"]:checked {
+    background-color: #BA7348; 
+    border-color: #BA7348;
+}
+
+/* Mostrar o símbolo de check dentro do checkbox quando marcado */
+.memories-selection-list .memory-item input[type="checkbox"]:checked::after {
+    content: '𖹭'; 
+    color: white;
+    font-size: 20px; 
+    position: absolute;
+}
+
+
+#add-to-album-modal .modal-content {
+    color: var(--primary-color);
+    border-radius: 30px 30px 0px 0px;
+    animation: surgir 0.5s cubic-bezier(0, 1.08, 1, 1) forwards;
+}
+
+
+#add-to-album-modal .modal-footer .btn {
+    padding: 12px 20px;
+    background-color: #BA7348; 
+    color: #fff; 
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
 
 /* Estilo para os botões de ação no modal de visualização */
 
