@@ -401,9 +401,34 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = "index.html"
   })
 
-  menuBtn.addEventListener("click", () => {
-    sidebar.classList.toggle("show")
-  })
+  // FUNÇÃO AUXILIAR PARA ALTERNAR A BARRA LATERAL (Sidebar)
+  const toggleSidebar = () => {
+      sidebar.classList.toggle("show");
+  };
+
+  // 1. Listener para o botão de menu sanduíche (chama a função auxiliar)
+  menuBtn.addEventListener("click", (e) => {
+    e.stopPropagation(); // Impede que o clique no botão se propague para o listener do documento
+    toggleSidebar();
+  });
+  
+  // 2. NOVO: Listener para fechar o sidebar ao clicar fora dele
+  document.addEventListener('click', (event) => {
+    const isSidebarOpen = sidebar.classList.contains('show');
+    
+    if (isSidebarOpen) {
+        // Verifica se o clique NÃO foi dentro da sidebar E NÃO foi no botão do menu.
+        // O closest garante que mesmo clicando em um elemento dentro do sidebar (ex: um <span> dentro de um <li>)
+        // o clique será considerado "dentro" do sidebar.
+        const isClickInsideSidebar = event.target.closest("#sidebar");
+        const isClickOnMenuButton = event.target.closest("#menu-btn");
+        
+        if (!isClickInsideSidebar && !isClickOnMenuButton) {
+            sidebar.classList.remove('show');
+        }
+    }
+  });
+
 
   homeLink.addEventListener("click", (e) => {
     e.preventDefault()
@@ -704,4 +729,3 @@ document.addEventListener("DOMContentLoaded", () => {
 
   fetchData()
 })
-

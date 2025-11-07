@@ -250,33 +250,62 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = "index.html"
   })
 
-  menuBtn.addEventListener("click", () => {
-    sidebar.classList.toggle("show")
-  })
+  // FUNÇÃO AUXILIAR PARA ALTERNAR A BARRA LATERAL (Sidebar)
+  const toggleSidebar = () => {
+      sidebar.classList.toggle("show");
+  };
+
+  // 1. Listener para o botão de menu sanduíche (chama a função auxiliar)
+  menuBtn.addEventListener("click", (e) => {
+    e.stopPropagation(); // Impede que o clique no botão se propague para o listener do documento
+    toggleSidebar();
+  });
   
-  // Lógica de Criar Álbum atualizada para usar customPrompt
+  // 2. NOVO: Listener para fechar o sidebar ao clicar fora dele
+  document.addEventListener('click', (event) => {
+    const isSidebarOpen = sidebar.classList.contains('show');
+    
+    if (isSidebarOpen) {
+        const isClickInsideSidebar = event.target.closest("#sidebar");
+        const isClickOnMenuButton = event.target.closest("#menu-btn");
+        
+        if (!isClickInsideSidebar && !isClickOnMenuButton) {
+            sidebar.classList.remove('show');
+        }
+    }
+  });
+
+
+  // Lógica de Criar Álbum corrigida para garantir que o prompt resolva e a barra feche
   createAlbumLink.addEventListener("click", async (e) => {
     e.preventDefault()
+    
+    // 1. Abre o prompt para obter o título
     const albumTitle = await customPrompt("Digite o título do novo álbum:")
 
-    if (albumTitle) {
+    // 2. CORRIGIDO: Verifica se o título foi fornecido (não é null e não é string vazia)
+    if (albumTitle && albumTitle.trim() !== "") {
       try {
         const response = await fetch(`${API_URL}/albums`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ title: albumTitle, userId: loggedInUser.id }),
         })
+        
         if (response.ok) {
           showCustomAlert("Álbum criado com sucesso!", 'success');
           await fetchAlbums()
         } else {
-          showCustomAlert("Erro ao criar álbum.", 'error');
+          // Tenta obter a mensagem de erro do corpo da resposta
+          const errorData = await response.json().catch(() => ({ message: 'Erro desconhecido' }));
+          showCustomAlert(`Erro ao criar álbum: ${errorData.message || response.statusText}`, 'error');
         }
       } catch (error) {
         showCustomAlert("Erro ao conectar ao servidor.", 'error');
       }
     }
-    sidebar.classList.remove("show")
+    // 3. Garante que o sidebar feche (após a interação com o prompt/API)
+    sidebar.classList.remove("show") 
   })
 
   // Lógica de Edição/Exclusão atualizada
@@ -287,7 +316,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (target) {
         e.preventDefault();
+        // Fecha o sidebar antes de navegar
+        sidebar.classList.remove("show"); 
         window.location.href = target.href;
+        return; // Sai após a navegação do link
     }
     
     if (editBtn) {

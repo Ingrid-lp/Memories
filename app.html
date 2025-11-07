@@ -41,21 +41,23 @@
                     <span class="material-icons" style="vertical-align: -5px;">exit_to_app</span>
                 </button>
             </div>
-            <ul class="menu-list">
-                <li><a href="#" id="home-link" class="menu-item active"><span class="material-icons">home</span> Minhas Memórias</a></li>
-                <li><a href="#" id="create-album-link" class="menu-item"><span class="material-icons">folder</span> Criar Álbum</a></li>
-                <li id="add-memory-container">
-                    <button id="add-memory-btn" class="btn add-btn"><span class="material-icons">add_box</span> Adicionar Memórias</button>
-                </li>
-                <li>
-                    <a href="#" id="mapa-ilhas-link" class="menu-item"><span class="material-icons">explore</span> Mapa das ilhas</a>
-                </li>
-            </ul>
-            <ul id="albums-list" class="menu-list album-section"></ul>
-        </nav>
+            
+            <div class="sidebar-scroll-content">
+                <ul class="menu-list">
+                    <li><a href="#" id="home-link" class="menu-item active"><span class="material-icons">home</span> Minhas Memórias</a></li>
+                    <li><a href="#" id="create-album-link" class="menu-item"><span class="material-icons">folder</span> Criar Álbum</a></li>
+                    <li id="add-memory-container">
+                        <button id="add-memory-btn" class="btn add-btn"><span class="material-icons">add_box</span> Adicionar Memórias</button>
+                    </li>
+                    <li>
+                        <a href="#" id="mapa-ilhas-link" class="menu-item"><span class="material-icons">explore</span> Mapa das ilhas</a>
+                    </li>
+                </ul>
+                <ul id="albums-list" class="menu-list album-section"></ul>
+            </div>
+            </nav>
 
         <main id="main-content">
-            <!-- Container de conteúdo colorido -->
             <div id="content-container" class="content-container">
     <div class="content-header">
         <h2 id="content-title">Minhas Memórias...</h2>
@@ -78,7 +80,6 @@
         </main>
     </div>
 
-    <!-- Parte dos MODAIS -->
     <div id="memory-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">

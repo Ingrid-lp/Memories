@@ -20,11 +20,11 @@
 /* Estiliza o contêiner do gráfico e define seu tamanho */
 .chart-container-wrapper {
     position: relative; /* Necessário para que o canvas preencha o espaço */
-    width: 95%; 
+    width: 90%; /* Ajuste: Reduzido de 95% para 90% */
     max-width: 800px; 
-    height: 60vh; /* Define uma altura responsiva (60% da altura da viewport) */
+    height: 65vh; /* Ajuste: Aumentado de 60vh para 65vh */
     margin: 20px auto 40px auto; /* Centraliza e adiciona espaçamento vertical */
-    padding: 20px;
+    padding: 15px; /* Ajuste: Reduzido de 20px para 15px */
     background-color: #f9f9f9; 
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

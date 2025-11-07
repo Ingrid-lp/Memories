@@ -93,7 +93,7 @@ html, body {
 
 #main-content {
     margin-left: 0;
-    padding: 90px 20px 20px 20px;
+    padding: 0 0 20px 0; /* Ajuste: Remoção do padding-top aqui */
     flex-grow: 1;
 }
 
@@ -188,8 +188,8 @@ html, body {
 
 .memories-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* Ajuste: Reduzido minmax de 280px para 140px */
+    gap: 15px; /* Ajuste: Reduzido o gap */
     margin-top: 20px;
 }
 
@@ -202,11 +202,13 @@ html, body {
     display: flex;
     flex-direction: column;
     cursor: pointer;
+    aspect-ratio: 1 / 1.1; /* Adicionado para manter proporção */
 }
 
 .memory-image {
     width: 100%;
-    height: 200px;
+    height: auto; /* Ajuste: Removido altura fixa de 200px */
+    min-height: 120px; /* Mantém uma altura mínima */
     object-fit: cover;
 }
 
@@ -296,12 +298,12 @@ html, body {
 /* Modal de ver a memoria ta */
 #view-memory-modal .modal-content {
     position: relative;
-    width: 90%;
+    width: 95%; /* Ajuste: De max-width fixo para 95% */
     max-width: 600px; 
     min-height: auto;
     background-color: var(--surface-color);
     border-radius: 20px;
-    padding: 30px;
+    padding: 20px; /* Ajuste: Reduzido o padding */
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
     bottom: auto; 
     margin: 0; 
@@ -340,13 +342,13 @@ html, body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 6px 45px;
+    padding: 6px 30px; /* Ajuste: Reduzido padding */
     background-color: var(--primary-color);
     color: #fff;
     text-decoration: none;
     border: none;
     border-radius: 30px;
-    font-size: 32px;
+    font-size: 24px; /* Ajuste: Reduzido de 32px para 24px */
     margin-bottom: 10px;
     margin-top: 50px;
 }
@@ -767,18 +769,46 @@ body.modal-open {
 .header-container {
     position: relative;
     width: 100%;
-    height: 120px;
+    height: 100px; /* Ajuste: Reduzida a altura do header em mobile */
     display: flex;
     justify-content: center; 
     align-items: center;     
 }
 
 .app-logo {
-    height: 70px;
+    height: 50px; /* Ajuste: Reduzido o tamanho do logo */
     object-fit: contain;
 }
 
 .empty-state {
     text-align: center;
     margin-top: 50px;
+}
+
+/* Media Query para Desktop/Telas Maiores */
+@media (min-width: 769px) {
+    /* Ajuste para grids maiores em desktop */
+    .memories-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 20px;
+    }
+    /* Reverte o posicionamento do container principal para o fluxo normal do documento */
+    .content-container {
+        position: relative;
+        min-height: auto;
+        height: auto;
+        padding: 40px 25px 50px 25px; 
+        box-shadow: none; 
+        border-radius: 0;
+        overflow-y: visible;
+    }
+    #main-content {
+        padding: 20px; 
+    }
+    .header-container {
+        height: 120px; /* Restaura a altura do header, se necessário */
+    }
+    .app-logo {
+        height: 70px; /* Restaura o tamanho do logo */
+    }
 }
