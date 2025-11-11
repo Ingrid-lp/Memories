@@ -14,7 +14,7 @@ const showCustomAlert = (message, type = 'success', duration = 3000) => {
     container.appendChild(alertElement);
 
     // Forçar reflow para garantir a transição de entrada
-    void alertElement.offsetWidth; 
+    void alertElement.offsetWidth;
     alertElement.classList.add('show');
 
     // Remover após a duração especificada
@@ -27,6 +27,25 @@ const showCustomAlert = (message, type = 'success', duration = 3000) => {
     }, duration);
 };
 
+// NOVO: Função para alternar a visibilidade da senha
+const togglePasswordVisibility = (e) => {
+    const button = e.currentTarget;
+    const targetId = button.getAttribute('data-target-id');
+    const passwordInput = document.getElementById(targetId);
+    const icon = button.querySelector('.material-icons');
+
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        icon.textContent = 'visibility'; // Altera o ícone para olho aberto
+    } else {
+        passwordInput.type = 'password';
+        icon.textContent = 'visibility_off'; // Altera o ícone para olho fechado
+    }
+    // Evita que o clique no botão envie o formulário
+    e.preventDefault();
+};
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const loginScreen = document.getElementById('login-screen');
     const registerScreen = document.getElementById('register-screen');
@@ -38,10 +57,16 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.style.backgroundImage = "url('img/loginimage.png')";
     const API_URL = 'http://localhost:3000';
 
+    // NOVO: Adiciona o event listener a todos os botões de alternância de senha
+    document.querySelectorAll('.toggle-password').forEach(button => {
+        button.addEventListener('click', togglePasswordVisibility);
+    });
+
     loginForm.addEventListener('submit', async(e) => {
         e.preventDefault();
         const email = e.target['login-email'].value;
-        const password = e.target['login-password'].value;
+        // ATUALIZADO: Obtém o valor do input de senha pelo ID
+        const password = document.getElementById('login-password').value;
 
         try {
             const response = await fetch(`${API_URL}/login`, {
@@ -67,7 +92,8 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         const name = e.target['register-name'].value;
         const email = e.target['register-email'].value;
-        const password = e.target['register-password'].value;
+        // ATUALIZADO: Obtém o valor do input de senha pelo ID
+        const password = document.getElementById('register-password').value;
 
         try {
             const response = await fetch(`${API_URL}/register`, {

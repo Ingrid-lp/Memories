@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Alice&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
 <body>
@@ -20,12 +21,15 @@
                 <label for="login-email">Email:</label>
                 <input type="email" id="login-email" required>
             </div>
-            <div class="form-group">
+
+            <div class="form-group input-with-icon">
                 <label for="login-password">Senha:</label>
                 <input type="password" id="login-password" required>
             </div>
+
             <button type="submit" class="btn">Entrar</button>
         </form>
+
         <p class="link-text">Não tem uma conta?</p> <button href="#" id="show-register">Cadastre-se</button>
     </div>
 
@@ -36,17 +40,20 @@
                 <label for="register-name">Nome:</label>
                 <input type="text" id="register-name" required>
             </div>
+
             <div class="form-group">
                 <label for="register-email">Email:</label>
                 <input type="email" id="register-email" required>
             </div>
-            <div class="form-group">
+
+            <div class="form-group input-with-icon">
                 <label for="register-password">Senha:</label>
                 <input type="password" id="register-password" required minlength="6">
             </div>
+
             <button type="submit" class="btn">Cadastro</button>
         </form>
-         <a href="#" id="show-login">Cancelar</a>
+        <a href="#" id="show-login">Cancelar</a>
     </div>
 
     <div id="custom-alert-container"></div>

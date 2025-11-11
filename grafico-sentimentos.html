@@ -7,7 +7,7 @@
     <title>Memories</title>
     <link rel="stylesheet" href="css/mapa-ilhas.css">
     <link rel="stylesheet" href="css/grafico-sentimentos.css">
-    
+
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Alice&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -26,11 +26,13 @@
                     <span class="material-icons" style="font-size: 48px;">account_circle</span>
                     <span id="greeting"></span>
                 </div>
+
                 <button id="logout-btn" class="btn logout-btn">
                     <span style="font-size: 30px;">Sair </span>
                     <span class="material-icons" style="vertical-align: -5px;">exit_to_app</span>
                 </button>
             </div>
+
             <ul class="menu-list">
                 <li><a href="app.html" class="menu-item"><span class="material-icons">home</span> Minhas Memórias</a></li>
                 <li><a href="#" id="create-album-link" class="menu-item"><span class="material-icons">folder</span> Criar Álbum</a></li>
@@ -40,6 +42,7 @@
                 <li>
                     <a href="mapa-ilhas.html" class="menu-item"><span class="material-icons">explore</span> Mapa das Ilhas</a>
                 </li>
+
             </ul>
             <ul id="albums-list" class="menu-list album-section">
             </ul>
@@ -48,13 +51,14 @@
         <main id="main-content">
             <h2 class="page-title">Gráfico de Sentimentos</h2>
             <p class="description-text">Quantos sentimentos você tem em suas memórias?</p>
-            
+
             <div id="chart-display-area" class="chart-container-wrapper">
                 <canvas id="meuGrafico" style="max-height: 80vh;"></canvas>
             </div>
+
         </main>
     </div>
-    
+
     <div id="custom-alert-container"></div>
 
     <script src="script-mapa-ilhas.js"></script>
