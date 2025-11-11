@@ -2,6 +2,9 @@
 <html lang="pt-BR">
 
 <head>
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Memories</title>
@@ -11,11 +14,25 @@
 </head>
 
 <body>
-    <div class="map-container">
-        <header class="app-header">
-            <button id="menu-btn" class="icon-btn"><span class="material-icons">menu</span></button>
-            <h1>Memories</h1>
-        </header>
+  
+    <div id="main-app" class="app-container">
+
+       <div id="main-app" class="app-container">
+
+    
+    <div class="header-container">
+        <button id="menu-btn" class="icon-btn menu-btn">
+            <span class="material-icons">menu</span>
+        </button>
+
+
+                    <button id="view-chart-btn" class="btn small-btn chart-btn">
+                    <span class="material-icons">bar_chart</span> Gráfico de Sentimentos
+                   </button>
+
+
+    </div>
+
 
         <nav id="sidebar" class="sidebar">
             <div class="user-profile-section">
@@ -46,9 +63,7 @@
     
             <div class="islands-map" id="islands-map-container">
 
-                <button id="view-chart-btn" class="btn small-btn chart-btn">
-                    <span class="material-icons">bar_chart</span> Gráfico de Sentimentos
-                </button>
+<img id="map-image" src="img/map.png" alt="Mapa das Ilhas">
 
                 <div class="island-item">
                     <img src="img/Ilhadafelicidade1.png" alt="Ilha Felicidade" class="island-image">
@@ -75,35 +90,18 @@
                     <p class="island-name">Ilha Da Raiva <span class="sentiment-count" data-sentiment="Raiva">(0)</span></p>
                 </div>
                 
+
                 </div>
+
+                
             </div>
         </main>
     </div>
     
     <div id="custom-alert-container"></div>
     
-    <div id="custom-confirm-modal" class="modal" onclick="hideModal('custom-confirm-modal')">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <span class="close-btn material-icons">close</span>
-            <p id="custom-confirm-message"></p>
-            <div class="modal-actions">
-                <button id="custom-confirm-no" class="btn secondary-btn">Não</button>
-                <button id="custom-confirm-yes" class="btn primary-btn">Sim</button>
-            </div>
-        </div>
-    </div>
+   <img src="img/rosadosventos.png" alt="Rosa dos Ventos" id="rosa-ventos">
 
-    <div id="custom-prompt-modal" class="modal" onclick="hideModal('custom-prompt-modal')">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <span class="close-btn material-icons">close</span>
-            <p id="custom-prompt-message"></p>
-            <input type="text" id="custom-prompt-input" maxlength="255">
-            <div class="modal-actions">
-                <button id="custom-prompt-cancel" class="btn secondary-btn">Cancelar</button>
-                <button id="custom-prompt-ok" class="btn primary-btn">OK</button>
-            </div>
-        </div>
-    </div>
 
     <script src="script-mapa-ilhas.js"></script>
     <script src="script-graficos.js"></script>

@@ -528,6 +528,7 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    
 }
 
 .album-list li a {
@@ -835,30 +836,5 @@ body.modal-open {
     margin-top: 50px;
 }
 
-/* Media Query para Desktop/Telas Maiores */
-@media (min-width: 769px) {
-    /* Ajuste para grids maiores em desktop */
-    .memories-grid {
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        gap: 20px;
-    }
-    /* Reverte o posicionamento do container principal para o fluxo normal do documento */
-    .content-container {
-        position: relative;
-        min-height: auto;
-        height: auto;
-        padding: 40px 25px 50px 25px; 
-        box-shadow: none; 
-        border-radius: 0;
-        overflow-y: visible;
-    }
-    #main-content {
-        padding: 20px; 
-    }
-    .header-container {
-        height: 120px; /* Restaura a altura do header, se necessário */
-    }
-    .app-logo {
-        height: 70px; /* Restaura o tamanho do logo */
-    }
-}
+
+
