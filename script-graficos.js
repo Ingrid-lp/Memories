@@ -37,11 +37,11 @@ function grafico(labels, dados) {
         label: 'Contagem de Memórias', 
         data: dados,  // Dados para o gráfico
         backgroundColor: [
-            'rgba(255, 210, 10, 0.6)', 
-            'rgba(255, 3, 192, 0.6)', 
-            'rgba(255, 4, 4, 0.6)', 
-            'rgba(0, 60, 255, 0.6)', 
-            'rgba(153, 102, 255, 0.6)'
+            'rgba(255, 198, 10, 0.75)', 
+            'rgba(255, 3, 179, 0.67)', 
+            'rgba(255, 21, 4, 0.6)', 
+            'rgba(0, 132, 255, 0.42)', 
+            'rgba(166, 88, 255, 0.61)'
         ],
     
         borderWidth: 1 
@@ -49,23 +49,32 @@ function grafico(labels, dados) {
     },
     options: {
       responsive: true,
-      maintainAspectRatio: false, // Permite que o CSS controle melhor o tamanho
-      scales: {
+      maintainAspectRatio: false, 
+     scales: {
         y: {
           beginAtZero: true,
           ticks: {
             stepSize: 1, 
+            font: {
+              size: 14,  // Tamanho da fonte no eixo Y
+              weight: 'bold',
+            },
+            color: '#ba74488e' 
           },
           title: {
             display: true,
-            text: 'Número de sentimentos'
+            text: 'Memórias',
+            font: {
+              size: 18,
+              weight: 'bold',
+            },
+             color: '#ba744886'
           }
         },
         x: {
-            title: {
-                display: true,
-                
-            }
+          title: {
+            display: true,
+          }
         }
       },
       plugins: {
@@ -107,4 +116,7 @@ const fetchSentimentCounts = async () => {
     console.error("Erro ao carregar contagens de sentimentos para o gráfico:", error);
     return new Array(sentimentTypes.length).fill(0);
   }
+
+
+  
 };

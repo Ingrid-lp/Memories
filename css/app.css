@@ -820,14 +820,14 @@ body.modal-open {
 .header-container {
     position: relative;
     width: 100%;
-    height: 100px; /* Ajuste: Reduzida a altura do header em mobile */
+    height: 100px; 
     display: flex;
     justify-content: center; 
     align-items: center;     
 }
 
 .app-logo {
-    height: 50px; /* Ajuste: Reduzido o tamanho do logo */
+    height: 50px; 
     object-fit: contain;
 }
 

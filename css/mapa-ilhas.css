@@ -11,11 +11,6 @@
   --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-html,
-body {
-  height: 100%;
-  margin: 0;
-}
 
 .alice-regular {
   font-family: "Alice", serif;
@@ -411,12 +406,14 @@ html, body {
   color: #fff9f4;
   border: none;
   border-radius: 10px;
-  padding: 10px 18px;
+  padding: 10px 10px;
   display: flex;
   align-items: center;
   gap: 8px;
-  font-family: inherit;
-  font-size: 20px;
+}
+
+#view-chart-btn .material-icons {
+    font-size: 36px; 
 }
 
 #rosa-ventos {
@@ -454,4 +451,9 @@ p {
     color: #A66D47 !important;
     margin: 10px 0;
     line-height: 1.6; 
+}
+
+.app-logo {
+    height: 50px; 
+    object-fit: contain;
 }

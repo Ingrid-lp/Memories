@@ -14,11 +14,20 @@
 </head>
 
 <body>
-    <div class="map-container">
-        <header class="app-header">
-            <button id="menu-btn" class="icon-btn"><span class="material-icons">menu</span></button>
-            <h1>Memories</h1>
-        </header>
+
+     <div id="main-app" class="app-container">
+
+       <div id="main-app" class="app-container">
+
+    
+    <div class="header-container">
+        <button id="menu-btn" class="icon-btn menu-btn">
+            <span class="material-icons">menu</span>
+        </button>
+
+        <img src="img/logo.png" alt="Logo Memories" class="app-logo">
+    </div>
+
 
         <nav id="sidebar" class="sidebar">
             <div class="user-profile-section">
@@ -48,16 +57,18 @@
             </ul>
         </nav>
 
-        <main id="main-content">
-            <h2 class="page-title">Gráfico de Sentimentos</h2>
-            <p class="description-text">Quantos sentimentos você tem em suas memórias?</p>
 
-            <div id="chart-display-area" class="chart-container-wrapper">
-                <canvas id="meuGrafico" style="max-height: 80vh;"></canvas>
-            </div>
+       <main id="main-content">
+    <div class="container">
+        <h2 class="page-title">Gráfico de Sentimentos</h2>
+        <p class="description-text">Qual sentimento mais te consome?</p>
 
-        </main>
+        <div id="chart-display-area" class="chart-container-wrapper">
+            <canvas id="meuGrafico" style="max-height: 80vh;"></canvas>
+        </div>
     </div>
+</main>
+
 
     <div id="custom-alert-container"></div>
 
