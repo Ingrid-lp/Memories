@@ -289,8 +289,9 @@ document.addEventListener("DOMContentLoaded", () => {
               <div class="memory-details-view">
                   <h3>${memory.title || "Sem título"}</h3>
                   <p><strong>Sentimento:</strong> ${memory.sentiment || "Não informado"}</p>
-                  <p><strong>Descrição:</strong> ${memory.description || "Sem descrição"}</p>
                   <p><strong>Data:</strong> ${memory.date || "Não informada"}</p>
+                   <h3>...</h3>
+                  <p><strong></strong> ${memory.description || "Sem descrição"}</p>
               </div>
               <div class="memory-actions modal-actions">
                   ${removeButtonHtml}

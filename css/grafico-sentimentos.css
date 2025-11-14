@@ -67,3 +67,9 @@ canvas {
     max-width: 100%;
     max-height: 80vh; /* Mantém o gráfico responsivo */
 }
+
+.app-logo {
+    height: 70px; 
+    object-fit: contain;
+    margin-top: 20px;
+}
