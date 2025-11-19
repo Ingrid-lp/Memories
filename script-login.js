@@ -27,7 +27,7 @@ const showCustomAlert = (message, type = 'success', duration = 3000) => {
     }, duration);
 };
 
-// NOVO: Função para alternar a visibilidade da senha
+// NOVO/REORGANIZADO: Função para alternar a visibilidade da senha
 const togglePasswordVisibility = (e) => {
     const button = e.currentTarget;
     const targetId = button.getAttribute('data-target-id');
@@ -41,7 +41,7 @@ const togglePasswordVisibility = (e) => {
         passwordInput.type = 'password';
         icon.textContent = 'visibility_off'; // Altera o ícone para olho fechado
     }
-    // Evita que o clique no botão envie o formulário
+    // Evita que o clique no botão (que está dentro do form) envie o formulário
     e.preventDefault();
 };
 
@@ -57,7 +57,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.style.backgroundImage = "url('img/loginimage.png')";
     const API_URL = 'http://localhost:3000';
 
-    // NOVO: Adiciona o event listener a todos os botões de alternância de senha
+    // ESSENCIAL: Adiciona o event listener a todos os botões de alternância de senha
+    // O seletor '.toggle-password' agora encontra os botões adicionados ao HTML.
     document.querySelectorAll('.toggle-password').forEach(button => {
         button.addEventListener('click', togglePasswordVisibility);
     });

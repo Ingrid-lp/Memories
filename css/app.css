@@ -10,16 +10,17 @@
     --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-html, body {
+html,
+body {
     height: 100%;
     margin: 0;
     background-color: var(--primary-color);
 }
 
 .alice-regular {
-  font-family: "Alice", serif;
-  font-weight: 400;
-  font-style: normal;
+    font-family: "Alice", serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .app-container {
@@ -50,7 +51,8 @@ html, body {
 
 #menu-btn {
     display: block;
-    z-index: 1 !important; /* add important nessa bosta */
+    z-index: 1 !important;
+    /* add important nessa bosta */
 }
 
 #menu-btn {
@@ -59,17 +61,17 @@ html, body {
     left: 15px;
     border: none;
     border-radius: 12px;
-    padding: 10px; /* aumenta o tamanho do botão */
+    padding: 10px;
+    /* aumenta o tamanho do botão */
     display: block;
-    z-index: 1 !important; /* add important nessa bosta */
+    z-index: 1 !important;
+    /* add important nessa bosta */
 }
-
 
 .menu-btn .material-icons {
-    font-size: 32px; 
+    font-size: 32px;
     color: #ffffff;
 }
-
 
 .sidebar {
     width: 280px;
@@ -93,7 +95,8 @@ html, body {
 
 #main-content {
     margin-left: 0;
-    padding: 0 0 20px 0; /* Ajuste: Remoção do padding-top aqui */
+    padding: 0 0 20px 0;
+    /* Ajuste: Remoção do padding-top aqui */
     flex-grow: 1;
 }
 
@@ -101,8 +104,7 @@ html, body {
     padding: 2px 15px;
 }
 
-#mapa-ilhas-link
-{
+#mapa-ilhas-link {
     padding: 6px 20px;
 }
 
@@ -112,15 +114,16 @@ html, body {
 }
 
 .user-profile-section {
-    background-color: #F3E1E1; /* container branco */
+    background-color: #F3E1E1;
+    /* container branco */
     padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 20px;
-    border-radius: 1px 3px 30px 30px;     
-    color: var(--primary-dark-color); 
-    margin-top: 0; 
+    border-radius: 1px 3px 30px 30px;
+    color: var(--primary-dark-color);
+    margin-top: 0;
 }
 
 .user-info {
@@ -135,12 +138,14 @@ html, body {
 }
 
 .logout-btn {
-  background: none;   
-  border: none;      
-  padding: 0;         
-  color:  #A86A46;;     
-  font: inherit;      /* herda fonte */
-  font-size: 18px;  
+    background: none;
+    border: none;
+    padding: 0;
+    color: #A86A46;
+    ;
+    font: inherit;
+    /* herda fonte */
+    font-size: 18px;
 }
 
 .menu-list {
@@ -160,11 +165,9 @@ html, body {
     font-size: 20px;
 }
 
-
 .menu-list .material-icons {
     margin-right: 15px;
 }
-
 
 #add-memory-container {
     padding: 10px 20px;
@@ -176,20 +179,23 @@ html, body {
     color: var(--light-text-color);
     text-decoration: none;
     font-weight: 500;
-    border:none;
-    background-color:  #DE8F5F;
+    border: none;
+    background-color: #DE8F5F;
     margin: 1px 0px 10px -15px;
-    font: inherit; 
+    font: inherit;
     color: #B86F43;
     font-size: 20px;
 }
+
 
 /* Grid de Memórias ( Se der tempo alterar estilo Masonry*/
 
 .memories-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* Ajuste: Reduzido minmax de 280px para 140px */
-    gap: 15px; /* Ajuste: Reduzido o gap */
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    /* Ajuste: Reduzido minmax de 280px para 140px */
+    gap: 15px;
+    /* Ajuste: Reduzido o gap */
     margin-top: 20px;
 }
 
@@ -202,27 +208,18 @@ html, body {
     display: flex;
     flex-direction: column;
     cursor: pointer;
-    aspect-ratio: 1 / 1.1; /* Adicionado para manter proporção */
+    aspect-ratio: 1 / 1.1;
+    /* Adicionado para manter proporção */
 }
 
 .memory-image {
     width: 100%;
-    height: auto; /* Ajuste: Removido altura fixa de 200px */
-    min-height: 120px; /* Mantém uma altura mínima */
+    height: auto;
+    /* Ajuste: Removido altura fixa de 200px */
+    min-height: 120px;
+    /* Mantém uma altura mínima */
     object-fit: cover;
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 .memory-details {
     padding: 15px;
@@ -293,10 +290,10 @@ html, body {
     margin: 0 auto;
     position: absolute;
     bottom: 0;
-    overflow: hidden; /* evita que o header escape jhdj */
+    overflow: hidden;
+    /* evita que o header escape jhdj */
     padding: 0px 15px 90px 15px;
 }
-
 
 .close-btn {
     color: #ffffff;
@@ -307,22 +304,27 @@ html, body {
     font-weight: bold;
 }
 
+
 /* Modal de ver a memoria ta */
+
 #view-memory-modal .modal-content {
     position: relative;
-    width: 95%; /* Ajuste: De max-width fixo para 95% */
-    max-width: 600px; 
+    width: 95%;
+    /* Ajuste: De max-width fixo para 95% */
+    max-width: 600px;
     min-height: auto;
     background-color: var(--surface-color);
     border-radius: 20px;
-    padding: 20px; /* Ajuste: Reduzido o padding */
+    padding: 20px;
+    /* Ajuste: Reduzido o padding */
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
-    bottom: auto; 
-    margin: 0; 
+    bottom: auto;
+    margin: 0;
 }
 
 
 /* Modal ADICIONAR MEMORia */
+
 #memory-modal .form-group {
     margin-bottom: 20px;
     text-align: left;
@@ -345,8 +347,8 @@ html, body {
 }
 
 #memory-modal label {
-    color: var(--primary-dark-color); 
-    font-size: 18px; 
+    color: var(--primary-dark-color);
+    font-size: 18px;
 }
 
 #memory-modal #salvar-btn {
@@ -354,49 +356,55 @@ html, body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 6px 30px; /* Ajuste: Reduzido padding */
+    padding: 6px 30px;
+    /* Ajuste: Reduzido padding */
     background-color: var(--primary-color);
     color: #fff;
     text-decoration: none;
     border: none;
     border-radius: 30px;
-    font-size: 24px; /* Ajuste: Reduzido de 32px para 24px */
+    font-size: 24px;
+    /* Ajuste: Reduzido de 32px para 24px */
     margin-bottom: 10px;
     margin-top: 50px;
 }
 
 .modal-header {
-    background-color:var(--primary-color);
+    background-color: var(--primary-color);
     width: 100%;
     color: white;
     display: flex;
-    justify-content: space-between; 
+    justify-content: space-between;
     align-items: center;
     padding: 12px 20px;
-    margin-bottom: 30px; 
-    border-radius: 18px ;
+    margin-bottom: 30px;
+    border-radius: 18px;
 }
 
- /* animaçãozinha apenas para add memoria */
+
+/* animaçãozinha apenas para add memoria */
+
 #memory-modal .modal-content {
-      /* animaçãozinha hehe */
+    /* animaçãozinha hehe */
     transform: translateY(100%);
     opacity: 0;
     animation: surgir 0.5s cubic-bezier(0, 1.08, 1, 1) forwards;
 }
 
-  @keyframes surgir {
+@keyframes surgir {
     0% {
-      transform: translateY(100%);
-      opacity: 0;
+        transform: translateY(100%);
+        opacity: 0;
     }
     100% {
-      transform: translateY(0);
-      opacity: 1;
+        transform: translateY(0);
+        opacity: 1;
     }
-  }
+}
+
 
 /*Modal Criar Álbum */
+
 #custom-prompt-modal .modal-content {
     position: relative;
     width: 90%;
@@ -420,15 +428,12 @@ html, body {
     }
 }
 
-
-
 #custom-prompt-message {
     font-size: 26px;
     color: var(--surface-color);
     font-weight: 5;
     margin-bottom: 0px;
 }
-
 
 #custom-prompt-input {
     width: 100%;
@@ -439,7 +444,6 @@ html, body {
     box-sizing: border-box;
     font-size: 15px;
 }
-
 
 #custom-prompt-modal .modal-actions {
     display: flex;
@@ -455,7 +459,7 @@ html, body {
     border: none;
     cursor: pointer;
     border-radius: 5px;
-    margin-top: -10px; 
+    margin-top: -10px;
     margin-left: 15px;
     margin-bottom: 10px;
     background-color: #CF7A47;
@@ -464,11 +468,8 @@ html, body {
 }
 
 
-
-
-
-
 /*Modal Criar EXCLUIR */
+
 .modal-content.custom-dialog-content {
     position: relative;
     width: 80%;
@@ -478,7 +479,6 @@ html, body {
     padding: 15px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
     text-align: center;
-
     animation: pop-up 0.5s cubic-bezier(0.11, 1.09, 0.12, 1.11);
 }
 
@@ -486,7 +486,6 @@ html, body {
     font-size: 30px;
     color: var(--surface-color);
     font-weight: normal;
-    
 }
 
 .modal-actions {
@@ -502,7 +501,7 @@ html, body {
     border: none;
     cursor: pointer;
     border-radius: 5px;
-    margin-top: -25px; 
+    margin-top: -25px;
     margin-left: 15px;
     margin-bottom: 10px;
     background-color: #CF7A47;
@@ -510,14 +509,9 @@ html, body {
     font-size: 25px;
 }
 
-#custom-confirm-no
-{
-     background-color: var(--primary-color);
+#custom-confirm-no {
+    background-color: var(--primary-color);
 }
-
-
-
-
 
 .album-list {
     list-style: none;
@@ -528,20 +522,18 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    
 }
 
 .album-list li a {
     padding: 15px 0;
 }
 
-
 .album-list .material-icons {
     margin-right: 15px;
 }
 
 .album-item-container .material-icons {
-   color: #F3E1E1;
+    color: #F3E1E1;
 }
 
 .menu-item.album-item {
@@ -569,7 +561,6 @@ html, body {
     padding: 5px;
 }
 
-
 .memories-selection-list .memory-item img {
     width: 100%;
     height: 100%;
@@ -577,44 +568,48 @@ html, body {
     border-radius: 4px;
 }
 
-
 .modal-footer {
     display: flex;
     justify-content: flex-end;
     width: 100%;
 }
 
+
 /* Estilo do checkbox  */
+
 .memories-selection-list .memory-item input[type="checkbox"] {
     position: absolute;
     top: 5px;
     left: 5px;
     z-index: 1;
-    width: 25px; 
-    height: 25px; 
-    appearance: none; 
-    background-color: #ffffff; 
-    border: 2px solid #BA7348; 
-    border-radius: 5px; 
+    width: 25px;
+    height: 25px;
+    appearance: none;
+    background-color: #ffffff;
+    border: 2px solid #BA7348;
+    border-radius: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+
 /* Quando o checkbox está marcado */
+
 .memories-selection-list .memory-item input[type="checkbox"]:checked {
-    background-color: #BA7348; 
+    background-color: #BA7348;
     border-color: #BA7348;
 }
 
+
 /* Mostrar o símbolo de check dentro do checkbox quando marcado */
+
 .memories-selection-list .memory-item input[type="checkbox"]:checked::after {
-    content: '𖹭'; 
+    content: '𖹭';
     color: white;
-    font-size: 20px; 
+    font-size: 20px;
     position: absolute;
 }
-
 
 #add-to-album-modal .modal-content {
     color: var(--primary-color);
@@ -622,16 +617,16 @@ html, body {
     animation: surgir 0.5s cubic-bezier(0, 1.08, 1, 1) forwards;
 }
 
-
 #add-to-album-modal .modal-footer .btn {
     padding: 12px 20px;
-    background-color: #BA7348; 
-    color: #fff; 
+    background-color: #BA7348;
+    color: #fff;
     font-size: 16px;
     border: none;
     border-radius: 10px;
     cursor: pointer;
 }
+
 
 /* Estilo para os botões de ação no modal de visualização */
 
@@ -639,27 +634,31 @@ html, body {
     margin-top: 20px;
 }
 
-
 #greeting {
-  color: var(--primary-color);
-  font-size: 30px;
+    color: var(--primary-color);
+    font-size: 30px;
 }
 
 #greeting .user-name {
-  color: #B86F43; 
-  font-size: 30px;
-
+    color: #B86F43;
+    font-size: 30px;
 }
+
 
 /* --- ESTILOS DE NOTIFICAÇÃO CUSTOMIZADA --- */
 
 #custom-alert-container {
     position: fixed;
-    top: 50%; /* Centraliza verticalmente */
-    left: 50%; /* Centraliza horizontalmente */
-    transform: translate(-50%, -50%); /* Ajuste final para centralização perfeita */
-    z-index: 1000; /* Garante que fique acima de tudo */
-    pointer-events: none; /* Permite clicar através do container */
+    top: 50%;
+    /* Centraliza verticalmente */
+    left: 50%;
+    /* Centraliza horizontalmente */
+    transform: translate(-50%, -50%);
+    /* Ajuste final para centralização perfeita */
+    z-index: 1000;
+    /* Garante que fique acima de tudo */
+    pointer-events: none;
+    /* Permite clicar através do container */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -685,48 +684,64 @@ html, body {
     transform: translateY(0);
 }
 
+
 /* Estilos para diferentes tipos de mensagem */
+
 .custom-alert.success {
-    background-color: var(--primary-color); /* Usando a cor primária para sucesso */
+    background-color: var(--primary-color);
+    /* Usando a cor primária para sucesso */
     border: 1px solid var(--primary-dark-color);
 }
 
 .custom-alert.error {
-    background-color: #f44336; /* Vermelho para erros */
+    background-color: #f44336;
+    /* Vermelho para erros */
     border: 1px solid #d32f2f;
 }
 
 .custom-alert.warning {
-    background-color: #ff9800; /* Laranja para avisos */
+    background-color: #ff9800;
+    /* Laranja para avisos */
     border: 1px solid #f57c00;
 }
 
 .custom-alert.info {
-    background-color: #2196f3; /* Azul para informações */
+    background-color: #2196f3;
+    /* Azul para informações */
     border: 1px solid #1976d2;
 }
-
 
 
 /* =================================================================
    SOLUÇÃO DE SCROLL E QUEBRA DE LINHA NO MODAL DE VISUALIZAÇÃO
    ================================================================= */
 
+
 /* 1. Aplica rolagem ao conteúdo total do modal (para caso a imagem seja muito grande) */
+
 #view-memory-modal .modal-content {
-    max-height: 90vh; /* Limita a altura total do modal */
-    overflow-y: auto; /* Adiciona scroll se a altura for excedida */
-    padding: 0px; /* Garante que o padding original seja mantido */
+    max-height: 90vh;
+    /* Limita a altura total do modal */
+    overflow-y: auto;
+    /* Adiciona scroll se a altura for excedida */
+    padding: 0px;
+    /* Garante que o padding original seja mantido */
     box-sizing: border-box;
-  /*  white-space: pre-line !important; */
+    /*  white-space: pre-line !important; */
 }
 
+
 /* 2. Limita a altura e adiciona rolagem FOCADA no bloco de detalhes (incluindo a descrição) */
-#view-memory-content .memory-details-view {     
-    width: 100%;               /* Ocupa toda a largura do container pai */
-    max-width: 392px;          /* Define um limite de largura */
-    overflow-y: auto;          /* Scroll vertical se ultrapassar a altura */
-    overflow-x: hidden;        /* Impede scroll lateral */
+
+#view-memory-content .memory-details-view {
+    width: 100%;
+    /* Ocupa toda a largura do container pai */
+    max-width: 392px;
+    /* Define um limite de largura */
+    overflow-y: auto;
+    /* Scroll vertical se ultrapassar a altura */
+    overflow-x: hidden;
+    /* Impede scroll lateral */
     padding: 30px;
     margin-bottom: 15px;
     border-radius: 5px;
@@ -734,13 +749,13 @@ html, body {
     box-sizing: border-box;
     border-style: none;
     position: relative;
-    top: -15px;                 
-    border-radius: 20px;    
+    top: -15px;
+    border-radius: 20px;
 }
 
 
-
 /* 3. Garante que o texto e titulo*/
+
 #view-memory-content .memory-details-view p {
     white-space: pre-wrap;
     word-wrap: break-word;
@@ -753,7 +768,6 @@ html, body {
     word-wrap: break-word;
     overflow-wrap: break-word;
     color: #945E3D;
-    
 }
 
 #view-memory-content .memory-details-view h3 {
@@ -762,19 +776,23 @@ html, body {
     overflow-wrap: break-word;
     color: #945E3D;
     font-size: 28px;
-    
 }
 
+
 /* 4. Garante que a imagem dentro do modal se ajuste */
+
 #view-memory-content img {
     max-width: 100%;
-    max-height: 50vh; /* Altura da imagem um pouco menor para deixar espaço para os detalhes e botões */
-    object-fit: contain; 
-    display: block; 
+    max-height: 50vh;
+    /* Altura da imagem um pouco menor para deixar espaço para os detalhes e botões */
+    object-fit: contain;
+    display: block;
     margin: 0 auto 15px auto;
 }
 
+
 /* NOVO: Bloqueia a rolagem do body quando um modal está aberto */
+
 body.modal-open {
     overflow: hidden;
 }
@@ -790,7 +808,9 @@ body.modal-open {
     margin-top: 10px;
 }
 
+
 /* Base */
+
 #view-memory-content .icon-btn {
     background: #FFCF9D;
     color: #8B5434;
@@ -805,8 +825,6 @@ body.modal-open {
     margin-bottom: 30px;
     margin-top: -30px;
 }
-
-
 
 #view-memory-content .edit-btn {
     background: #FFCF9D;
@@ -829,7 +847,7 @@ body.modal-open {
     width: 100%;
     height: 86vh;
     padding: 40px 25px 1px 25px;
-    background-color:  #F3E1E1;
+    background-color: #F3E1E1;
     border-radius: 60px 60px 0 0;
     box-shadow: 0 -4px 20px rgb(0 0 0 / 18%);
     box-sizing: border-box;
@@ -838,11 +856,15 @@ body.modal-open {
     left: 0;
     right: 0;
     position: absolute;
-    overflow-y: auto; /* scrollagem */
-    overflow-x: hidden; /* scrollagem */
+    overflow-y: auto;
+    /* scrollagem */
+    overflow-x: hidden;
+    /* scrollagem */
 }
 
+
 /* alinhar o botao add*/
+
 .content-header {
     display: flex;
     align-items: center;
@@ -857,7 +879,9 @@ body.modal-open {
     margin: 0;
 }
 
+
 /* botão*/
+
 .content-container .btn {
     font: inherit;
     background-color: #B86F43;
@@ -882,14 +906,14 @@ body.modal-open {
 .header-container {
     position: relative;
     width: 100%;
-    height: 100px; 
+    height: 100px;
     display: flex;
-    justify-content: center; 
-    align-items: center;     
+    justify-content: center;
+    align-items: center;
 }
 
 .app-logo {
-    height: 70px; 
+    height: 70px;
     object-fit: contain;
     margin-top: 20px;
 }
@@ -900,4 +924,91 @@ body.modal-open {
 }
 
 
+/* --- ESTILOS PARA O MODAL DE IMAGEM EM TELA CHEIA (LIGHTBOX) --- */
 
+#full-screen-image-modal.modal {
+    background-color: rgba(0, 0, 0, 0.9);
+    /* Fundo semi-transparente escuro */
+    padding-top: 0;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    /* ESSENCIAL: Coloca este modal acima de todos os outros (inclusive o modal de detalhes, que deve ter um z-index menor, ex: 99) */
+}
+
+
+/* Garante que o modal base ('modal') tenha um z-index padrão alto, se já não tiver */
+
+.modal {
+    z-index: 99;
+}
+
+
+/* Remove preenchimento e fundo padrão do modal para maximizar a área da imagem */
+
+.modal-content.full-screen-image-content {
+    padding: 0;
+    width: auto;
+    max-width: 90%;
+    height: auto;
+    max-height: 90%;
+    background-color: transparent;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease-in-out;
+    transform: scale(0.95);
+}
+
+#full-screen-image-modal.modal.show .full-screen-image-content {
+    transform: scale(1);
+}
+
+.full-screen-image-content .close-btn {
+    position: fixed;
+    /* Fixa o 'x' no canto superior direito da tela */
+    top: 20px;
+    right: 30px;
+    color: #fff;
+    /* Cor branca para contraste com fundo escuro */
+    font-size: 40px;
+    font-weight: bold;
+    opacity: 0.8;
+    transition: 0.3s;
+    z-index: 101;
+    /* Garante que está acima do modal de tela cheia */
+}
+
+.full-screen-image-content .close-btn:hover,
+.full-screen-image-content .close-btn:focus {
+    opacity: 1;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.full-image-display {
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: 90vh;
+    /* Ajusta a altura da imagem à tela */
+    display: block;
+    object-fit: contain;
+    /* Garante que a imagem se ajuste sem cortar */
+}
+
+.caption-text {
+    color: #ccc;
+    font-size: 16px;
+    padding: 10px 0;
+    text-align: center;
+}
+
+
+/* Torna a imagem clicável no modal de detalhes */
+
+#view-memory-modal .memory-details-view img {
+    cursor: pointer;
+}

@@ -26,6 +26,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const memorySentimentInput = document.getElementById("memory-sentiment")
     const closeBtns = document.querySelectorAll(".close-btn")
 
+    // NOVO: Elementos para o modal de imagem em tela cheia
+    const fullScreenImageModal = document.getElementById("full-screen-image-modal");
+    const fullImageDisplay = document.getElementById("full-image-display");
+    const fullImageCaption = document.getElementById("full-image-caption");
+    const closeFullScreenBtn = fullScreenImageModal.querySelector(".close-btn"); // Seleciona o 'x' do modal
+
     // --- FUNÇÕES DE DIÁLOGO CUSTOMIZADAS ---
 
     const showCustomAlert = (message, type = 'success', duration = 3000) => {
@@ -57,12 +63,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const showModal = (modalId) => {
         const modal = document.getElementById(modalId);
-        if (modal) modal.style.display = "flex";
+        if (modal) {
+            modal.style.display = "flex";
+            // NOVO: Adiciona classe 'show' para CSS de transição (se implementado)
+            setTimeout(() => modal.classList.add('show'), 10);
+        }
     }
 
     const hideModal = (modalId) => {
         const modal = document.getElementById(modalId);
-        if (modal) modal.style.display = "none";
+        if (modal) {
+            modal.classList.remove('show');
+            // Timeout de 300ms para corresponder ao tempo de transição do CSS, evitando piscar
+            setTimeout(() => modal.style.display = "none", 300);
+        }
     }
 
     const customPrompt = (message, defaultValue = '', maxLength = 10) => {
@@ -149,6 +163,14 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href = "index.html"
         return
     }
+
+    // NOVO: Função para exibir a imagem em tela cheia (Lightbox)
+    const showFullScreenImage = (imageUrl, title) => {
+        fullImageDisplay.src = imageUrl;
+        fullImageCaption.textContent = title || "Imagem";
+        showModal("full-screen-image-modal");
+    };
+
 
     // FUNÇÃO CENTRALIZADA PARA ABRIR O MODAL DE ADICIONAR MEMÓRIA
     const openAddMemoryModal = () => {
@@ -250,6 +272,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 card.className = "memory-card"
                 const imageUrl = memory.imageUrl.startsWith("/uploads") ? `${API_URL}${memory.imageUrl}` : memory.imageUrl
                 card.innerHTML = `<img src="${imageUrl}" alt="${memory.title}" class="memory-image" data-id="${memory.id}">`
+
+                // O clique na imagem abre o modal de detalhes
                 card.querySelector(".memory-image").addEventListener("click", () => {
                     const memoryToView = memories.find((m) => m.id == memory.id)
                     showMemoryDetails(memoryToView)
@@ -284,8 +308,10 @@ document.addEventListener("DOMContentLoaded", () => {
             `<button class="icon-btn remove-from-album-btn" data-id="${memory.id}"><span class="material-icons">folder_delete</span></button>` :
             "";
 
+        // NOVO: Adicionamos um ID à imagem no modal de detalhes para facilitar a seleção
         viewMemoryContent.innerHTML = `
-              <img src="${imageUrl}" alt="${memory.title}" style="max-width: 100%; max-height: 80vh; object-fit: contain; display: block; margin: 0 auto;">
+              <img src="${imageUrl}" alt="${memory.title}" id="memory-details-image" 
+                   style="max-width: 100%; max-height: 50vh; object-fit: contain; display: block; margin: 0 auto; cursor: pointer;">
               <div class="memory-details-view">
                   <h3>${memory.title || "Sem título"}</h3>
                   <p><strong>Sentimento:</strong> ${memory.sentiment || "Não informado"}</p>
@@ -303,8 +329,18 @@ document.addEventListener("DOMContentLoaded", () => {
         const editBtn = viewMemoryContent.querySelector(".edit-btn")
         const deleteBtn = viewMemoryContent.querySelector(".delete-btn")
         const removeFromAlbumBtn = viewMemoryContent.querySelector(".remove-from-album-btn")
+        const memoryDetailsImage = viewMemoryContent.querySelector("#memory-details-image"); // Seleciona a imagem recém-criada
         const memoryId = memory.id
         const targetAlbumId = currentAlbumId;
+
+        // ESSENCIAL: Event Listener para abrir a imagem em tela cheia a partir do modal de detalhes
+        if (memoryDetailsImage) {
+            memoryDetailsImage.addEventListener("click", (e) => {
+                e.stopPropagation(); // Evita que o clique feche o modal de detalhes (se o listener for no overlay)
+                // Chama a nova função para exibir a imagem no lightbox POR CIMA
+                showFullScreenImage(imageUrl, memory.title);
+            });
+        }
 
 
         if (editBtn) {
@@ -429,8 +465,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (isSidebarOpen) {
             // Verifica se o clique NÃO foi dentro da sidebar E NÃO foi no botão do menu.
-            // O closest garante que mesmo clicando em um elemento dentro do sidebar (ex: um <span> dentro de um <li>)
-            // o clique será considerado "dentro" do sidebar.
             const isClickInsideSidebar = event.target.closest("#sidebar");
             const isClickOnMenuButton = event.target.closest("#menu-btn");
 
@@ -681,11 +715,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     })
 
+    // NOVO: Fechar o modal de imagem em tela cheia pelo botão 'x'
+    closeFullScreenBtn.addEventListener("click", () => {
+        hideModal("full-screen-image-modal");
+    });
+
+
+    // ATUALIZADO: Inclui o novo modal no fechamento por clique fora
     window.addEventListener("click", (e) => {
         if (e.target.id === "memory-modal" || e.target.id === "add-to-album-modal" ||
             e.target.id === "view-memory-modal" || e.target.id === "custom-confirm-modal" ||
-            e.target.id === "custom-prompt-modal") {
-            hideModal(e.target.id);
+            e.target.id === "custom-prompt-modal" || e.target.id === "full-screen-image-modal") { // Adiciona o novo ID
+
+            // Só esconde se o clique foi no fundo do modal (próprio elemento) e não no seu conteúdo.
+            if (e.target.classList.contains('modal')) {
+                hideModal(e.target.id);
+            }
         }
     })
 
