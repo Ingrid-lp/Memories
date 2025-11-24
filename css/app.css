@@ -939,9 +939,6 @@ body.modal-open {
 
 /* Garante que o modal base ('modal') tenha um z-index padrão alto, se já não tiver */
 
-.modal {
-    z-index: 99;
-}
 
 
 /* Remove preenchimento e fundo padrão do modal para maximizar a área da imagem */
