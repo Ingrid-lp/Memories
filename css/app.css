@@ -932,7 +932,7 @@ body.modal-open {
     padding-top: 0;
     align-items: center;
     justify-content: center;
-    z-index: 1000;
+    z-index: 1002;
     /* ESSENCIAL: Coloca este modal acima de todos os outros (inclusive o modal de detalhes, que deve ter um z-index menor, ex: 99) */
 }
 
