@@ -214,10 +214,7 @@ body {
 
 .memory-image {
     width: 100%;
-    height: auto;
-    /* Ajuste: Removido altura fixa de 200px */
-    min-height: 120px;
-    /* Mantém uma altura mínima */
+    min-height: 21vh;
     object-fit: cover;
 }
 
@@ -712,49 +709,32 @@ body {
 }
 
 
-/* =================================================================
-   SOLUÇÃO DE SCROLL E QUEBRA DE LINHA NO MODAL DE VISUALIZAÇÃO
-   ================================================================= */
-
-
-/* 1. Aplica rolagem ao conteúdo total do modal (para caso a imagem seja muito grande) */
-
 #view-memory-modal .modal-content {
-    max-height: 90vh;
-    /* Limita a altura total do modal */
+    max-height: 100%;
+    max-width: 100%;
     overflow-y: auto;
-    /* Adiciona scroll se a altura for excedida */
     padding: 0px;
-    /* Garante que o padding original seja mantido */
     box-sizing: border-box;
-    /*  white-space: pre-line !important; */
 }
 
 
-/* 2. Limita a altura e adiciona rolagem FOCADA no bloco de detalhes (incluindo a descrição) */
 
 #view-memory-content .memory-details-view {
     width: 100%;
-    /* Ocupa toda a largura do container pai */
-    max-width: 392px;
-    /* Define um limite de largura */
+    max-width: 100%;
     overflow-y: auto;
-    /* Scroll vertical se ultrapassar a altura */
     overflow-x: hidden;
-    /* Impede scroll lateral */
     padding: 30px;
-    margin-bottom: 15px;
-    border-radius: 5px;
+    margin-bottom: 20px;
     background-color: #ffffff;
     box-sizing: border-box;
-    border-style: none;
     position: relative;
     top: -15px;
     border-radius: 20px;
 }
 
 
-/* 3. Garante que o texto e titulo*/
+/* texto e titulo*/
 
 #view-memory-content .memory-details-view p {
     white-space: pre-wrap;
@@ -778,16 +758,10 @@ body {
     font-size: 28px;
 }
 
-
-/* 4. Garante que a imagem dentro do modal se ajuste */
-
 #view-memory-content img {
-    max-width: 100%;
-    max-height: 50vh;
-    /* Altura da imagem um pouco menor para deixar espaço para os detalhes e botões */
-    object-fit: contain;
-    display: block;
-    margin: 0 auto 15px auto;
+    
+    width: 100vh;
+    height: auto;
 }
 
 
@@ -924,8 +898,6 @@ body.modal-open {
 }
 
 
-/* --- ESTILOS PARA O MODAL DE IMAGEM EM TELA CHEIA (LIGHTBOX) --- */
-
 #full-screen-image-modal.modal {
     background-color: rgba(0, 0, 0, 0.9);
     /* Fundo semi-transparente escuro */
@@ -936,12 +908,6 @@ body.modal-open {
     /* ESSENCIAL: Coloca este modal acima de todos os outros (inclusive o modal de detalhes, que deve ter um z-index menor, ex: 99) */
 }
 
-
-/* Garante que o modal base ('modal') tenha um z-index padrão alto, se já não tiver */
-
-
-
-/* Remove preenchimento e fundo padrão do modal para maximizar a área da imagem */
 
 .modal-content.full-screen-image-content {
     padding: 0;
@@ -965,47 +931,28 @@ body.modal-open {
 
 .full-screen-image-content .close-btn {
     position: fixed;
-    /* Fixa o 'x' no canto superior direito da tela */
     top: 20px;
     right: 30px;
     color: #fff;
-    /* Cor branca para contraste com fundo escuro */
     font-size: 40px;
     font-weight: bold;
     opacity: 0.8;
     transition: 0.3s;
     z-index: 101;
-    /* Garante que está acima do modal de tela cheia */
-}
-
-.full-screen-image-content .close-btn:hover,
-.full-screen-image-content .close-btn:focus {
-    opacity: 1;
-    text-decoration: none;
-    cursor: pointer;
 }
 
 .full-image-display {
-    width: auto;
     max-width: 100%;
-    height: auto;
-    max-height: 90vh;
-    /* Ajusta a altura da imagem à tela */
-    display: block;
     object-fit: contain;
-    /* Garante que a imagem se ajuste sem cortar */
+    margin-bottom: 0%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .caption-text {
     color: #ccc;
     font-size: 16px;
-    padding: 10px 0;
-    text-align: center;
-}
+    margin-bottom: 50%;
 
-
-/* Torna a imagem clicável no modal de detalhes */
-
-#view-memory-modal .memory-details-view img {
-    cursor: pointer;
 }
